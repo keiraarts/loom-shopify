@@ -1,4 +1,47 @@
 
+# LoomSDK + Shopify
+
+Let Shopify merchants easily collect videos, feedback, and questions on their shop via Loom! We're extending Loom's SDK into a Shopify themes extension app.
+
+
+![Logo](https://i.imgur.com/0MB8NLs.png)
+
+
+## Screenshots
+
+![App Screenshot](https://i.imgur.com/3zHAl96.png)
+![App Screenshot](https://i.imgur.com/UhLSrwc.jpg)
+
+## Related
+
+View a demo of how this app is used on Shopify. The password to view the store is 'loom'.
+
+[Shopify Store Demo](https://via-dev-220.myshopify.com/password)
+
+
+## Acknowledgements
+
+ - [Shopify Cookieless Authentication](https://github.com/ctrlaltdylan/shopify-nextjs-toolbox)
+ - [Shopify Theme App Extensions Documentation](https://shopify.dev/apps/online-store/theme-app-extensions/getting-started)
+ - [Loom SDK](https://www.loom.com/sdk)
+
+
+## Contributing
+
+Contributions are always welcome!
+
+See `contributing.md` for ways to get started.
+
+Please adhere to this project's `code of conduct`.
+
+
+## Demo
+
+![App Screenshot](https://cdn.loom.com/sessions/thumbnails/9a9bf950328043eaa1a7c05aba9b57c3-with-play.gif)
+
+[Loom Demo Video](https://www.loom.com/share/9a9bf950328043eaa1a7c05aba9b57c3)
+
+
 ## Deployment
 
 ## Installation
@@ -46,3 +89,4 @@ shopify extension push
 ## License
 
 This respository is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
