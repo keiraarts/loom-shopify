@@ -1,0 +1,15 @@
+/* purgecss start ignore */
+@tailwind base;
+@tailwind components;
+/* purgecss end ignore */
+@tailwind utilities;
+
+div#loom-sdk-record-overlay-shadow-root-id {
+  display: block!important
+}
+
+@media only screen and (max-width: 749px){
+  .hidden-on-mobile {
+    display: none;
+  }
+}

@@ -1,0 +1,34 @@
+{
+	"name": "viaGlamour",
+	"short_name": "viaGlamour",
+	"icons": [
+		{
+			"src": "/manifest/pwa-icon-192.png",
+			"purpose": "any maskable",
+			"type": "image/png",
+			"sizes": "192x192"
+		},
+		{
+			"src": "/manifest/pwa-icon-512.png",
+			"purpose": "any maskable",
+			"type": "image/png",
+			"sizes": "512x512"
+		}
+	],
+	"start_url": "/?source=pwa",
+	"display": "minimal-ui",
+	"orientation": "natural",
+	"background_color": "#FFFFFF",
+	"theme_color": "#FFB831",
+	"description": "Start your own makeup line",
+	"scope": "/",
+	"shortcuts": [
+		{
+			"name": "What's the status of my orders?",
+			"short_name": "Orders",
+			"description": "View customer orders",
+			"url": "/orders?source=pwa",
+			"src": "/manifest/pwa-icon-96.png"
+		}
+	]
+}

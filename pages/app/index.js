@@ -1,0 +1,772 @@
+import React, { Fragment, useState, useContext, useEffect } from "react";
+import { useCountState, useCountDispatch } from "../../src/app-context";
+import EmptyState from "../../components/empty-state";
+import Loading from "../../components/loading";
+import Router, { useRouter } from "next/router";
+import { Redirect } from "@shopify/app-bridge/actions";
+import { Context } from "@shopify/app-bridge-react";
+import { oembed } from "@loomhq/loom-embed";
+import FadeIn from "react-fade-in";
+import NProgress from "nprogress";
+import set from "lodash/set";
+import cn from "classnames";
+
+import useStorefront from "../../hooks/useStorefront";
+import useCustomer from "../../hooks/useCustomer";
+import useVideos from "../../hooks/useVideos";
+import useThemes from "../../hooks/useThemes";
+import Footer from "../../components/footer";
+
+const options = { weekday: "long", month: "short", day: "numeric" };
+
+function Index({ children }) {
+  const state = useCountState();
+  const dispatch = useCountDispatch();
+  const { data: storefront } = useStorefront();
+
+  // Opens a new tab for users
+  const app = useContext(Context);
+  const redirectContext = (url) => {
+    const redirect = Redirect.create(app);
+    redirect.dispatch(Redirect.Action.REMOTE, {
+      url: url,
+      newContext: true,
+    });
+  };
+
+  const views = ["unread", "completed", "favorited"];
+
+  const { data, isLoading } = useVideos();
+  const [videos, setVideos] = useState([]);
+
+  const { data: themes } = useThemes();
+  const [theme, setTheme] = useState("current");
+
+  // Allow search via email and page urls
+  const [search, setSearch] = useState();
+
+  // Keep 'tabs' on the selected tab.
+  const [tab, setTab] = useState(views[0]);
+
+  // Show friendly counts per tab category
+  const [counts, setCounts] = useState({});
+
+  // Placeholder data that represents Loom's SDK response
+  const defaults = {
+    id: false,
+    title: "Welcome to our app",
+    height: "720",
+    width: "1080",
+    sharedUrl: "https://www.loom.com/share/9a9bf950328043eaa1a7c05aba9b57c3",
+    embedUrl: "https://www.loom.com/share/9a9bf950328043eaa1a7c05aba9b57c3",
+    providerUrl: "https://www.loom.com",
+    page_url: "Introduction video",
+    email: "keiraarts@gmail.com",
+    date_updated: Date.now(),
+  };
+
+  // Store the Loom SDK response
+  const [loom, setLoom] = useState(defaults);
+  const [videoHtml, setVideoHTML] = useState();
+
+  useEffect(() => {
+    if (data) {
+      let items = [];
+      views.map((view, index) => {
+        // Required to detemine count for each tab
+        const count = data.reduce((prev, current) => {
+          const status = current?.status ?? views[0];
+          // Only generate video list once
+          if (index === 0) {
+            // If there is no status, use the default
+            if (status === tab) {
+              items.push(current);
+            }
+          }
+
+          return prev + (status === view ? 1 : 0);
+        }, 0);
+
+        set(counts, view, count);
+      });
+
+      // Seearch tab videos
+      if (search && search !== "") {
+        items = items.filter(({ email = "", page_url = "" }) => {
+          if ((email + page_url).includes(search)) return true;
+        });
+      }
+
+      setCounts(counts);
+      setVideos(items);
+    }
+  }, [isLoading, tab, search, state.key]);
+
+  // Ping Shopify to load cached-customer data using the email
+  const { data: customer, isLoading: isCustomer } = useCustomer(loom?.email);
+
+  useEffect(() => {
+    if (isCustomer) NProgress.start();
+    else {
+      const delay = setTimeout(() => NProgress.done(), 100);
+      return () => clearTimeout(delay);
+    }
+  }, [customer?.id, isCustomer]);
+
+  useEffect(() => {
+    // Generated new html when new videos are selected
+    if (loom.sharedUrl) EmbedVideo(loom);
+  }, [loom.id]);
+
+  // Create HTML to embed Loom's shared urls
+  const EmbedVideo = async ({ sharedUrl }) => {
+    if (sharedUrl) {
+      try {
+        const { html } = await oembed(sharedUrl);
+        setVideoHTML(html);
+      } catch (error) {}
+    }
+  };
+
+  return (
+    <React.Fragment>
+      <header className="w-full">
+        <div className="relative z-10 flex flex-shrink-0 h-12 bg-white border-b border-gray-200 shadow-sm">
+          <button
+            type="button"
+            className="px-4 text-gray-500 border-r border-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500 md:hidden"
+          >
+            <span className="sr-only">Open sidebar</span>
+            <svg
+              className="w-6 h-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h7"
+              />
+            </svg>
+          </button>
+          <div className="flex justify-between flex-1 px-4 sm:px-6">
+            <div className="flex flex-1">
+              <form className="flex w-full md:ml-0" action="#" method="GET">
+                <label for="desktop-search-field" className="sr-only">
+                  Search video replies
+                </label>
+                <label for="mobile-search-field" className="sr-only">
+                  Search video replies
+                </label>
+                <div className="relative w-full text-gray-400 focus-within:text-gray-600">
+                  <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none">
+                    <svg
+                      className="flex-shrink-0 w-5 h-5"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <input
+                    name="mobile-search-field"
+                    id="mobile-search-field"
+                    className="w-full h-full py-2 pl-8 pr-3 text-sm text-gray-900 placeholder-gray-500 border-transparent focus:outline-none focus:ring-0 focus:border-transparent focus:placeholder-gray-400 sm:hidden"
+                    onChange={(event) => setSearch(event.target.value)}
+                    placeholder="Search"
+                    value={search}
+                    type="search"
+                  />
+                  <input
+                    name="desktop-search-field"
+                    id="desktop-search-field"
+                    className="hidden w-full h-full py-2 pl-8 pr-3 text-sm text-gray-900 placeholder-gray-500 border-transparent focus:outline-none focus:ring-0 focus:border-transparent focus:placeholder-gray-400 sm:block"
+                    placeholder="Search videos by emails or products"
+                    onChange={(event) => setSearch(event.target.value)}
+                    value={search}
+                    type="search"
+                  />
+                </div>
+              </form>
+            </div>
+            <div className="flex items-center ml-2 space-x-4 sm:ml-6 sm:space-x-6">
+              <div className="flex items-center justify-end">
+                <div className="flex">
+                  <a
+                    onClick={() => {
+                      dispatch({
+                        type: "SET_MODAL_VIEW",
+                        view: "support",
+                      });
+                    }}
+                    className="px-3 py-2 text-sm font-medium text-black rounded-md cursor-pointer hover:text-black"
+                  >
+                    Support
+                  </a>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  redirectContext(
+                    `https://${storefront.username}.myshopify.com/admin/themes/current/editor?context=apps&template=index&activateAppId=5178a21d-051e-4b38-8992-ed13ae96cd73/app-block`
+                  );
+                }}
+                className="flex items-center justify-center p-1 text-white bg-green-600 rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              >
+                <svg
+                  className="w-5 h-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                  />
+                </svg>
+                <span className="sr-only">Add file</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div className="flex flex-col flex-1 overflow-hidden">
+        <div className="flex flex-row-reverse flex-1 overflow-hidden">
+          <main className="flex flex-col justify-between flex-1 overflow-y-auto">
+            <div className="w-full h-full px-4 pt-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
+              <div className="flex">
+                <h1 className="flex-1 text-2xl font-bold text-gray-900">
+                  Videos
+                </h1>
+                <div className="ml-6 bg-gray-100 p-0.5 rounded-lg flex items-center sm:hidden">
+                  <button
+                    type="button"
+                    className="p-1.5 rounded-md text-gray-400 hover:bg-white hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                    <span className="sr-only">Use list view</span>
+                  </button>
+                  <button
+                    type="button"
+                    className="ml-0.5 bg-white p-1.5 rounded-md shadow-sm text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                    </svg>
+                    <span className="sr-only">Use grid view</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="mt-3 sm:mt-2">
+                <div className="sm:hidden">
+                  <label for="tabs" className="sr-only">
+                    Select a tab
+                  </label>
+                  <select
+                    id="tabs"
+                    name="tabs"
+                    className="block w-full py-2 pl-3 pr-10 text-base border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  >
+                    <option selected>Recently Viewed</option>
+                    <option>Recently Added</option>
+                    <option>Favorited</option>
+                  </select>
+                </div>
+                <div className="hidden sm:block">
+                  <div className="flex items-center border-b border-gray-300">
+                    <nav
+                      className="flex flex-1 -mb-px space-x-6 xl:space-x-8"
+                      aria-label="Tabs"
+                    >
+                      {views.map((view) => {
+                        return (
+                          <a
+                            href="#"
+                            aria-current={view}
+                            onClick={() => setTab(view)}
+                            className={cn({
+                              "px-1 py-4 text-sm font-medium capitalize border-b-2  whitespace-nowrap": true,
+                              "border-indigo-500 text-indigo-700": view === tab,
+                              "text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300":
+                                view !== tab,
+                            })}
+                          >
+                            {view}
+                            {counts[view] > 0 && (
+                              <span className="bg-indigo-50 text-indigo-900 hidden ml-2 py-0.5 px-2.5 rounded-full text-xs font-medium md:inline-block">
+                                {counts[view]}
+                              </span>
+                            )}
+                          </a>
+                        );
+                      })}
+                    </nav>
+                    <div className="hidden ml-6 bg-gray-100 p-0.5 rounded-lg items-center sm:flex"></div>
+                  </div>
+                </div>
+              </div>
+
+              {isLoading && (
+                <div className="flex items-center justify-center flex-1 h-full">
+                  <Loading />
+                </div>
+              )}
+
+              {!isLoading && videos.length === 0 && (
+                <FadeIn className="flex items-center justify-center flex-1 h-full">
+                  <EmptyState
+                    src="/logos/primary-logo-icon.png"
+                    quote="It can be hard to understand complex questions over email. With our app, you can give customers an easy way to record questions with a video!"
+                    children={
+                      <React.Fragment>
+                        <div className="flex flex-row items-stretch max-w-sm gap-4 mx-auto my-5 text-center">
+                          <div className="flex-1">
+                            <label
+                              for="location"
+                              className="block text-sm font-medium text-gray-700 sr-only"
+                            >
+                              Location
+                            </label>
+                            <select
+                              id="location"
+                              name="location"
+                              onChange={() => setTheme(event.target.value)}
+                              className="block w-full h-full py-2 pl-3 pr-10 text-base border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            >
+                              <option selected value="current">
+                                Current theme
+                              </option>
+
+                              {themes?.map((el) => {
+                                return <option value={el.id}>{el.name}</option>;
+                              })}
+                            </select>
+                          </div>
+                          <button
+                            onClick={() => {
+                              redirectContext(
+                                `https://${storefront.username}.myshopify.com/admin/themes/${theme}/editor?context=apps&template=index&activateAppId=5178a21d-051e-4b38-8992-ed13ae96cd73/app-block`
+                              );
+                            }}
+                            className="px-4 py-2 font-semibold text-white bg-green-600 rounded-md cursor-pointer"
+                          >
+                            Open Preview
+                          </button>
+                        </div>
+                        <div className="max-w-md mx-auto mt-5">
+                          <ul
+                            role="list"
+                            className="mt-1 list-disc border-t border-gray-200 divide-y divide-gray-200 lg:border-t-0"
+                          >
+                            <li className="flex items-center justify-center py-2 mx-auto">
+                              <span className="ml-3 text-xs font-medium text-gray-900">
+                                A design school might use this app to let
+                                students record a portfolio overview so
+                                instructors can match them with a mentor.
+                              </span>
+                            </li>
+                            <li className="flex items-center justify-center py-2 mx-auto">
+                              <span className="ml-3 text-xs font-medium text-gray-900">
+                                A cosmetics company might collect customer
+                                record product feedback over video to better
+                                understand how their formulas are used.
+                              </span>
+                            </li>
+                            <li className="flex items-center justify-center py-2 mx-auto">
+                              <span className="ml-3 text-xs font-medium text-gray-900">
+                                A clothing company might let customers compare
+                                products with a screen recording to get better
+                                help finding the best product fit.
+                              </span>
+                            </li>
+                          </ul>
+                        </div>
+                      </React.Fragment>
+                    }
+                  />
+                </FadeIn>
+              )}
+
+              {!isLoading && videos.length > 0 && (
+                <section
+                  className="pb-16 mt-4"
+                  aria-labelledby="gallery-heading"
+                >
+                  <h2 id="gallery-heading" className="sr-only">
+                    Recently viewed
+                  </h2>
+                  <div className="overflow-hidden sm:rounded-md sm:-mx-5 md:-mx-8">
+                    <FadeIn
+                      role="list"
+                      wrapperTag="ul"
+                      className="divide-y divide-gray-200"
+                    >
+                      {videos.map((video, index) => {
+                        const char = video.id.toUpperCase().charCodeAt(0);
+
+                        return (
+                          <li key={index}>
+                            <a
+                              href={"#" + video.id}
+                              onClick={() => setLoom(video)}
+                              className={cn({
+                                "bg-blue-100": loom.id === video.id,
+                                "bg-gray-50 hover:bg-gray-100":
+                                  loom.id !== video.id,
+                                "block": true,
+                              })}
+                            >
+                              <div className="flex items-center px-4 py-3 sm:px-6">
+                                <div className="flex items-center flex-1 min-w-0">
+                                  <div className="flex-shrink-0">
+                                    <span
+                                      x-char={char}
+                                      className={cn({
+                                        "inline-flex items-center justify-center w-8 h-8 rounded-full": true,
+                                        "bg-green-500": char < 10,
+                                        "bg-green-600": char < 20,
+                                        "bg-blue-500": char < 30,
+                                        "bg-blue-600": char < 40,
+                                        "bg-purple-500": char < 50,
+                                        "bg-purple-600": char < 60,
+                                        "bg-indigo-500": char < 70,
+                                        "bg-indigo-600": char < 80,
+                                      })}
+                                    >
+                                      <span className="font-medium leading-none text-white capitalize">
+                                        {video.email.substring(0, 1)}
+                                      </span>
+                                    </span>
+                                  </div>
+                                  <div className="flex-1 min-w-0 px-4 md:grid md:grid-cols-2 md:gap-4">
+                                    <div>
+                                      <p className="text-sm font-medium text-indigo-600 truncate">
+                                        {video.email}
+                                      </p>
+                                      <p className="flex items-center mt-0.5 text-sm text-gray-500">
+                                        <svg
+                                          className="flex-shrink-0 w-3 h-3 mr-1 text-gray-400"
+                                          fill="none"
+                                          stroke="currentColor"
+                                          viewBox="0 0 24 24"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="3"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                          ></path>
+                                        </svg>
+                                        <span className="">
+                                          {video.page_url !== ""
+                                            ? video.page_url
+                                            : "Homepage"}
+                                        </span>
+                                      </p>
+                                    </div>
+                                    <div className="hidden lg:block">
+                                      <div>
+                                        <p className="text-sm text-gray-900">
+                                          Recorded on{" "}
+                                          <time datetime={video.date_created}>
+                                            {new Date(
+                                              video.date_created
+                                            ).toLocaleDateString(
+                                              "en-US",
+                                              options
+                                            )}
+                                          </time>
+                                        </p>
+                                        <p className="flex items-center mt-0.5 text-sm text-gray-500">
+                                          <svg
+                                            className={cn({
+                                              "text-green-600":
+                                                video?.status === "completed",
+                                              "flex-shrink-0 mr-1.5 h-4 w-4 ": true,
+                                            })}
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20"
+                                            fill="currentColor"
+                                            aria-hidden="true"
+                                          >
+                                            <path
+                                              fill-rule="evenodd"
+                                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                              clip-rule="evenodd"
+                                            />
+                                          </svg>
+                                          {video?.status === "completed"
+                                            ? `Replied on ${new Date(
+                                                video.date_completed
+                                              ).toLocaleDateString(
+                                                "en-US",
+                                                options
+                                              )}  `
+                                            : "Awaiting action"}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div>
+                                  <svg
+                                    className="w-5 h-5 text-gray-600"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 20 20"
+                                    fill="currentColor"
+                                    aria-hidden="true"
+                                  >
+                                    <path
+                                      fill-rule="evenodd"
+                                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                      clip-rule="evenodd"
+                                    />
+                                  </svg>
+                                </div>
+                              </div>
+                            </a>
+                          </li>
+                        );
+                      })}
+                    </FadeIn>
+                  </div>
+                </section>
+              )}
+            </div>
+
+            <Footer />
+          </main>
+
+          <aside
+            key={loom.id}
+            className="hidden p-6 bg-white border-r border-gray-200 w-96 xl:w-1/3 sm:block"
+          >
+            <div className="pb-16 space-y-6">
+              <div>
+                <div
+                  className="-mx-5 -mt-5"
+                  dangerouslySetInnerHTML={{ __html: videoHtml }}
+                ></div>
+                <div className="flex items-start justify-between mt-4">
+                  <div>
+                    <h2 className="text-lg font-medium text-gray-900">
+                      <span className="sr-only">Details for </span>
+                      {loom.title}
+                    </h2>
+                    <p className="text-sm font-medium text-gray-500">
+                      {loom?.page_url !== "" ? loom.page_url : "Homepage"}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const update = {
+                        ...loom,
+                        status:
+                          loom?.status === "favorited" ? views[0] : "favorited",
+                        date_updated: Date.now(),
+                      };
+
+                      dispatch({
+                        type: "UPDATE_VIDEO",
+                        video: update,
+                      });
+
+                      if (update.status === "favorited") setTab("favorited");
+                      setLoom(update);
+                    }}
+                    className={cn({
+                      "bg-pink-500 text-white": loom.status === "favorited",
+                      "bg-white text-gray-700": loom.status !== "favorited",
+                      "flex items-center justify-center w-9 h-9 ml-4 rounded-full hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500": true,
+                    })}
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+
+                    <span className="sr-only">Favorite</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className={cn({ hidden: !loom.id, flex: true })}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const update = {
+                      ...loom,
+                      status:
+                        loom.status === "completed" ? views[0] : "completed",
+                      date_updated: Date.now(),
+                    };
+
+                    if (loom.status !== "completed") {
+                      set(update, "date_completed", Date.now());
+                    }
+
+                    dispatch({
+                      type: "UPDATE_VIDEO",
+                      video: update,
+                    });
+
+                    if (update.status === "completed") setTab("completed");
+                    setLoom(update);
+                  }}
+                  className={cn({
+                    "bg-gray-300 text-gray-800 cursor-default":
+                      loom?.status === "completed",
+                    "text-white bg-indigo-600 cursor-pointer hover:bg-indigo-700":
+                      loom?.status !== "completed",
+                    "flex flex-row items-center justify-center flex-1 px-4 py-2 text-sm font-medium border border-transparent rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500": true,
+                  })}
+                >
+                  {loom?.status !== "completed" && (
+                    <svg
+                      className="w-5 h-5 mr-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5 13l4 4L19 7"
+                      ></path>
+                    </svg>
+                  )}
+
+                  <span>Complete</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    dispatch({
+                      type: "DELETE_VIDEO",
+                      video: loom,
+                    });
+
+                    setLoom(defaults);
+                  }}
+                  className="flex-1 px-4 py-2 ml-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  Delete
+                </button>
+              </div>
+
+              <div>
+                <h3 className="font-medium text-gray-900">Information</h3>
+                <dl className="mt-2 border-t border-b border-gray-200 divide-y divide-gray-200">
+                  <div className="flex justify-between py-3 text-sm font-medium">
+                    <dt className="text-gray-500">Uploaded by</dt>
+                    <dd className="text-gray-900 underline">
+                      <a
+                        onClick={() =>
+                          redirectContext(
+                            `https://${state.username}.myshopify.com/admin/customers?query=${loom.email}`
+                          )
+                        }
+                        target="_blank"
+                        className="cursor-pointer"
+                      >
+                        {loom.email}
+                      </a>
+                    </dd>
+                  </div>
+
+                  <div className="flex justify-between py-3 text-sm font-medium">
+                    <dt className="text-gray-500">Created</dt>
+                    <dd className="text-gray-900">
+                      <time datetime={loom.date_created}>
+                        {new Date(loom.date_created).toLocaleDateString(
+                          "en-US",
+                          options
+                        )}
+                      </time>
+                    </dd>
+                  </div>
+
+                  <div className="flex justify-between py-3 text-sm font-medium">
+                    <dt className="text-gray-500">Page</dt>
+                    <dd className="text-gray-900">{loom.page_url}</dd>
+                  </div>
+
+                  <div className="flex justify-between py-3 text-sm font-medium">
+                    <dt className="text-gray-500">Customer Name</dt>
+                    <dd className="text-gray-900">{customer?.displayName}</dd>
+                  </div>
+
+                  <div className="flex justify-between py-3 text-sm font-medium">
+                    <dt className="text-gray-500">Order Count</dt>
+                    <dd className="text-gray-900">{customer?.ordersCount}</dd>
+                  </div>
+
+                  <div className="flex justify-between py-3 text-sm font-medium">
+                    <dt className="text-gray-500">Accepts Marketing</dt>
+                    <dd className="text-gray-900">
+                      {customer?.acceptsMarketing ? "Yes" : "No"}
+                    </dd>
+                  </div>
+
+                  <div className="flex justify-between py-3 text-sm font-medium">
+                    <dt className="text-gray-500">Note</dt>
+                    <dd className="text-gray-900 truncate">{customer?.note}</dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </React.Fragment>
+  );
+}
+
+export default Index;

@@ -1,0 +1,19 @@
+{
+
+  "liquid.format": true,
+  "liquid.rules": {
+    "ignore": [
+      {
+        "type": "",
+        "begin": "",
+        "end": ""
+      }
+    ],
+
+    "html": {},
+    "js": {},
+    "css": {},
+    "scss": {},
+    "json": {}
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "extension",
+  "version": "1.0.0",
+  "description": "A [theme app extension](https://shopify.dev/apps/online-store/theme-app-extensions) boilerplate that highlights the basic structure and features that are available to developers who want to integrate their apps with Shopify Online Stores. It has been built as a learning tool for the start of your journey of building a theme extension, and is not intended as a starting point for projects.",
+  "private": true,
+  "scripts": {
+    "build": "webpack && npx tailwindcss build -i src/application.css -o assets/tailwind.css && copyfiles ./assets/main.js ../theme-app-extension/assets/ --flat && copyfiles ./assets/tailwind.css ../theme-app-extension/assets/ --flat && copyfiles ./blocks/*.liquid ../theme-app-extension/blocks/ --flat && copyfiles ./src/*.png ../theme-app-extension/assets/ --flat",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@loomhq/loom-embed": "^1.2.8",
+    "@loomhq/loom-sdk": "^2.21.2",
+    "@tailwindcss/forms": "^0.3.4"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.0",
+    "clean-webpack-plugin": "^4.0.0",
+    "postcss": "^8.4.4",
+    "tailwindcss": "^2.2.19",
+    "webpack": "^5.64.4",
+    "webpack-cli": "^4.9.1"
+  }
+}

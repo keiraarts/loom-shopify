@@ -1,0 +1,14 @@
+{
+  "env": {
+    "development": {
+      "presets": ["next/babel"]
+    },
+    "production": {
+      "presets": ["next/babel"],
+      "plugins": [ ["transform-remove-console", { "exclude": ["warn"] }] ]  
+    },
+    "test": {
+      "presets": [["next/babel", { "preset-env": { "modules": "commonjs" } }]]
+    }
+  }
+}

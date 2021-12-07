@@ -1,0 +1,27 @@
+# Environment Configuration
+.env
+source
+
+# Dependency directory
+node_modules
+**/node_modules
+theme-extensions-build/node_modules/
+theme-app-extension/node_modules/
+
+# Test coverage directory
+coverage
+
+# Ignore Apple macOS Desktop Services Store
+.DS_Store
+
+# Logs
+logs
+*.log
+
+# ngrok tunnel file
+config/tunnel.pid
+
+# next build output
+.next/
+
+node_modules.nosync

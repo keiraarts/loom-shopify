@@ -1,0 +1,14 @@
+{
+  "extends": ["next"],
+  "rules": {
+    "react-hooks/exhaustive-deps": "off",
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-page-custom-font": "off",
+    "eact-hooks/exhaustive-deps": "off",
+    "@next/next/no-img-element": "off",
+    "shopify/jsx-no-hardcoded-content": "off"
+  }, 
+  "parserOptions": {
+    "ecmaVersion": 2020
+  }
+}

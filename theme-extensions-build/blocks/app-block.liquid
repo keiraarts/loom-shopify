@@ -1,0 +1,199 @@
+{% assign header_font = settings.header_font_new %}
+{{ header_font | font_face }}
+
+<div id="app" data-id="{{ block.settings.colour }}" class="w-full hidden-on-mobile sm:flex md:block" style="background-color: {{ block.settings.background_color }}">
+    <div class="max-w-md px-4 py-12 sm:py-24 sm:px-6 lg:px-8 lg:py-24 {{ block.settings.max_width }} {{ block.settings.horizontal_alignment }}">
+
+        <figure class="flex flex-row items-center justify-center w-full mb-2 icon-item" id="icon-section">
+            {%- if block.settings.logo_image and block.settings.show_icon == true -%}
+                <img class="mb-5 max-h-16 mx-2 sm:mx-4 {{ block.settings.horizontal_alignment }}" src="{{ block.settings.logo_image | img_url: '200px' }}" alt="{{ block.settings.logo_image.alt }}" loading="lazy" width="{{block.settings.logo_image.width}}" height="{{block.settings.logo_image.height}}">
+            {%- elsif block.settings.show_icon == true -%}
+                <img class="mb-5 w-16 h-16 mx-2 sm:mx-4 {{ block.settings.horizontal_alignment }}" src="{{ 'penguin-girl.png' | asset_url }}" loading="lazy" width="300" height="300">
+            {%- endif -%}
+
+            {%- if block.settings.show_sdk == true -%}
+                <img class="mb-5 w-16 h-16 mx-2 sm:mx-4 {{ block.settings.horizontal_alignment }}" src="{{ 'loom-logo.png' | asset_url }}" alt="loom partner logo" loading="lazy" width="50" height="50">
+            {%- endif -%}
+        </figure>
+
+        <div class="flex items-center justify-center mx-auto mb-5 bg-green-700 rounded-full w-14 h-14" id="checkmark-section" style="display: none!important">
+            <svg aria-hidden="true" class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+            </svg>
+        </div>
+
+        <span class="mb-5 sm:text-4xl" id="video-headlines">
+            <h2 class="block custom-font {{ block.settings.font_size }}" style="color: {{ block.settings.text_color }}; font-family: {{ block.settings.heading_font.family }}; font-weight: {{ block.settings.heading_font.weight }}">{{ block.settings.heading | default: 'Have a complicated question?' }}</h3>
+        </span>
+
+        <span class="flex flex-col mb-5 sm:text-4xl" id="success-message" style="display: none!important">
+            <h2 class="block custom-font {{ block.settings.font_size }}" style="color: {{ block.settings.text_color }}; font-family: {{ block.settings.heading_font.family }}; font-weight: {{ block.settings.heading_font.weight }}">Video message sent!</h3>
+            <a class="mt-3 text-base underline {{ block.settings.horizontal_alignment }}" href="" id="loom-url" style="color: {{ block.settings.text_color }};" target="_blank">View video url</a>
+        </span>
+
+
+        <label class="text-sm text-left opacity-75 sr-only" for="reply-email">Your email</label>
+        <form class="flex-row items-stretch justify-center mt-5 sm:flex sm:max-w-2xl md:mt-8 {{ block.settings.horizontal_alignment }}" id="submit-video" onsubmit="return false;">
+            <input class="hidden" id="loom-id" name="loom-id" required>
+            <input class="hidden" id="loom-key" name="loom-key" value="{{ block.settings.api_key }}">
+            <input class="hidden" id="customer" name="customer" value="{{ customer.id }}">
+            <input class="hidden" id="username" name="username" value="{{ shop.permanent_domain }}">
+            <input class="hidden" id="page-title" name="page-title" value="{{ page.title }}">
+            <input class="hidden" id="page-url" name="page-url" value="{{ page.url }}">
+            <input autocomplete="email" class="flex-1 w-full min-w-0 px-4 py-3 text-xl text-gray-900 placeholder-gray-500 bg-white border border-gray-300 rounded-sm appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:placeholder-gray-400 sm:max-w-sm" id="reply-email" name="reply-email" placeholder="ashley.smith@icloud.com" required type="email">
+
+            <div class="mt-3 rounded-md sm:mt-0 sm:ml-5 sm:flex-shrink-0">
+                <button class="flex items-center justify-center w-full text-white border border-transparent ring-0 button focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" id="loom-sdk-button" style="color: {{ block.settings.button_text_color }}; background-color: {{ block.settings.button_background_color }}">
+                    {{ block.settings.cta | default: 'Record a video' }}
+                </button>
+
+                <button class="flex items-center justify-center w-full text-white border border-transparent ring-0 button focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" id="submit-email" style="color: {{ block.settings.button_text_color }}; background-color: {{ block.settings.button_background_color }}; display: none!important;">
+                    Send video
+                </button>
+
+            </div>
+        </form>
+
+
+    </div>
+</div>
+
+
+{% schema %}
+
+{
+    "name": "Record",
+    "target": "section",
+    "stylesheet": "tailwind.css",
+    "javascript": "main.js",
+    "templates": [
+        "collection",
+        "product",
+        "search",
+        "index",
+        "page"
+    ],
+    "settings": [
+        {
+            "type": "header",
+            "content": "Account"
+        }, {
+            "type": "text",
+            "id": "api_key",
+            "label": "Live API Key",
+            "default": "47a9781a-1c42-4f28-b857-7ff9e72bed19",
+            "info": "Create a free account to go live. https://loom.com/developer-portal"
+        }, {
+            "type": "header",
+            "content": "Content"
+        }, {
+            "type": "richtext",
+            "id": "heading",
+            "label": "Text",
+            "default": "<p>Send us a video message to get our help finding the best product for you.</p>"
+        }, {
+            "type": "text",
+            "id": "cta",
+            "label": "Button text",
+            "default": "Record screen"
+        }, {
+            "type": "select",
+            "id": "font_size",
+            "label": "Font Size",
+            "options": [
+                {
+                    "value": "h1",
+                    "label": "Large"
+                }, {
+                    "value": "h2",
+                    "label": "Medium"
+                }, {
+                    "value": "h3",
+                    "label": "Small"
+                }
+            ],
+            "default": "h2"
+        }, {
+            "type": "select",
+            "id": "max_width",
+            "label": "Container Width",
+            "options": [
+                {
+                    "value": "sm:max-w-3xl",
+                    "label": "Tight"
+                }, {
+                    "value": "sm:max-w-4xl",
+                    "label": "Padded"
+                }, {
+                    "value": "sm:max-w-none",
+                    "label": "Full-width"
+                }
+            ],
+            "default": "sm:max-w-3xl"
+        }, {
+            "type": "select",
+            "id": "horizontal_alignment",
+            "label": "Horizontal alignment",
+            "options": [
+                {
+                    "value": "ml-0 text-left",
+                    "label": "Left Aligned"
+                }, {
+                    "value": "mx-auto text-center",
+                    "label": "Center Aligned"
+                }
+            ],
+            "default": "mx-auto text-center"
+        }, {
+            "type": "header",
+            "content": "Font Styles"
+        }, {
+            "type": "font_picker",
+            "id": "heading_font",
+            "label": "Heading font",
+            "default": "helvetica_n4"
+        }, {
+            "type": "color",
+            "id": "text_color",
+            "label": "Text Color",
+            "default": "#000000"
+        }, {
+            "type": "color",
+            "id": "background_color",
+            "label": "Background Color",
+            "default": "#FFFFFF"
+        }, {
+            "type": "header",
+            "content": "Button Styles"
+        }, {
+            "type": "color",
+            "id": "button_text_color",
+            "label": "Button Text Color",
+            "default": "#FFFFFF"
+        }, {
+            "type": "color",
+            "id": "button_background_color",
+            "label": "Button Background Color",
+            "default": "#000000"
+        }, {
+            "type": "header",
+            "content": "Optional Styles"
+        }, {
+            "type": "checkbox",
+            "id": "show_icon",
+            "label": "Show app icon",
+            "default": true
+        }, {
+            "type": "checkbox",
+            "id": "show_sdk",
+            "label": "Show Loom icon",
+            "default": true
+        }, {
+            "type": "image_picker",
+            "id": "logo_image",
+            "label": "Icon"
+        }
+    ]
+}
+
+{% endschema %}

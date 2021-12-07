@@ -1,0 +1,249 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+div#loom-sdk-record-overlay-shadow-root-id {
+  display: block!important
+}
+
+.skeleton-box::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  -webkit-transform: translateX(-100%);
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.2) 20%,
+    rgba(255, 255, 255, 0.7) 60%,
+    rgba(255, 255, 255, 0.1) 65%,
+    rgba(255, 255, 255, 0)
+  );
+  -webkit-animation: shimmer 5s infinite;
+  animation: shimmer 5s infinite;
+  content: "";
+}
+
+
+.dot-grid-background {
+  background-image: url("/assets/grid-dot-pattern.png");
+  background-size: 2vw;
+  scroll-behavior: smooth;
+}
+
+.dot-grid-background-large {
+  background-image: url("/assets/grid-dot-pattern.png");
+  background-size: 4vw;
+  scroll-behavior: smooth;
+}
+
+.scrollbar::-webkit-scrollbar {
+  color: #0033cc;
+  height: 5px;
+  margin-top: 7px;
+  padding-top: 5px;
+  margin-right: 10px;
+  background-color: rgba(0, 0, 0, 0); /* or add it to the track */
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  border: solid 0px transparent;
+  background: #0000;
+  border-radius: 3px;
+  margin-top: 5px;
+  margin: 0 0%;
+  margin-right: 5px;
+  margin-left: 5px;
+  width: 0px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  margin-top: 5px;
+  background: #0033cc;
+  border-radius: 3px;
+  color: #0033cc;
+  border: solid 3px transparent;
+  height: 10px;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+@-webkit-keyframes shimmer {
+  100% {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+  }
+}
+
+.animate-slow-rotate {
+  -webkit-animation: square-rotate 4s infinite ease-in-out;
+  animation: square-rotate 4s infinite ease-in-out;
+}
+
+@keyframes square-rotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  10% {
+    -webkit-transform: rotate(0deg);
+  }
+  20% {
+    -webkit-transform: rotate(90deg);
+  }
+  30% {
+    -webkit-transform: rotate(90deg);
+  }
+  40% {
+    -webkit-transform: rotate(180deg);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+  }
+  60% {
+    -webkit-transform: rotate(270deg);
+  }
+  70% {
+    -webkit-transform: rotate(270deg);
+  }
+  80% {
+    -webkit-transform: rotate(360deg);
+  }
+  90% {
+    -webkit-transform: rotate(360deg);
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+  }
+}
+
+.animate-quick-rotate {
+  -webkit-animation: square-spin 1.2s ease 0s 1 normal none;
+  animation: square-spin 1.2s ease 0s 1 normal none;
+}
+
+@keyframes square-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+.dotted-background {
+  background-image: radial-gradient(#a2a2a2 9%, transparent 0),radial-gradient(#a2a2a2 9%, transparent 0)!important;
+  background-size: 18px 18px;
+}
+
+
+/* Make clicks pass-through */
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  position: fixed;
+  z-index: 1031;
+  top: 0;
+  left: 0;
+  height: 3.5px;
+  background: #ffbb24 linear-gradient(to right, #ffbb24, #ff9327, #ffbb24);
+  background-size: 500%;
+  animation: s linear infinite barprogress, 5s fadein;
+  width: 100%;
+}
+
+@keyframes barprogress {
+  0% {
+      background-position: 0% 0;
+  }
+  to {
+      background-position: 125% 0;
+  }
+}
+
+/* Fancy blur effect */
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0px;
+  width: 100px;
+  height: 100%;
+  box-shadow: 0 0 10px #ffb831, 0 0 5px #ffb831;
+  opacity: 1;
+
+  -webkit-transform: rotate(3deg) translate(0px, -4px);
+  -ms-transform: rotate(3deg) translate(0px, -4px);
+  transform: rotate(3deg) translate(0px, -4px);
+}
+
+/* Remove these to get rid of the spinner */
+#nprogress .spinner {
+  display: none;
+  position: fixed;
+  z-index: 1031;
+  top: 15px;
+  right: 15px;
+}
+
+
+.nprogress-custom-parent {
+  overflow: hidden;
+  position: relative;
+}
+
+.nprogress-custom-parent #nprogress .bar {
+  position: absolute;
+}
+
+@-webkit-keyframes nprogress-spinner {
+  0% {
+      -webkit-transform: rotate(0deg);
+  }
+  100% {
+      -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes nprogress-spinner {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+}
