@@ -37,7 +37,7 @@ Please adhere to this project's `code of conduct`.
 
 ## Demo
 
-![App Screenshot](https://cdn.loom.com/sessions/thumbnails/9a9bf950328043eaa1a7c05aba9b57c3-with-play.gif)
+![App Screenshot](https://i.imgur.com/F4dlh9M.gif)
 
 [Loom Demo Video](https://www.loom.com/share/9a9bf950328043eaa1a7c05aba9b57c3)
 
