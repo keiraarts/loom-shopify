@@ -1,7 +1,7 @@
 
 # LoomSDK + Shopify
 
-Let Shopify merchants easily collect videos, feedback, and questions on their shop via Loom! We're extending Loom's SDK into a Shopify themes extension app.
+Let Shopify merchants easily collect videos, feedback, and questions on their shop via Loom! We're extending Loom's SDK into an embedded Shopify App, that allows merchants to extend their current theme with an app block that lets customers record videos.
 
 
 ![Logo](https://i.imgur.com/0MB8NLs.png)
