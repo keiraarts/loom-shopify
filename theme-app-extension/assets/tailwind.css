@@ -742,6 +742,11 @@ select {
   margin-right: auto;
 }
 
+.my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
 .mt-3 {
   margin-top: 0.75rem;
 }
@@ -752,6 +757,10 @@ select {
 
 .mr-0 {
   margin-right: 0px;
+}
+
+.mr-1 {
+  margin-right: 0.25rem;
 }
 
 .mb-2 {
@@ -918,6 +927,12 @@ select {
   justify-content: center;
 }
 
+.space-x-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.75rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.75rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
 .rounded-sm {
   border-radius: 0.125rem;
 }
@@ -966,6 +981,16 @@ select {
 .py-3 {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
+}
+
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.py-5 {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
 }
 
 .py-12 {

@@ -28,6 +28,7 @@ async function init() {
     if (email !== "") SubmitVideo(video);
     // Else prompt the user to enter email before POST request
     else {
+      document.getElementById("reply-email").style.display = "block";
       document.getElementById("submit-email").style.display = "block";
       document.getElementById("reply-email").focus();
       button.style.display = "none";
@@ -57,7 +58,7 @@ async function SubmitVideo(video) {
   document.getElementById("checkmark-section").style.display = "flex";
   // Replace headline text
   document.getElementById("video-headlines").style.display = "none";
-  document.getElementById("success-message").style.display = "block";
+  document.getElementById("success-message").style.display = "flex";
 
   // Attach meta to form for debugging
   document.getElementById("loom-url").setAttribute("href", video.sharedUrl);

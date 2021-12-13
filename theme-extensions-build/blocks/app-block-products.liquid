@@ -3,16 +3,34 @@
 
 <div id="app" data-id="{{ block.settings.colour }}" class="w-full app-block-products hidden-on-mobile sm:flex md:block" style="background-color: {{ block.settings.background_color }}">
     <div class="mx-auto text-center" style="margin-bottom: {{ block.settings.margin_bottom }}px; margin-top: {{ block.settings.margin_top }}px">
-        <label class="text-sm text-left opacity-75 sr-only" for="reply-email">Your email</label>
 
-        <form class="flex-row items-stretch justify-center mx-auto text-center sm:flex" id="submit-video" onsubmit="return false;">
+
+        <div id="icon-section"></div>
+        <div id="video-headlines"></div>
+
+        <div class="flex flex-row items-center justify-center py-4 my-5 space-x-3" id="success-message" style="display: none!important">
+
+            <div class="items-center justify-center w-12 h-12 mr-1 bg-green-700 rounded-full" id="checkmark-section" style="display: none;">
+                <svg aria-hidden="true" class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                </svg>
+            </div>
+
+            <p class="block custom-font p">Video message sent!</p>
+
+        </div>
+
+        <a class="hidden mt-3 text-base text-center underline" href="" id="loom-url" target="_blank">View video</a>
+
+        <label class="text-sm text-left opacity-75 sr-only" for="reply-email">Your email</label>
+        <form class="flex-col items-stretch justify-center mx-auto text-center sm:flex" id="submit-video" onsubmit="return false;">
             <input class="hidden" id="loom-id" name="loom-id" required>
             <input class="hidden" id="loom-key" name="loom-key" value="{{ block.settings.api_key }}">
             <input class="hidden" id="customer" name="customer" value="{{ customer.id }}">
             <input class="hidden" id="username" name="username" value="{{ shop.permanent_domain }}">
             <input class="hidden" id="page-title" name="page-title" value="{{ page.title }}">
             <input class="hidden" id="page-url" name="page-url" value="{{ page.url }}">
-            <input autocomplete="email" class="flex-1 min-w-0 px-4 py-3 text-xl text-gray-900 placeholder-gray-500 bg-white border border-gray-300 rounded-sm appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:placeholder-gray-400 sm:max-w-sm" id="reply-email" name="reply-email" placeholder="ashley.smith@icloud.com" required style="display: none!important" type="email">
+            <input autocomplete="email" class="flex-1 min-w-0 px-4 py-5 text-xl text-gray-900 placeholder-gray-500 bg-white border rounded-sm appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:placeholder-gray-400" id="reply-email" name="reply-email" placeholder="ashley.smith@icloud.com" required style="display: none!important" type="email">
 
             <div class="w-full rounded-md sm:mt-0 sm:flex-shrink-0">
                 <button class="flex items-center justify-center w-full text-white border border-transparent ring-0 button focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" id="loom-sdk-button" style="color: {{ block.settings.button_text_color }}; background-color: {{ block.settings.button_background_color }};">
