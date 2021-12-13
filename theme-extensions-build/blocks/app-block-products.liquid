@@ -1,0 +1,101 @@
+{% assign header_font = settings.header_font_new %}
+{{ header_font | font_face }}
+
+<div id="app" data-id="{{ block.settings.colour }}" class="w-full app-block-products hidden-on-mobile sm:flex md:block" style="background-color: {{ block.settings.background_color }}">
+    <div class="mx-auto text-center" style="margin-bottom: {{ block.settings.margin_bottom }}px; margin-top: {{ block.settings.margin_top }}px">
+        <label class="text-sm text-left opacity-75 sr-only" for="reply-email">Your email</label>
+
+        <form class="flex-row items-stretch justify-center mx-auto text-center sm:flex" id="submit-video" onsubmit="return false;">
+            <input class="hidden" id="loom-id" name="loom-id" required>
+            <input class="hidden" id="loom-key" name="loom-key" value="{{ block.settings.api_key }}">
+            <input class="hidden" id="customer" name="customer" value="{{ customer.id }}">
+            <input class="hidden" id="username" name="username" value="{{ shop.permanent_domain }}">
+            <input class="hidden" id="page-title" name="page-title" value="{{ page.title }}">
+            <input class="hidden" id="page-url" name="page-url" value="{{ page.url }}">
+            <input autocomplete="email" class="flex-1 min-w-0 px-4 py-3 text-xl text-gray-900 placeholder-gray-500 bg-white border border-gray-300 rounded-sm appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:placeholder-gray-400 sm:max-w-sm" id="reply-email" name="reply-email" placeholder="ashley.smith@icloud.com" required style="display: none!important" type="email">
+
+            <div class="w-full rounded-md sm:mt-0 sm:flex-shrink-0">
+                <button class="flex items-center justify-center w-full text-white border border-transparent ring-0 button focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" id="loom-sdk-button" style="color: {{ block.settings.button_text_color }}; background-color: {{ block.settings.button_background_color }};">
+                    <span style="padding-top: {{ block.settings.button_padding }}px; padding-bottom: {{ block.settings.button_padding }}px;">{{ block.settings.cta | default: 'Record a video' }}</span>
+                </button>
+
+                <button class="flex items-center justify-center w-full text-white border border-transparent ring-0 button focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" id="submit-email" style="color: {{ block.settings.button_text_color }}; background-color: {{ block.settings.button_background_color }}; display: none!important;">
+                    Send video
+                </button>
+
+            </div>
+        </form>
+
+
+    </div>
+</div>
+
+
+{% schema %}
+
+{
+    "name": "Product Questions",
+    "target": "section",
+    "stylesheet": "tailwind.css",
+    "javascript": "main.js",
+    "templates": ["product"],
+    "settings": [
+        {
+            "type": "header",
+            "content": "Account"
+        }, {
+            "type": "text",
+            "id": "api_key",
+            "label": "Live API Key",
+            "default": "47a9781a-1c42-4f28-b857-7ff9e72bed19",
+            "info": "Create a free account to go live. https://loom.com/developer-portal"
+        }, {
+            "type": "text",
+            "id": "cta",
+            "label": "Button text",
+            "default": "Record video question"
+        }, {
+            "type": "range",
+            "id": "button_padding",
+            "min": 0,
+            "max": 10,
+            "step": 1,
+            "unit": "px",
+            "label": "Padding",
+            "default": 0
+        }, {
+            "type": "range",
+            "id": "margin_top",
+            "min": -20,
+            "max": 20,
+            "step": 1,
+            "unit": "px",
+            "label": "Top margin",
+            "default": 0
+        }, {
+            "type": "range",
+            "id": "margin_bottom",
+            "min": -20,
+            "max": 20,
+            "step": 1,
+            "unit": "px",
+            "label": "Bottom margin",
+            "default": 0
+        }, {
+            "type": "header",
+            "content": "Button Styles"
+        }, {
+            "type": "color",
+            "id": "button_text_color",
+            "label": "Button Text Color",
+            "default": "#FFFFFF"
+        }, {
+            "type": "color",
+            "id": "button_background_color",
+            "label": "Button Background Color",
+            "default": "#000000"
+        }
+    ]
+}
+
+{% endschema %}
