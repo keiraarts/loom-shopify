@@ -249,9 +249,108 @@ function Index({ children }) {
       <div className="flex flex-col flex-1 overflow-hidden">
         <div className="flex flex-row-reverse flex-1 overflow-hidden">
           <main className="flex flex-col justify-between flex-1 overflow-y-auto">
-            <div className="w-full h-full px-4 pt-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <nav aria-label="Progress">
+              <ol
+                role="list"
+                className="border border-gray-300 divide-y divide-gray-300 rounded-md md:flex md:divide-y-0"
+              >
+                <li className="relative md:flex-1 md:flex">
+                  <a href="#" className="flex items-center w-full group">
+                    <span className="flex items-center px-6 py-4 text-sm font-medium">
+                      <span className="flex items-center justify-center flex-shrink-0 w-10 h-10 bg-indigo-600 rounded-full group-hover:bg-indigo-800">
+                        <svg
+                          className="w-6 h-6 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          aria-hidden="true"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clip-rule="evenodd"
+                          />
+                        </svg>
+                      </span>
+                      <span className="ml-4 text-sm font-medium text-gray-900">
+                        View a preview
+                      </span>
+                    </span>
+                  </a>
+
+                  <div
+                    className="absolute top-0 right-0 hidden w-5 h-full md:block"
+                    aria-hidden="true"
+                  >
+                    <svg
+                      className="w-full h-full text-gray-300"
+                      viewBox="0 0 22 80"
+                      fill="none"
+                      preserveAspectRatio="none"
+                    >
+                      <path
+                        d="M0 -2L20 40L0 82"
+                        vector-effect="non-scaling-stroke"
+                        stroke="currentcolor"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </div>
+                </li>
+
+                <li className="relative md:flex-1 md:flex">
+                  <a
+                    href="#"
+                    className="flex items-center px-6 py-4 text-sm font-medium"
+                    aria-current="step"
+                  >
+                    <span className="flex items-center justify-center flex-shrink-0 w-10 h-10 border-2 border-indigo-600 rounded-full">
+                      <span className="text-indigo-600">02</span>
+                    </span>
+                    <span className="ml-4 text-sm font-medium text-indigo-600">
+                      Record a video
+                    </span>
+                  </a>
+
+                  <div
+                    className="absolute top-0 right-0 hidden w-5 h-full md:block"
+                    aria-hidden="true"
+                  >
+                    <svg
+                      className="w-full h-full text-gray-300"
+                      viewBox="0 0 22 80"
+                      fill="none"
+                      preserveAspectRatio="none"
+                    >
+                      <path
+                        d="M0 -2L20 40L0 82"
+                        vector-effect="non-scaling-stroke"
+                        stroke="currentcolor"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </div>
+                </li>
+
+                <li className="relative md:flex-1 md:flex">
+                  <a href="#" className="flex items-center group">
+                    <span className="flex items-center px-6 py-4 text-sm font-medium">
+                      <span className="flex items-center justify-center flex-shrink-0 w-10 h-10 border-2 border-gray-300 rounded-full group-hover:border-gray-400">
+                        <span className="text-gray-500 group-hover:text-gray-900">
+                          03
+                        </span>
+                      </span>
+                      <span className="ml-4 text-sm font-medium text-gray-500 group-hover:text-gray-900">
+                        Register domain
+                      </span>
+                    </span>
+                  </a>
+                </li>
+              </ol>
+            </nav>
+            <div className="w-full h-full px-4 mx-auto sm:pt-4 max-w-7xl sm:px-4 lg:px-4">
               <div className="flex">
-                <h1 className="flex-1 text-2xl font-bold text-gray-900">
+                <h1 className="flex-1 hidden text-2xl font-bold text-gray-900 sr-only">
                   Videos
                 </h1>
                 <div className="ml-6 bg-gray-100 p-0.5 rounded-lg flex items-center sm:hidden">
@@ -292,7 +391,7 @@ function Index({ children }) {
                 </div>
               </div>
 
-              <div className="mt-3 sm:mt-2">
+              <div className="mt-3 sm:mt-0">
                 <div className="sm:hidden">
                   <label for="tabs" className="sr-only">
                     Select a tab
@@ -569,7 +668,6 @@ function Index({ children }) {
                 </section>
               )}
             </div>
-
             <Footer />
           </main>
 
@@ -583,7 +681,213 @@ function Index({ children }) {
                   className="-mx-5 -mt-5"
                   dangerouslySetInnerHTML={{ __html: videoHtml }}
                 ></div>
-                <div className="flex items-start justify-between mt-4">
+
+                <div className="overflow-hidden sm:-mx-5 sm:divide-y-0 sm:grid sm:grid-cols-1 sm:gap-px">
+                  <nav className="flex w-full" aria-label="Breadcrumb">
+                    <ol
+                      role="list"
+                      className="flex w-full px-6 space-x-4 bg-white rounded-md rounded-b-none shadow"
+                    >
+                      <li className="flex">
+                        <div className="flex items-center">
+                          <a
+                            href="#"
+                            className="text-gray-400 hover:text-gray-500"
+                          >
+                            <svg
+                              className="flex-shrink-0 w-5 h-5"
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                              aria-hidden="true"
+                            >
+                              <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                            </svg>
+                            <span className="sr-only">Home</span>
+                          </a>
+                        </div>
+                      </li>
+
+                      <li className="flex">
+                        <div className="flex items-center">
+                          <svg
+                            className="flex-shrink-0 w-6 h-full text-gray-200"
+                            viewBox="0 0 24 44"
+                            preserveAspectRatio="none"
+                            fill="currentColor"
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
+                          >
+                            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+                          </svg>
+                          <a
+                            href="#"
+                            className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
+                          >
+                            Setup
+                          </a>
+                        </div>
+                      </li>
+
+                      <li className="flex flex-1">
+                        <div className="flex items-center">
+                          <svg
+                            className="flex-shrink-0 w-6 h-full text-gray-200"
+                            viewBox="0 0 24 44"
+                            preserveAspectRatio="none"
+                            fill="currentColor"
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
+                          >
+                            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+                          </svg>
+                          <a
+                            href="#"
+                            className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
+                            aria-current="page"
+                          >
+                            Quick recipes
+                          </a>
+                        </div>
+                      </li>
+                    </ol>
+                  </nav>
+
+                  <div className="relative p-5 bg-white group focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
+                    <div className="-mt-1">
+                      <h3 className="text-base font-medium text-black">
+                        <a href="#" className="focus:outline-none">
+                          <span
+                            className="absolute inset-0"
+                            aria-hidden="true"
+                          ></span>
+                          Collect product feedback
+                        </a>
+                      </h3>
+                      <p className="mt-2 text-sm text-black">
+                        A cosmetics company might collect customer record
+                        product feedback over video to better understand how
+                        their formulas are used.
+                      </p>
+                    </div>
+                    <span
+                      className="absolute text-gray-300 pointer-events-none top-6 right-6 group-hover:text-gray-400"
+                      aria-hidden="true"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z" />
+                      </svg>
+                    </span>
+                  </div>
+
+                  <div className="relative p-5 bg-gray-50 group focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
+                    <div className="-mt-1">
+                      <h3 className="text-base font-medium text-black">
+                        <a href="#" className="focus:outline-none">
+                          <span
+                            className="absolute inset-0"
+                            aria-hidden="true"
+                          ></span>
+                          Help with purchase decisions
+                        </a>
+                      </h3>
+                      <p className="mt-2 text-sm text-black">
+                        A design school might use this app to let students
+                        record a portfolio overview so instructors can match
+                        them with a mentor.
+                      </p>
+                    </div>
+                    <span
+                      className="absolute text-gray-300 pointer-events-none top-6 right-6 group-hover:text-gray-400"
+                      aria-hidden="true"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z" />
+                      </svg>
+                    </span>
+                  </div>
+
+                  <div className="relative p-5 bg-white group focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
+                    <div className="-mt-1">
+                      <h3 className="text-base font-medium text-black">
+                        <a href="#" className="focus:outline-none">
+                          <span
+                            className="absolute inset-0"
+                            aria-hidden="true"
+                          ></span>
+                          Reduce returns & exchanges
+                        </a>
+                      </h3>
+                      <p className="mt-2 text-sm text-black">
+                        A clothing company might let customers compare products
+                        with a screen recording to get better help finding the
+                        best product fit.
+                      </p>
+                    </div>
+                    <span
+                      className="absolute text-gray-300 pointer-events-none top-6 right-6 group-hover:text-gray-400"
+                      aria-hidden="true"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z" />
+                      </svg>
+                    </span>
+                  </div>
+
+                  <div className="relative p-5 bg-gray-50 group focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
+                    <div className="-mt-1">
+                      <h3 className="text-base font-medium text-black">
+                        <a href="#" className="focus:outline-none">
+                          <span
+                            className="absolute inset-0"
+                            aria-hidden="true"
+                          ></span>
+                          Offer technical support
+                        </a>
+                      </h3>
+                      <p className="mt-2 text-sm text-black">
+                        A design school might use this app to let students
+                        record a portfolio overview so instructors can match
+                        them with a mentor.
+                      </p>
+                    </div>
+                    <span
+                      className="absolute text-gray-300 pointer-events-none top-6 right-6 group-hover:text-gray-400"
+                      aria-hidden="true"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z" />
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+
+                <div
+                  className={cn({
+                    "flex items-start justify-between mt-4": true,
+                    "hidden": !loom.id,
+                  })}
+                >
                   <div>
                     <h2 className="text-lg font-medium text-gray-900">
                       <span className="sr-only">Details for </span>
@@ -701,7 +1005,7 @@ function Index({ children }) {
                 </button>
               </div>
 
-              <div>
+              <div className={cn({ hidden: loom.id === defaults.id })}>
                 <h3 className="font-medium text-gray-900">Information</h3>
                 <dl className="mt-2 border-t border-b border-gray-200 divide-y divide-gray-200">
                   <div className="flex justify-between py-3 text-sm font-medium">

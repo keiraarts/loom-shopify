@@ -31,6 +31,10 @@
             <a class="mt-3 text-base underline {{ block.settings.horizontal_alignment }}" href="" id="loom-url" style="color: {{ block.settings.text_color }};" target="_blank">View video</a>
         </span>
 
+        <span class="flex flex-col mb-5" id="loom-error-message" style="display: none!important">
+            <a class="mt-3 text-base p leading-snug {{ block.settings.horizontal_alignment }}" href="" style="color: red;">We're sorry; your browser doesn't support video recording! Make sure you're using a modern browser without incognito mode.</a>
+        </span>
+
 
         <label class="text-sm text-left opacity-75 sr-only" for="reply-email">Your email</label>
         <form class="flex-row items-stretch justify-center mt-5 sm:flex sm:max-w-2xl md:mt-8 {{ block.settings.horizontal_alignment }}" id="submit-video" onsubmit="return false;">

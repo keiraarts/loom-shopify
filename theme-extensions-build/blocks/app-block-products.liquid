@@ -22,6 +22,10 @@
 
         <a class="hidden mt-3 text-base text-center underline" href="" id="loom-url" target="_blank">View video</a>
 
+        <span class="flex flex-col mb-3" id="loom-error-message" style="display: none!important">
+            <a class="mt-3 p text-base leading-snug {{ block.settings.horizontal_alignment }}" href="">We're sorry; your browser doesn't support video recording! Make sure you're on a modern browser without incognito mode.</a>
+        </span>
+
         <label class="text-sm text-left opacity-75 sr-only" for="reply-email">Your email</label>
         <form class="flex-col items-stretch justify-center mx-auto text-center sm:flex" id="submit-video" onsubmit="return false;">
             <input class="hidden" id="loom-id" name="loom-id" required>
@@ -59,15 +63,6 @@
     "templates": ["product"],
     "settings": [
         {
-            "type": "header",
-            "content": "Account"
-        }, {
-            "type": "text",
-            "id": "api_key",
-            "label": "Live API Key",
-            "default": "47a9781a-1c42-4f28-b857-7ff9e72bed19",
-            "info": "Create a free account to go live. https://loom.com/developer-portal"
-        }, {
             "type": "text",
             "id": "cta",
             "label": "Button text",
@@ -112,6 +107,18 @@
             "id": "button_background_color",
             "label": "Button Background Color",
             "default": "#000000"
+        }, {
+            "type": "header",
+            "content": "Account"
+        }, {
+            "type": "text",
+            "id": "api_key",
+            "label": "Live API Key",
+            "default": "47a9781a-1c42-4f28-b857-7ff9e72bed19",
+            "info": "Create a free account and get your key. [Learn more](https://loom.com/developer-portal)"
+        }, {
+            "type": "paragraph",
+            "content": "This app uses Loom.com to record videos. Create a free account on the link above, add your domain to settings, and then copy-paste your API key to finish this setup."
         }
     ]
 }

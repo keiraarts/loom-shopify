@@ -7,11 +7,11 @@ async function init() {
   if (!root) return;
 
   const { supported, error } = await isSupported();
-  button.setAttribute("supported", supported);
   if (!button) return;
 
   if (!supported) {
-    button.setAttribute("error", error);
+    button.setAttribute("supported", supported);
+    button.setAttribute("error", error.toString());
     return;
   }
 
@@ -41,6 +41,16 @@ async function init() {
   document.getElementById("submit-email").addEventListener("click", () => {
     if (loom && document.getElementById("reply-email").value !== "")
       SubmitVideo(loom);
+  });
+
+  document.getElementById("loom-sdk-button").addEventListener("click", () => {
+    if (!supported) {
+      const errorMessage = document.getElementById("loom-error-message");
+      // show the default error if the button isn't supported
+      errorMessage.style.display = "block";
+      // highlight the error message in red
+      errorMessage.style.color = "rgb(179, 27, 27);";
+    }
   });
 
   sdkButton.on("cancel", () => {
