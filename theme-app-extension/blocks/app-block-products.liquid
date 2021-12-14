@@ -63,15 +63,6 @@
     "templates": ["product"],
     "settings": [
         {
-            "type": "header",
-            "content": "Account"
-        }, {
-            "type": "text",
-            "id": "api_key",
-            "label": "Live API Key",
-            "default": "47a9781a-1c42-4f28-b857-7ff9e72bed19",
-            "info": "Create a free account to go live. https://loom.com/developer-portal"
-        }, {
             "type": "text",
             "id": "cta",
             "label": "Button text",
@@ -116,6 +107,18 @@
             "id": "button_background_color",
             "label": "Button Background Color",
             "default": "#000000"
+        }, {
+            "type": "header",
+            "content": "Account"
+        }, {
+            "type": "text",
+            "id": "api_key",
+            "label": "Live API Key",
+            "default": "47a9781a-1c42-4f28-b857-7ff9e72bed19",
+            "info": "Use your own branding by registering an API key. [Learn more](https://loom.com/developer-portal)"
+        }, {
+            "type": "paragraph",
+            "content": "This app uses Loom.com to record videos. Create a free account on the link above, add your domain to settings, and then copy-paste your API key to finish this setup."
         }
     ]
 }

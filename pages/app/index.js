@@ -11,6 +11,13 @@ import NProgress from "nprogress";
 import set from "lodash/set";
 import cn from "classnames";
 
+import Recipes from "../../components/recipes";
+import ThemePreview from "../../components/theme-preview";
+import VideoAwait from "../../components/video-await";
+import VideoReply from "../../components/video-reply";
+import SetupReview from "../../components/setup-review";
+import SetupNav from "../../components/setup-nav";
+
 import useStorefront from "../../hooks/useStorefront";
 import useCustomer from "../../hooks/useCustomer";
 import useVideos from "../../hooks/useVideos";
@@ -38,9 +45,7 @@ function Index({ children }) {
 
   const { data, isLoading } = useVideos();
   const [videos, setVideos] = useState([]);
-
-  const { data: themes } = useThemes();
-  const [theme, setTheme] = useState("current");
+  const [step, setStep] = useState(0);
 
   // Allow search via email and page urls
   const [search, setSearch] = useState();
@@ -130,7 +135,7 @@ function Index({ children }) {
 
   return (
     <React.Fragment>
-      <header className="w-full">
+      <header className="z-20 w-full lg:fixed">
         <div className="relative z-10 flex flex-shrink-0 h-12 bg-white border-b border-gray-200 shadow-sm">
           <button
             type="button"
@@ -246,641 +251,289 @@ function Index({ children }) {
           </div>
         </div>
       </header>
-      <div className="flex flex-col flex-1 overflow-hidden">
+      <div className="flex flex-col flex-1 overflow-hidden lg:mt-12">
         <div className="flex flex-row-reverse flex-1 overflow-hidden">
           <main className="flex flex-col justify-between flex-1 overflow-y-auto">
-            <nav aria-label="Progress">
-              <ol
-                role="list"
-                className="border border-gray-300 divide-y divide-gray-300 rounded-md md:flex md:divide-y-0"
-              >
-                <li className="relative md:flex-1 md:flex">
-                  <a href="#" className="flex items-center w-full group">
-                    <span className="flex items-center px-6 py-4 text-sm font-medium">
-                      <span className="flex items-center justify-center flex-shrink-0 w-10 h-10 bg-indigo-600 rounded-full group-hover:bg-indigo-800">
-                        <svg
-                          className="w-6 h-6 text-white"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          aria-hidden="true"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clip-rule="evenodd"
-                          />
-                        </svg>
-                      </span>
-                      <span className="ml-4 text-sm font-medium text-gray-900">
-                        View a preview
-                      </span>
-                    </span>
-                  </a>
+            <SetupNav
+              steps={[
+                { title: "View preview" },
+                { title: "Record a video" },
+                { title: "Send a reply" },
+              ]}
+              current={step}
+              onClick={setStep}
+            />
 
-                  <div
-                    className="absolute top-0 right-0 hidden w-5 h-full md:block"
-                    aria-hidden="true"
-                  >
-                    <svg
-                      className="w-full h-full text-gray-300"
-                      viewBox="0 0 22 80"
-                      fill="none"
-                      preserveAspectRatio="none"
-                    >
-                      <path
-                        d="M0 -2L20 40L0 82"
-                        vector-effect="non-scaling-stroke"
-                        stroke="currentcolor"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  </div>
-                </li>
+            {step === 0 && <ThemePreview />}
+            {step === 1 && <VideoAwait />}
+            {step === 2 && <VideoReply onComplete={() => setStep(3)} />}
+            {step === 3 && <SetupReview />}
 
-                <li className="relative md:flex-1 md:flex">
-                  <a
-                    href="#"
-                    className="flex items-center px-6 py-4 text-sm font-medium"
-                    aria-current="step"
-                  >
-                    <span className="flex items-center justify-center flex-shrink-0 w-10 h-10 border-2 border-indigo-600 rounded-full">
-                      <span className="text-indigo-600">02</span>
-                    </span>
-                    <span className="ml-4 text-sm font-medium text-indigo-600">
-                      Record a video
-                    </span>
-                  </a>
-
-                  <div
-                    className="absolute top-0 right-0 hidden w-5 h-full md:block"
-                    aria-hidden="true"
-                  >
-                    <svg
-                      className="w-full h-full text-gray-300"
-                      viewBox="0 0 22 80"
-                      fill="none"
-                      preserveAspectRatio="none"
+            {storefront?.setup && (
+              <div className="w-full h-full px-2 mx-auto sm:pt-4 max-w-7xl sm:px-2 lg:px-2">
+                <div className="flex">
+                  <h1 className="flex-1 hidden text-2xl font-bold text-gray-900 sr-only">
+                    Videos
+                  </h1>
+                  <div className="ml-6 bg-gray-100 p-0.5 rounded-lg flex items-center sm:hidden">
+                    <button
+                      type="button"
+                      className="p-1.5 rounded-md text-gray-400 hover:bg-white hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
                     >
-                      <path
-                        d="M0 -2L20 40L0 82"
-                        vector-effect="non-scaling-stroke"
-                        stroke="currentcolor"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  </div>
-                </li>
-
-                <li className="relative md:flex-1 md:flex">
-                  <a href="#" className="flex items-center group">
-                    <span className="flex items-center px-6 py-4 text-sm font-medium">
-                      <span className="flex items-center justify-center flex-shrink-0 w-10 h-10 border-2 border-gray-300 rounded-full group-hover:border-gray-400">
-                        <span className="text-gray-500 group-hover:text-gray-900">
-                          03
-                        </span>
-                      </span>
-                      <span className="ml-4 text-sm font-medium text-gray-500 group-hover:text-gray-900">
-                        Register domain
-                      </span>
-                    </span>
-                  </a>
-                </li>
-              </ol>
-            </nav>
-            <div className="w-full h-full px-4 mx-auto sm:pt-4 max-w-7xl sm:px-4 lg:px-4">
-              <div className="flex">
-                <h1 className="flex-1 hidden text-2xl font-bold text-gray-900 sr-only">
-                  Videos
-                </h1>
-                <div className="ml-6 bg-gray-100 p-0.5 rounded-lg flex items-center sm:hidden">
-                  <button
-                    type="button"
-                    className="p-1.5 rounded-md text-gray-400 hover:bg-white hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-                  >
-                    <svg
-                      className="w-5 h-5"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      aria-hidden="true"
+                      <svg
+                        className="w-5 h-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                      <span className="sr-only">Use list view</span>
+                    </button>
+                    <button
+                      type="button"
+                      className="ml-0.5 bg-white p-1.5 rounded-md shadow-sm text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
                     >
-                      <path
-                        fill-rule="evenodd"
-                        d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                    <span className="sr-only">Use list view</span>
-                  </button>
-                  <button
-                    type="button"
-                    className="ml-0.5 bg-white p-1.5 rounded-md shadow-sm text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-                  >
-                    <svg
-                      className="w-5 h-5"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                    </svg>
-                    <span className="sr-only">Use grid view</span>
-                  </button>
-                </div>
-              </div>
-
-              <div className="mt-3 sm:mt-0">
-                <div className="sm:hidden">
-                  <label for="tabs" className="sr-only">
-                    Select a tab
-                  </label>
-                  <select
-                    id="tabs"
-                    name="tabs"
-                    className="block w-full py-2 pl-3 pr-10 text-base border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  >
-                    <option selected>Recently Viewed</option>
-                    <option>Recently Added</option>
-                    <option>Favorited</option>
-                  </select>
-                </div>
-                <div className="hidden sm:block">
-                  <div className="flex items-center border-b border-gray-300">
-                    <nav
-                      className="flex flex-1 -mb-px space-x-6 xl:space-x-8"
-                      aria-label="Tabs"
-                    >
-                      {views.map((view) => {
-                        return (
-                          <a
-                            href="#"
-                            aria-current={view}
-                            onClick={() => setTab(view)}
-                            className={cn({
-                              "px-1 py-4 text-sm font-medium capitalize border-b-2  whitespace-nowrap": true,
-                              "border-indigo-500 text-indigo-700": view === tab,
-                              "text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300":
-                                view !== tab,
-                            })}
-                          >
-                            {view}
-                            {counts[view] > 0 && (
-                              <span className="bg-indigo-50 text-indigo-900 hidden ml-2 py-0.5 px-2.5 rounded-full text-xs font-medium md:inline-block">
-                                {counts[view]}
-                              </span>
-                            )}
-                          </a>
-                        );
-                      })}
-                    </nav>
-                    <div className="hidden ml-6 bg-gray-100 p-0.5 rounded-lg items-center sm:flex"></div>
+                      <svg
+                        className="w-5 h-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                      </svg>
+                      <span className="sr-only">Use grid view</span>
+                    </button>
                   </div>
                 </div>
-              </div>
 
-              {isLoading && (
-                <div className="flex items-center justify-center flex-1 h-full">
-                  <Loading />
-                </div>
-              )}
-
-              {!isLoading && videos.length === 0 && (
-                <FadeIn className="flex items-center justify-center flex-1 h-full">
-                  <EmptyState
-                    src="/logos/primary-logo-icon.png"
-                    quote="It can be hard to understand complex questions over email. With our app, you can give customers an easy way to record questions with a video!"
-                    children={
-                      <React.Fragment>
-                        <div className="flex flex-row items-stretch max-w-sm gap-4 mx-auto my-5 text-center">
-                          <div className="flex-1">
-                            <label
-                              for="location"
-                              className="block text-sm font-medium text-gray-700 sr-only"
-                            >
-                              Location
-                            </label>
-                            <select
-                              id="location"
-                              name="location"
-                              onChange={() => setTheme(event.target.value)}
-                              className="block w-full h-full py-2 pl-3 pr-10 text-base border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            >
-                              <option selected value="current">
-                                Current theme
-                              </option>
-
-                              {themes?.map((el) => {
-                                return <option value={el.id}>{el.name}</option>;
-                              })}
-                            </select>
-                          </div>
-                          <button
-                            onClick={() => {
-                              redirectContext(
-                                `https://${storefront.username}.myshopify.com/admin/themes/${theme}/editor?context=apps&template=index&activateAppId=5178a21d-051e-4b38-8992-ed13ae96cd73/app-block`
-                              );
-                            }}
-                            className="px-4 py-2 font-semibold text-white bg-green-600 rounded-md cursor-pointer"
-                          >
-                            Open Preview
-                          </button>
-                        </div>
-                        <div className="max-w-md mx-auto mt-5">
-                          <ul
-                            role="list"
-                            className="mt-1 list-disc border-t border-gray-200 divide-y divide-gray-200 lg:border-t-0"
-                          >
-                            <li className="flex items-center justify-center py-2 mx-auto">
-                              <span className="ml-3 text-xs font-medium text-gray-900">
-                                A design school might use this app to let
-                                students record a portfolio overview so
-                                instructors can match them with a mentor.
-                              </span>
-                            </li>
-                            <li className="flex items-center justify-center py-2 mx-auto">
-                              <span className="ml-3 text-xs font-medium text-gray-900">
-                                A cosmetics company might collect customer
-                                record product feedback over video to better
-                                understand how their formulas are used.
-                              </span>
-                            </li>
-                            <li className="flex items-center justify-center py-2 mx-auto">
-                              <span className="ml-3 text-xs font-medium text-gray-900">
-                                A clothing company might let customers compare
-                                products with a screen recording to get better
-                                help finding the best product fit.
-                              </span>
-                            </li>
-                          </ul>
-                        </div>
-                      </React.Fragment>
-                    }
-                  />
-                </FadeIn>
-              )}
-
-              {!isLoading && videos.length > 0 && (
-                <section
-                  className="pb-16 mt-4"
-                  aria-labelledby="gallery-heading"
-                >
-                  <h2 id="gallery-heading" className="sr-only">
-                    Recently viewed
-                  </h2>
-                  <div className="overflow-hidden sm:rounded-md sm:-mx-5 md:-mx-8">
-                    <FadeIn
-                      role="list"
-                      wrapperTag="ul"
-                      className="divide-y divide-gray-200"
+                <div className="mt-3 sm:mt-0">
+                  <div className="sm:hidden">
+                    <label for="tabs" className="sr-only">
+                      Select a tab
+                    </label>
+                    <select
+                      id="tabs"
+                      name="tabs"
+                      className="block w-full py-2 pl-3 pr-10 text-base border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     >
-                      {videos.map((video, index) => {
-                        const char = video.id.toUpperCase().charCodeAt(0);
-
-                        return (
-                          <li key={index}>
+                      <option selected>Recently Viewed</option>
+                      <option>Recently Added</option>
+                      <option>Favorited</option>
+                    </select>
+                  </div>
+                  <div className="hidden sm:block">
+                    <div className="flex items-center border-b border-gray-300">
+                      <nav
+                        className="flex flex-1 -mb-px space-x-6 xl:space-x-8"
+                        aria-label="Tabs"
+                      >
+                        {views.map((view) => {
+                          return (
                             <a
-                              href={"#" + video.id}
-                              onClick={() => setLoom(video)}
+                              href="#"
+                              aria-current={view}
+                              onClick={() => setTab(view)}
                               className={cn({
-                                "bg-blue-100": loom.id === video.id,
-                                "bg-gray-50 hover:bg-gray-100":
-                                  loom.id !== video.id,
-                                "block": true,
+                                "px-1 py-4 text-sm font-medium capitalize border-b-2  whitespace-nowrap": true,
+                                "border-indigo-500 text-indigo-700":
+                                  view === tab,
+                                "text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300":
+                                  view !== tab,
                               })}
                             >
-                              <div className="flex items-center px-4 py-3 sm:px-6">
-                                <div className="flex items-center flex-1 min-w-0">
-                                  <div className="flex-shrink-0">
-                                    <span
-                                      x-char={char}
-                                      className={cn({
-                                        "inline-flex items-center justify-center w-8 h-8 rounded-full": true,
-                                        "bg-green-500": char < 10,
-                                        "bg-green-600": char < 20,
-                                        "bg-blue-500": char < 30,
-                                        "bg-blue-600": char < 40,
-                                        "bg-purple-500": char < 50,
-                                        "bg-purple-600": char < 60,
-                                        "bg-indigo-500": char < 70,
-                                        "bg-indigo-600": char < 80,
-                                      })}
-                                    >
-                                      <span className="font-medium leading-none text-white capitalize">
-                                        {video.email.substring(0, 1)}
-                                      </span>
-                                    </span>
-                                  </div>
-                                  <div className="flex-1 min-w-0 px-4 md:grid md:grid-cols-2 md:gap-4">
-                                    <div>
-                                      <p className="text-sm font-medium text-indigo-600 truncate">
-                                        {video.email}
-                                      </p>
-                                      <p className="flex items-center mt-0.5 text-sm text-gray-500">
-                                        <svg
-                                          className="flex-shrink-0 w-3 h-3 mr-1 text-gray-400"
-                                          fill="none"
-                                          stroke="currentColor"
-                                          viewBox="0 0 24 24"
-                                          xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                          <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="3"
-                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                          ></path>
-                                        </svg>
-                                        <span className="">
-                                          {video.page_url !== ""
-                                            ? video.page_url
-                                            : "Homepage"}
+                              {view}
+                              {counts[view] > 0 && (
+                                <span className="bg-indigo-50 text-indigo-900 hidden ml-2 py-0.5 px-2.5 rounded-full text-xs font-medium md:inline-block">
+                                  {counts[view]}
+                                </span>
+                              )}
+                            </a>
+                          );
+                        })}
+                      </nav>
+                      <div className="hidden ml-6 bg-gray-100 p-0.5 rounded-lg items-center sm:flex"></div>
+                    </div>
+                  </div>
+                </div>
+
+                {isLoading && (
+                  <div className="flex items-center justify-center flex-1 h-full">
+                    <Loading />
+                  </div>
+                )}
+
+                {!isLoading && videos.length === 0 && <ThemePreview />}
+
+                {!isLoading && videos.length > 0 && (
+                  <section
+                    className="pb-16 mt-4"
+                    aria-labelledby="gallery-heading"
+                  >
+                    <h2 id="gallery-heading" className="sr-only">
+                      Recently viewed
+                    </h2>
+                    <div className="overflow-hidden bg-white sm:rounded-md ">
+                      <FadeIn
+                        role="list"
+                        wrapperTag="ul"
+                        className="divide-y divide-gray-200"
+                      >
+                        {videos.map((video, index) => {
+                          const char = video.id.toUpperCase().charCodeAt(0);
+
+                          return (
+                            <li key={index}>
+                              <a
+                                href={"#" + video.id}
+                                onClick={() => setLoom(video)}
+                                className={cn({
+                                  "bg-blue-100": loom.id === video.id,
+                                  "bg-transparent hover:bg-blue-100":
+                                    loom.id !== video.id,
+                                  "block": true,
+                                })}
+                              >
+                                <div className="flex items-center px-4 py-3 sm:px-6">
+                                  <div className="flex items-center flex-1 min-w-0">
+                                    <div className="flex-shrink-0">
+                                      <span
+                                        x-char={char}
+                                        className={cn({
+                                          "inline-flex items-center justify-center w-8 h-8 rounded-full": true,
+                                          "bg-green-500": char < 10,
+                                          "bg-green-600": char < 20,
+                                          "bg-blue-500": char < 30,
+                                          "bg-blue-600": char < 40,
+                                          "bg-purple-500": char < 50,
+                                          "bg-purple-600": char < 60,
+                                          "bg-indigo-500": char < 70,
+                                          "bg-indigo-600": char < 80,
+                                        })}
+                                      >
+                                        <span className="font-medium leading-none text-white capitalize">
+                                          {video.email.substring(0, 1)}
                                         </span>
-                                      </p>
+                                      </span>
                                     </div>
-                                    <div className="hidden lg:block">
+                                    <div className="flex-1 min-w-0 px-4 md:grid md:grid-cols-2 md:gap-4">
                                       <div>
-                                        <p className="text-sm text-gray-900">
-                                          Recorded on{" "}
-                                          <time datetime={video.date_created}>
-                                            {new Date(
-                                              video.date_created
-                                            ).toLocaleDateString(
-                                              "en-US",
-                                              options
-                                            )}
-                                          </time>
+                                        <p className="text-sm font-medium text-indigo-600 truncate">
+                                          {video.email}
                                         </p>
                                         <p className="flex items-center mt-0.5 text-sm text-gray-500">
                                           <svg
-                                            className={cn({
-                                              "text-green-600":
-                                                video?.status === "completed",
-                                              "flex-shrink-0 mr-1.5 h-4 w-4 ": true,
-                                            })}
+                                            className="flex-shrink-0 w-3 h-3 mr-1 text-gray-400"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
                                             xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20"
-                                            fill="currentColor"
-                                            aria-hidden="true"
                                           >
                                             <path
-                                              fill-rule="evenodd"
-                                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                              clip-rule="evenodd"
-                                            />
+                                              stroke-linecap="round"
+                                              stroke-linejoin="round"
+                                              stroke-width="3"
+                                              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                            ></path>
                                           </svg>
-                                          {video?.status === "completed"
-                                            ? `Replied on ${new Date(
-                                                video.date_completed
+                                          <span className="">
+                                            {video.page_url !== ""
+                                              ? video.page_url
+                                              : "Homepage"}
+                                          </span>
+                                        </p>
+                                      </div>
+                                      <div className="hidden lg:block">
+                                        <div>
+                                          <p className="text-sm text-gray-900">
+                                            Recorded on{" "}
+                                            <time datetime={video.date_created}>
+                                              {new Date(
+                                                video.date_created
                                               ).toLocaleDateString(
                                                 "en-US",
                                                 options
-                                              )}  `
-                                            : "Awaiting action"}
-                                        </p>
+                                              )}
+                                            </time>
+                                          </p>
+                                          <p className="flex items-center mt-0.5 text-sm text-gray-500">
+                                            <svg
+                                              className={cn({
+                                                "text-green-600":
+                                                  video?.status === "completed",
+                                                "flex-shrink-0 mr-1.5 h-4 w-4 ": true,
+                                              })}
+                                              xmlns="http://www.w3.org/2000/svg"
+                                              viewBox="0 0 20 20"
+                                              fill="currentColor"
+                                              aria-hidden="true"
+                                            >
+                                              <path
+                                                fill-rule="evenodd"
+                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                clip-rule="evenodd"
+                                              />
+                                            </svg>
+                                            {video?.status === "completed"
+                                              ? `Replied on ${new Date(
+                                                  video.date_completed
+                                                ).toLocaleDateString(
+                                                  "en-US",
+                                                  options
+                                                )}  `
+                                              : "Awaiting action"}
+                                          </p>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
+                                  <div>
+                                    <svg
+                                      className="w-5 h-5 text-gray-600"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 20 20"
+                                      fill="currentColor"
+                                      aria-hidden="true"
+                                    >
+                                      <path
+                                        fill-rule="evenodd"
+                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                        clip-rule="evenodd"
+                                      />
+                                    </svg>
+                                  </div>
                                 </div>
-                                <div>
-                                  <svg
-                                    className="w-5 h-5 text-gray-600"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                    aria-hidden="true"
-                                  >
-                                    <path
-                                      fill-rule="evenodd"
-                                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                      clip-rule="evenodd"
-                                    />
-                                  </svg>
-                                </div>
-                              </div>
-                            </a>
-                          </li>
-                        );
-                      })}
-                    </FadeIn>
-                  </div>
-                </section>
-              )}
-            </div>
+                              </a>
+                            </li>
+                          );
+                        })}
+                      </FadeIn>
+                    </div>
+                  </section>
+                )}
+              </div>
+            )}
             <Footer />
           </main>
 
           <aside
             key={loom.id}
-            className="hidden p-6 bg-white border-r border-gray-200 w-96 xl:w-1/3 sm:block"
+            className="hidden p-6 border-r border-gray-200 bg-shopify-grey w-96 xl:w-1/3 sm:block"
           >
-            <div className="pb-16 space-y-6">
-              <div>
+            <div className="space-y-6">
+              <div className="m-0">
                 <div
-                  className="-mx-5 -mt-5"
+                  className="-mx-4 -mt-5 bg-white rounded-md"
                   dangerouslySetInnerHTML={{ __html: videoHtml }}
                 ></div>
 
-                <div className="overflow-hidden sm:-mx-5 sm:divide-y-0 sm:grid sm:grid-cols-1 sm:gap-px">
-                  <nav className="flex w-full" aria-label="Breadcrumb">
-                    <ol
-                      role="list"
-                      className="flex w-full px-6 space-x-4 bg-white rounded-md rounded-b-none shadow"
-                    >
-                      <li className="flex">
-                        <div className="flex items-center">
-                          <a
-                            href="#"
-                            className="text-gray-400 hover:text-gray-500"
-                          >
-                            <svg
-                              className="flex-shrink-0 w-5 h-5"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                              aria-hidden="true"
-                            >
-                              <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                            </svg>
-                            <span className="sr-only">Home</span>
-                          </a>
-                        </div>
-                      </li>
-
-                      <li className="flex">
-                        <div className="flex items-center">
-                          <svg
-                            className="flex-shrink-0 w-6 h-full text-gray-200"
-                            viewBox="0 0 24 44"
-                            preserveAspectRatio="none"
-                            fill="currentColor"
-                            xmlns="http://www.w3.org/2000/svg"
-                            aria-hidden="true"
-                          >
-                            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
-                          </svg>
-                          <a
-                            href="#"
-                            className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
-                          >
-                            Setup
-                          </a>
-                        </div>
-                      </li>
-
-                      <li className="flex flex-1">
-                        <div className="flex items-center">
-                          <svg
-                            className="flex-shrink-0 w-6 h-full text-gray-200"
-                            viewBox="0 0 24 44"
-                            preserveAspectRatio="none"
-                            fill="currentColor"
-                            xmlns="http://www.w3.org/2000/svg"
-                            aria-hidden="true"
-                          >
-                            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
-                          </svg>
-                          <a
-                            href="#"
-                            className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
-                            aria-current="page"
-                          >
-                            Quick recipes
-                          </a>
-                        </div>
-                      </li>
-                    </ol>
-                  </nav>
-
-                  <div className="relative p-5 bg-white group focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
-                    <div className="-mt-1">
-                      <h3 className="text-base font-medium text-black">
-                        <a href="#" className="focus:outline-none">
-                          <span
-                            className="absolute inset-0"
-                            aria-hidden="true"
-                          ></span>
-                          Collect product feedback
-                        </a>
-                      </h3>
-                      <p className="mt-2 text-sm text-black">
-                        A cosmetics company might collect customer record
-                        product feedback over video to better understand how
-                        their formulas are used.
-                      </p>
-                    </div>
-                    <span
-                      className="absolute text-gray-300 pointer-events-none top-6 right-6 group-hover:text-gray-400"
-                      aria-hidden="true"
-                    >
-                      <svg
-                        className="w-5 h-5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z" />
-                      </svg>
-                    </span>
-                  </div>
-
-                  <div className="relative p-5 bg-gray-50 group focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
-                    <div className="-mt-1">
-                      <h3 className="text-base font-medium text-black">
-                        <a href="#" className="focus:outline-none">
-                          <span
-                            className="absolute inset-0"
-                            aria-hidden="true"
-                          ></span>
-                          Help with purchase decisions
-                        </a>
-                      </h3>
-                      <p className="mt-2 text-sm text-black">
-                        A design school might use this app to let students
-                        record a portfolio overview so instructors can match
-                        them with a mentor.
-                      </p>
-                    </div>
-                    <span
-                      className="absolute text-gray-300 pointer-events-none top-6 right-6 group-hover:text-gray-400"
-                      aria-hidden="true"
-                    >
-                      <svg
-                        className="w-5 h-5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z" />
-                      </svg>
-                    </span>
-                  </div>
-
-                  <div className="relative p-5 bg-white group focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
-                    <div className="-mt-1">
-                      <h3 className="text-base font-medium text-black">
-                        <a href="#" className="focus:outline-none">
-                          <span
-                            className="absolute inset-0"
-                            aria-hidden="true"
-                          ></span>
-                          Reduce returns & exchanges
-                        </a>
-                      </h3>
-                      <p className="mt-2 text-sm text-black">
-                        A clothing company might let customers compare products
-                        with a screen recording to get better help finding the
-                        best product fit.
-                      </p>
-                    </div>
-                    <span
-                      className="absolute text-gray-300 pointer-events-none top-6 right-6 group-hover:text-gray-400"
-                      aria-hidden="true"
-                    >
-                      <svg
-                        className="w-5 h-5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z" />
-                      </svg>
-                    </span>
-                  </div>
-
-                  <div className="relative p-5 bg-gray-50 group focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
-                    <div className="-mt-1">
-                      <h3 className="text-base font-medium text-black">
-                        <a href="#" className="focus:outline-none">
-                          <span
-                            className="absolute inset-0"
-                            aria-hidden="true"
-                          ></span>
-                          Offer technical support
-                        </a>
-                      </h3>
-                      <p className="mt-2 text-sm text-black">
-                        A design school might use this app to let students
-                        record a portfolio overview so instructors can match
-                        them with a mentor.
-                      </p>
-                    </div>
-                    <span
-                      className="absolute text-gray-300 pointer-events-none top-6 right-6 group-hover:text-gray-400"
-                      aria-hidden="true"
-                    >
-                      <svg
-                        className="w-5 h-5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z" />
-                      </svg>
-                    </span>
-                  </div>
-                </div>
+                <Recipes />
 
                 <div
                   className={cn({

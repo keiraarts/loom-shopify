@@ -6,7 +6,7 @@ class SESClass {
   constructor(
     username,
     identity = {
-      brand: "CensusCore.com",
+      brand: "HonestyCore.com",
       ses_email: process.env.AWS_SES_EMAIL,
     }
   ) {
@@ -114,34 +114,6 @@ class SESClass {
       .promise()
       .then((res) => res)
       .catch((err) => console.error(err));
-
-    return response;
-  }
-
-  async GetIdentity(domain) {
-    var params = {
-      Domain: domain,
-    };
-
-    const response = new SES(this.config)
-      .verifyDomainDkim(params)
-      .promise()
-      .then((res) => res)
-      .catch((err) => err);
-
-    return response;
-  }
-
-  async VerifyDomain(domain) {
-    var params = {
-      Domain: domain,
-    };
-
-    const response = new SES(this.config)
-      .verifyDomainIdentity(params)
-      .promise()
-      .then((res) => res)
-      .catch((err) => err);
 
     return response;
   }

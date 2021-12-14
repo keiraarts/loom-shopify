@@ -79,6 +79,15 @@ class Shopify {
     return themes;
   }
 
+  async GetAssets(theme) {
+    const themes = await this.shopifyInstance
+      .get(`/themes/${theme.id}/assets.json`)
+      .then((res) => res.data.assets)
+      .catch((err) => console.error("theme err", err));
+
+    return themes;
+  }
+
   async GetShopPolicies() {
     const policies = await this.shopifyInstance
       .get(`/policies.json`)

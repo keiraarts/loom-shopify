@@ -9,6 +9,7 @@ type AppProps = {
   title: string;
   button: any;
   children: any;
+  footer: any;
 };
 
 export default function EmptyState({
@@ -19,6 +20,7 @@ export default function EmptyState({
   title,
   button,
   children,
+  footer,
 }: AppProps) {
   return (
     <section className="flex self-center justify-between max-w-lg col-span-3 py-5 mx-auto align-middle sm:py-2">
@@ -26,15 +28,17 @@ export default function EmptyState({
         <div className="relative">
           {src && (
             <img
-              className={cn({ "h-16 mx-auto pr-1": true, "hidden": !src })}
+              className={cn({ "h-20 mx-auto pr-1": true, "hidden": !src })}
               alt="ship your orders"
               src={src}
             />
           )}
 
+          {children}
+
           <blockquote
             className={cn({
-              "mt-3 sm:mt-10 block": src,
+              "mt-3 sm:mt-5 block": src,
               "hidden no-quote": !quote,
             })}
           >
@@ -53,7 +57,7 @@ export default function EmptyState({
               </div>
             )}
 
-            {children}
+            {footer}
 
             <footer className="mt-5">
               <div className="flex flex-col items-center justify-center sm:flex-row">

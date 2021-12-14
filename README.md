@@ -31,7 +31,7 @@ View a demo of how this app is used on Shopify. The password to view the store i
 Contributions are always welcome!
 
 See `contributing.md` for ways to get started.
-
+`
 Please adhere to this project's `code of conduct`.
 
 
