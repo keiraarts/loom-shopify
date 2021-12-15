@@ -8,6 +8,7 @@ class SESClass {
     identity = {
       brand: "HonestyCore.com",
       ses_email: process.env.AWS_SES_EMAIL,
+      replyto: process.env.AWS_SES_EMAIL,
     }
   ) {
     // Amazon SES configuration
@@ -19,8 +20,9 @@ class SESClass {
     };
 
     this.username = username;
-    this.identity_brand = identity.brand;
-    this.identity_email = identity.ses_email;
+    this.identity_brand = identity.brand; // shows up on email previews
+    this.identity_email = identity.ses_email; // aws verified address
+    this.replyto = get(identity, "replyto", this.identity_email); //reply-to email
   }
 
   async Notification(emails, content) {
@@ -100,6 +102,38 @@ class SESClass {
           Html: {
             Charset: "UTF-8",
             Data: EmailClass.Personel(content),
+          },
+        },
+        Subject: {
+          Charset: "UTF-8",
+          Data: get(content, "subject"),
+        },
+      },
+    };
+
+    const response = new SES(this.config)
+      .sendEmail(params)
+      .promise()
+      .then((res) => res)
+      .catch((err) => console.error(err));
+
+    return response;
+  }
+
+  async CustomerOutgoing(emails, content) {
+    const EmailClass = new Email();
+
+    var params = {
+      Source: `${this.identity_brand} <${this.identity_email}>`,
+      Destination: {
+        ToAddresses: emails.filter(Boolean),
+      },
+      ReplyToAddresses: [this.replyto],
+      Message: {
+        Body: {
+          Html: {
+            Charset: "UTF-8",
+            Data: EmailClass.Outgoing(content),
           },
         },
         Subject: {

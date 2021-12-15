@@ -73,6 +73,7 @@ const afterAuth = async (req, res, accessToken) => {
       theme: "shopify",
       brand: shop.name,
       email: shop.email,
+      customer_email: shop.customer_email,
       currency: shop.currency,
       hostname: shop.myshopify_domain,
 

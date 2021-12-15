@@ -20,7 +20,7 @@ class Emails {
 
   Personel({ messages = [] }) {
     return `
-    
+
 <html>
 <head>
  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -70,7 +70,7 @@ class Emails {
    <table style="color:rgb(0,0,0);font-family:&quot;Times New Roman&quot;;font-size:medium"><tbody><tr>
     <td align="left"><a href="https://disputecore.com" target="_blank"><img alt="disputecore" border="0" src="https://disputecore.com/logos/email-logo.png" style="max-width:150px;border:0px;padding:0px;margin:auto"></a><br><p></p><div>
       <p>Recover your money from customer disputes and lost shipments<br>Text us at +1 (866) 217-1477</p></div><div><p><br>
-      
+
       </p></div></td></tr></tbody></table></div></div></div></div>
 
 
@@ -159,8 +159,8 @@ class Emails {
          </tr>
       </tbody>
      </table>
-     
-     
+
+
      <table class="Section Table" width="100%" style="border: 0;border-collapse: collapse;margin: 0;padding: 0;background-color: #ffffff;">
       <tbody>
          <tr>
@@ -179,8 +179,8 @@ class Emails {
                                  <tr>
                                     <td class="Table-divider Spacer" colspan="3" height="6" style="border: 0;border-collapse: collapse;margin: 0;padding: 0;-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;color: #ffffff;font-size: 1px;line-height: 1px;mso-line-height-rule: exactly;">&nbsp;</td>
                                  </tr>
-                              
-                               
+
+
                              ${intenalList.join("")}
 
                                  <tr>
@@ -201,7 +201,7 @@ class Emails {
          </tr>
       </tbody>
      </table>
-     
+
      <table class="Section Divider" width="100%" style="border: 0;border-collapse: collapse;margin: 0;padding: 0;background-color: #ffffff;">
       <tbody>
          <tr>
@@ -209,7 +209,7 @@ class Emails {
          </tr>
       </tbody>
      </table>
-     
+
      `);
     });
 
@@ -359,13 +359,13 @@ class Emails {
         &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
         &nbsp;&zwnj;&nbsp;&zwnj;&nbsp; &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
         &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp; &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
-        &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp; 
+        &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
         &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
         &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp; &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
         &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp; &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
         &nbsp;&zwnj;&nbsp;&zwnj;&nbsp; &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
         &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp; &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
-        &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp; 
+        &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
         &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
         &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp; &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
         &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
@@ -476,7 +476,7 @@ class Emails {
                        </tr>
                      </tbody>
                    </table>
-                   
+
                    <table class="Section Divider Divider--large" width="100%" style="border: 0;border-collapse: collapse;margin: 0;padding: 0;background-color: #ffffff;">
                    <tbody>
                      <tr>
@@ -487,7 +487,7 @@ class Emails {
                  `
                          : ""
                      }
-                     
+
                      ${
                        note
                          ? `<table class="Section Note" width="100%" style="border: 0;border-collapse: collapse;margin: 0;padding: 0;background-color: #ffffff;">
@@ -510,7 +510,7 @@ class Emails {
                    </table>`
                          : ""
                      }
-                 
+
                      <table class="Section Note" width="100%" style="border: 0;border-collapse: collapse;margin: 0;padding: 0;background-color: #ffffff;">
                        <tbody>
                          <tr>
@@ -549,7 +549,7 @@ class Emails {
                         </tr>
                       </tbody>
                     </table>
-                    
+
                     <table class="Section Divider" width="100%" style="border: 0;border-collapse: collapse;margin: 0;padding: 0;background-color: #ffffff;">
                     <tbody>
                       <tr>
@@ -566,10 +566,10 @@ class Emails {
                   </table>`
                           : ""
                       }
-                    
 
 
-                    
+
+
                      <table class="Section Separator" width="100%" style="border: 0;border-collapse: collapse;margin: 0;padding: 0;background-color: #ffffff;">
                        <tbody>
                          <tr>
@@ -579,7 +579,7 @@ class Emails {
                          </tr>
                        </tbody>
                      </table>
-                
+
                      <table class="Section Divider Divider--small" width="100%" style="border: 0;border-collapse: collapse;margin: 0;padding: 0;background-color: #ffffff;">
                        <tbody>
                          <tr>
@@ -608,7 +608,7 @@ class Emails {
                          </tr>
                        </tbody>
                      </table>
-                   
+
                     <table class="Section Divider Divider--small" width="100%" style="border: 0;border-collapse: collapse;margin: 0;padding: 0;background-color: #ffffff;">
                        <tbody>
                          <tr>
@@ -619,14 +619,14 @@ class Emails {
 
                      <table class="Section Copy" style="border: 0;border-collapse: collapse;margin: 0;padding: 0;background-color: #ffffff;">
                        <tbody>
-                         
+
                         ${prerenderedFooter.join(
                           `<td class="Spacer Spacer--divider" height="10" style="border: 0;border-collapse: collapse;margin: 0;padding: 0;-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;color: #ffffff;font-size: 1px;line-height: 1px;mso-line-height-rule: exactly;">&nbsp;</td>`
                         )}
 
                        </tbody>
                      </table>
-                  
+
                      <table class="Section Section--last Divider Divider--large" width="100%" style="border: 0;border-collapse: collapse;margin: 0;padding: 0;background-color: #ffffff;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
                        <tbody>
                          <tr>
@@ -695,11 +695,60 @@ class Emails {
         tracking &&
         `<p>They attached the following tracking number, ${tracking}.</p>`
       }
-      <p>${message}</p> 
+      <p>${message}</p>
 
     </body>
     </html>
 `;
+  }
+
+  Outgoing({ messages = [], domain }) {
+    return `
+      <html>
+      <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width" />
+          <title></title>
+          <style>
+              p, ul, li {
+                  font-family: sans-serif;
+                  font-size: 15px;
+                  font-weight: normal;
+                  margin: 0;
+                  margin-bottom: 15px;
+                  line-height: 145%;
+                  color: black!important;
+              }
+              a {
+                  font-family: sans-serif;
+                  font-size: 15px;
+                  text-decoration: underline;
+                  line-height: 145%;
+                  margin-top: 10px;
+                  margin-bottom: 10px;
+              }
+          </style>
+        </head>
+        <body>
+        <p>
+
+        ${messages.join(`</p><p>`)}
+
+        </p>
+
+        <br>
+        <div>
+
+        <div dir="ltr"><div><div dir="ltr"><br>
+        <table style="color:rgb(0,0,0);font-family:&quot;Times New Roman&quot;;font-size:medium"><tbody><tr>
+        <td align="left"><a href="${domain}" target="_blank"><img alt="disputecore" border="0" src="https://disputecore.com/logos/email-logo.png" style="max-width:150px;border:0px;padding:0px;margin:auto"></a><br><p></p><div>
+        <p>This is a reply to the video message you sent us.<br>${domain}?utm_source=honestycore</p></div><div><p><br>
+        </p></div></td></tr></tbody></table></div></div></div></div>
+
+      <p></p>
+      </body>
+      </html>
+    `;
   }
 }
 
