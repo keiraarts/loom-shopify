@@ -702,7 +702,7 @@ class Emails {
 `;
   }
 
-  Outgoing({ messages = [], domain }) {
+  Outgoing({ messages = [], domain, alias, position }) {
     return `
       <html>
       <head>
@@ -735,14 +735,11 @@ class Emails {
         ${messages.join(`</p><p>`)}
 
         </p>
-
-        <br>
         <div>
 
-        <div dir="ltr"><div><div dir="ltr"><br>
+        <div dir="ltr"><div><div dir="ltr">
         <table style="color:rgb(0,0,0);font-family:&quot;Times New Roman&quot;;font-size:medium"><tbody><tr>
-        <td align="left"><a href="${domain}" target="_blank"><img alt="disputecore" border="0" src="https://disputecore.com/logos/email-logo.png" style="max-width:150px;border:0px;padding:0px;margin:auto"></a><br><p></p><div>
-        <p>This is a reply to the video message you sent us.<br>${domain}?utm_source=honestycore</p></div><div><p><br>
+        <p>${alias}, ${position}<br><a href="${domain}?utm_source=honestycore">${domain}</a></p></div><div><p><br>
         </p></div></td></tr></tbody></table></div></div></div></div>
 
       <p></p>

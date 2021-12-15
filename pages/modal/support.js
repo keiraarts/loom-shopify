@@ -133,7 +133,7 @@ export default function SupportPage({ isEmbedded }) {
                     name="message"
                     rows="5"
                     value={message}
-                    placeholder="Hello Kyouko from MagicSoaps! I want to upload my logos onto the packaging, what size should my Canva file be? Many thanks!"
+                    placeholder="Hello Keira @ HonestyCore! Can you help me change the fonts on the record button? I'd love to use Helvetica Rounded!"
                     onChange={(event) => setMessage(event.target.value)}
                     className="block w-full px-4 py-3 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                   ></textarea>

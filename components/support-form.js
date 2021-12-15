@@ -88,7 +88,7 @@ export default function SupportForm(props) {
                     name="email"
                     type="email"
                     autoComplete="true"
-                    placeholder="ashley@magicsoaps.ca"
+                    placeholder="ashley@icloud.com"
                     className="block w-full px-4 py-3 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                     value={email}
                     defaultValue={storefront?.email}

@@ -44,7 +44,6 @@ function Index() {
 
   // Control tutorial steps
   const [step, setStep] = useState(0);
-
   useEffect(() => {
     // If merchant added the app but is waiting for a customer video
     if (storefront.is_compatible) setStep(4);
@@ -69,7 +68,7 @@ function Index() {
     embedUrl: "https://www.loom.com/share/9a9bf950328043eaa1a7c05aba9b57c3",
     providerUrl: "https://www.loom.com",
     page_url: "Introduction video",
-    email: "keiraarts@gmail.com",
+    email: "hey@honestycore.com",
     date_updated: Date.now(),
   };
 
