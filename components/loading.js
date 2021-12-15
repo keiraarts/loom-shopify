@@ -4,7 +4,7 @@ function Loading({ className }) {
       <div className="mx-auto">
         <svg
           version="1.2"
-          className="w-16 h-16 mx-auto animate-spin"
+          className="mx-auto w-14 h-14 animate-spin"
           baseProfile="tiny"
           id="Layer_1"
           x="0px"

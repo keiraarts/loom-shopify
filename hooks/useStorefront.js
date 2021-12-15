@@ -15,12 +15,16 @@ function useStorefront() {
   });
 
   const fetcher = (url) => instance.get(url).then(({ data }) => data);
-  const { data, error } = useSWR(session_token && `/storefront`, fetcher);
+  const { data, error, mutate } = useSWR(
+    session_token && `/storefront`,
+    fetcher
+  );
 
   return {
-    data,
+    data: data || { id: false, is_compatible: false },
     isLoading: !error && !data,
     isError: error,
+    mutate,
   };
 }
 

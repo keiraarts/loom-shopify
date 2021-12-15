@@ -24,7 +24,7 @@ function useCustomer(email) {
 
   return {
     mutate,
-    data: data?.[0]?.node ?? [],
+    data: data?.[0]?.node ?? { id: false },
     isLoading: !error && !data,
     isError: error,
   };

@@ -1,0 +1,72 @@
+import React, { Fragment, useState, useContext, useEffect } from "react";
+import { useCountState } from "../src/app-context";
+
+import FadeIn from "react-fade-in";
+import EmptyState from "../components/empty-state";
+import useThemes from "../hooks/useThemes";
+
+import { Redirect } from "@shopify/app-bridge/actions";
+import { Context } from "@shopify/app-bridge-react";
+
+export default function ThemePreview() {
+  const state = useCountState();
+  const { data: themes } = useThemes();
+  const [theme, setTheme] = useState("current");
+
+  // Opens a new tab for users
+  const app = useContext(Context);
+  const redirectContext = (url) => {
+    const redirect = Redirect.create(app);
+    redirect.dispatch(Redirect.Action.REMOTE, {
+      url: url,
+      newContext: true,
+    });
+  };
+
+  return (
+    <FadeIn className="flex items-center justify-center flex-1 h-full">
+      <EmptyState
+        src="/logos/primary-logo-icon.png"
+        quote="It can be hard to understand complex questions over email. With our app, you can give customers an easy way to record questions with a video!"
+        children={
+          <React.Fragment>
+            <div className="flex flex-row items-stretch max-w-sm gap-4 mx-auto my-5 text-center">
+              <div className="flex-1">
+                <label
+                  for="location"
+                  className="block text-sm font-medium text-gray-700 sr-only"
+                >
+                  Location
+                </label>
+                <select
+                  id="location"
+                  name="location"
+                  onChange={() => setTheme(event.target.value)}
+                  className="block w-full h-full py-2 pl-3 pr-10 text-base border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                >
+                  <option selected value="current">
+                    Current theme
+                  </option>
+
+                  {themes?.map((el) => {
+                    return <option value={el.id}>{el.name}</option>;
+                  })}
+                </select>
+              </div>
+              <button
+                onClick={() => {
+                  redirectContext(
+                    `https://${state.username}.myshopify.com/admin/themes/${theme}/editor?context=apps&template=index&activateAppId=5178a21d-051e-4b38-8992-ed13ae96cd73/app-block`
+                  );
+                }}
+                className="px-4 py-2 font-semibold text-white bg-green-600 rounded-md cursor-pointer"
+              >
+                Open Preview
+              </button>
+            </div>
+          </React.Fragment>
+        }
+      />
+    </FadeIn>
+  );
+}

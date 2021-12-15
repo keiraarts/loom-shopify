@@ -1,8 +1,6 @@
 import React, { Fragment, useState, useContext, useEffect } from "react";
 import { useCountState, useCountDispatch } from "../../src/app-context";
-import EmptyState from "../../components/empty-state";
 import Loading from "../../components/loading";
-import Router, { useRouter } from "next/router";
 import { Redirect } from "@shopify/app-bridge/actions";
 import { Context } from "@shopify/app-bridge-react";
 import { oembed } from "@loomhq/loom-embed";
@@ -21,15 +19,15 @@ import SetupNav from "../../components/setup-nav";
 import useStorefront from "../../hooks/useStorefront";
 import useCustomer from "../../hooks/useCustomer";
 import useVideos from "../../hooks/useVideos";
-import useThemes from "../../hooks/useThemes";
 import Footer from "../../components/footer";
 
 const options = { weekday: "long", month: "short", day: "numeric" };
+const views = ["unread", "completed", "favorited"];
 
-function Index({ children }) {
+function Index() {
   const state = useCountState();
   const dispatch = useCountDispatch();
-  const { data: storefront } = useStorefront();
+  const { data: storefront, isLoading } = useStorefront();
 
   // Opens a new tab for users
   const app = useContext(Context);
@@ -41,11 +39,16 @@ function Index({ children }) {
     });
   };
 
-  const views = ["unread", "completed", "favorited"];
-
-  const { data, isLoading } = useVideos();
+  const { data } = useVideos();
   const [videos, setVideos] = useState([]);
+
+  // Control tutorial steps
   const [step, setStep] = useState(0);
+
+  useEffect(() => {
+    // If merchant added the app but is waiting for a customer video
+    if (storefront.is_compatible) setStep(4);
+  }, [storefront.id]);
 
   // Allow search via email and page urls
   const [search, setSearch] = useState();
@@ -82,11 +85,9 @@ function Index({ children }) {
         const count = data.reduce((prev, current) => {
           const status = current?.status ?? views[0];
           // Only generate video list once
-          if (index === 0) {
+          if (index === 0 && status === tab) {
             // If there is no status, use the default
-            if (status === tab) {
-              items.push(current);
-            }
+            items.push(current);
           }
 
           return prev + (status === view ? 1 : 0);
@@ -107,19 +108,18 @@ function Index({ children }) {
     }
   }, [isLoading, tab, search, state.key]);
 
-  // Ping Shopify to load cached-customer data using the email
+  // Ping Shopify to load cached-customer data using the video's reply-to email
   const { data: customer, isLoading: isCustomer } = useCustomer(loom?.email);
 
   useEffect(() => {
+    // Show loading bar when customer object is being fetched
     if (isCustomer) NProgress.start();
-    else {
-      const delay = setTimeout(() => NProgress.done(), 100);
-      return () => clearTimeout(delay);
-    }
-  }, [customer?.id, isCustomer]);
+    const delay = setTimeout(() => NProgress.done());
+    return () => clearTimeout(delay, 200);
+  }, [isCustomer, customer.id]);
 
   useEffect(() => {
-    // Generated new html when new videos are selected
+    // Generated new html when a video is selected
     if (loom.sharedUrl) EmbedVideo(loom);
   }, [loom.id]);
 
@@ -253,24 +253,52 @@ function Index({ children }) {
       </header>
       <div className="flex flex-col flex-1 overflow-hidden lg:mt-12">
         <div className="flex flex-row-reverse flex-1 overflow-hidden">
-          <main className="flex flex-col justify-between flex-1 overflow-y-auto">
-            <SetupNav
-              steps={[
-                { title: "View preview" },
-                { title: "Record a video" },
-                { title: "Send a reply" },
-              ]}
-              current={step}
-              onClick={setStep}
-            />
+          {/*  Blocks the UI rendering until the storefront data has loaded */}
 
-            {step === 0 && <ThemePreview />}
-            {step === 1 && <VideoAwait />}
-            {step === 2 && <VideoReply onComplete={() => setStep(3)} />}
-            {step === 3 && <SetupReview />}
+          <section
+            className={cn({
+              "hidden": !isLoading,
+              "flex flex-col justify-between flex-1 overflow-y-auto": isLoading,
+            })}
+          >
+            <div className="flex items-center justify-center flex-1 h-full sm:-ml-3">
+              <Loading />
+            </div>
+          </section>
 
-            {storefront?.setup && (
-              <div className="w-full h-full px-2 mx-auto sm:pt-4 max-w-7xl sm:px-2 lg:px-2">
+          {/*  Blocks the UI rendering until the storefront data has loaded */}
+
+          <main
+            className={cn({
+              "loading-storefront hidden": isLoading,
+              "flex flex-col justify-between flex-1 overflow-y-auto": true,
+            })}
+          >
+            {/*  Loads the onboarding setup flow */}
+
+            {!storefront?.is_setup && (
+              <React.Fragment>
+                {!storefront?.is_compatible && (
+                  <SetupNav
+                    steps={[
+                      { title: "View preview" },
+                      { title: "Record a video" },
+                      { title: "Send a reply" },
+                    ]}
+                    current={step}
+                    onClick={setStep}
+                  />
+                )}
+                {step === 0 && <ThemePreview />}
+                {step === 1 && <VideoAwait />}
+                {step === 2 && <VideoReply onComplete={() => setStep(3)} />}
+                {step === 3 && <SetupReview />}
+              </React.Fragment>
+            )}
+
+            {/*  Renders a list of videos without setup prompts */}
+            {storefront?.is_compatible && storefront?.is_setup && (
+              <div className="w-full h-full px-2 mx-auto sm:pt-2 max-w-7xl sm:px-2 lg:px-2">
                 <div className="flex">
                   <h1 className="flex-1 hidden text-2xl font-bold text-gray-900 sr-only">
                     Videos
@@ -363,15 +391,9 @@ function Index({ children }) {
                   </div>
                 </div>
 
-                {isLoading && (
-                  <div className="flex items-center justify-center flex-1 h-full">
-                    <Loading />
-                  </div>
-                )}
+                {videos.length === 0 && <ThemePreview />}
 
-                {!isLoading && videos.length === 0 && <ThemePreview />}
-
-                {!isLoading && videos.length > 0 && (
+                {videos.length > 0 && (
                   <section
                     className="pb-16 mt-4"
                     aria-labelledby="gallery-heading"
