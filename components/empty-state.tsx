@@ -1,5 +1,6 @@
 import React from "react";
 import cn from "classnames";
+import { useCountDispatch } from "../src/app-context";
 
 type AppProps = {
   src: string;
@@ -22,16 +23,38 @@ export default function EmptyState({
   children,
   footer,
 }: AppProps) {
+  const dispatch = useCountDispatch();
+
   return (
     <section className="flex self-center justify-between max-w-lg col-span-3 py-5 mx-auto align-middle sm:py-2">
       <div className="relative px-4 mx-auto max-w-7xl sm:px-3 lg:px-4">
         <div className="relative">
           {src && (
-            <img
-              className={cn({ "h-20 mx-auto pr-1": true, "hidden": !src })}
-              alt="ship your orders"
-              src={src}
-            />
+            <div className="relative group">
+              <div className="flex flex-col-reverse text-xs text-center text-gray-800 cursor-pointer sm:mt-5 sm:text-sm">
+                <div
+                  onClick={() => {
+                    dispatch({
+                      type: "SET_MODAL_VIEW",
+                      view: "support",
+                    });
+                  }}
+                >
+                  <div className="relative inline-flex flex-col px-3 py-1 mx-auto mb-3 text-white transition-all transform bg-blue-500 rounded-full opacity-0 cursor-pointer sm:-ml-2 group-hover:opacity-100 duration-50 ">
+                    <span className="absolute w-5 h-5 transform rotate-45 bg-blue-500 left-5 top-4"></span>
+                    <span className="relative inline-block ">
+                      Need any help?
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <img
+                className={cn({ "h-20 mx-auto pr-1": true, "hidden": !src })}
+                alt="ship your orders"
+                src={src}
+              />
+            </div>
           )}
 
           {children}

@@ -74,7 +74,7 @@ export default function RecipeCards() {
                     </span>
                   </div>
 
-                  <h3 className="mt-6 text-base font-medium text-black">
+                  <h3 className="mt-4 text-base font-medium text-black">
                     <a href="#" className="focus:outline-none">
                       <span
                         className="absolute inset-0"
@@ -83,7 +83,7 @@ export default function RecipeCards() {
                       {title}
                     </a>
                   </h3>
-                  <p className="mt-2 text-sm text-gray-600">{content}</p>
+                  <p className="mt-2 text-xs text-gray-600">{content}</p>
                 </div>
                 <span
                   className="absolute text-gray-400 pointer-events-none top-6 right-6 group-hover:text-gray-800"
