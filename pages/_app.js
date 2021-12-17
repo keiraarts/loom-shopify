@@ -122,11 +122,11 @@ function MyApp({ Component, pageProps }) {
   }, [shopOrigin]);
 
   const defaults = {
-    title: "ScreenReply",
+    title: "Honesty - Video messages for Shopify",
     description: "Let customers send you video messages",
     canonical: "/",
     openGraph: {
-      title: "ScreenReply.com",
+      title: "HonestyCore.com",
       description: `Let customers send you video questions through your Shopify store. Download our free app on Shopify's app store.`,
       images: [
         {
@@ -135,7 +135,7 @@ function MyApp({ Component, pageProps }) {
           height: 600,
         },
       ],
-      site_name: "ScreenReply",
+      site_name: "HonestyCore.com",
     },
     twitter: {
       handle: "@keiraarts",

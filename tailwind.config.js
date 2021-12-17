@@ -50,13 +50,14 @@ module.exports = {
         },
 
         brand: {
-          beige: "#F1EDE6",
-          gold: "#A78E5D",
+          beige: "#EFEDE6",
+          paper: "#FFF3E4",
+          lilac: "#C7B9FF",
           yellow: "#FFBB24",
           background: "#0033CC",
           red: "#E9453C",
           green: "#B6D827",
-          blue: "#0E84FF",
+          blue: "#5551FF",
           grey: "#5B6B72",
         },
       },

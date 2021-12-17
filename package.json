@@ -69,7 +69,7 @@
     "lodash": "^4.17.21",
     "logrocket": "^1.0.14",
     "nanoid": "^3.1.23",
-    "next": "^12.0.4",
+    "next": "^12.0.7",
     "next-env": "^1.1.0",
     "next-fonts": "^1.5.1",
     "next-i18next": "^8.5.5",
