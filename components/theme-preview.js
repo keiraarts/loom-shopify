@@ -8,10 +8,12 @@ import useThemes from "../hooks/useThemes";
 import { Redirect } from "@shopify/app-bridge/actions";
 import { Context } from "@shopify/app-bridge-react";
 
-export default function ThemePreview() {
+export default function ThemePreview({ onComplete = () => {} }) {
   const state = useCountState();
   const { data: themes } = useThemes();
   const [theme, setTheme] = useState("current");
+
+  console.log({ themes });
 
   // Opens a new tab for users
   const app = useContext(Context);
@@ -33,14 +35,14 @@ export default function ThemePreview() {
             <div className="flex flex-row items-stretch max-w-sm gap-4 mx-auto my-5 text-center">
               <div className="flex-1">
                 <label
-                  for="location"
+                  for="theme"
                   className="block text-sm font-medium text-gray-700 sr-only"
                 >
-                  Location
+                  Theme
                 </label>
                 <select
-                  id="location"
-                  name="location"
+                  id="theme"
+                  name="theme"
                   onChange={() => setTheme(event.target.value)}
                   className="block w-full h-full py-2 pl-3 pr-10 text-base border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
@@ -48,9 +50,15 @@ export default function ThemePreview() {
                     Current theme
                   </option>
 
-                  {themes?.map((el) => {
-                    return <option value={el.id}>{el.name}</option>;
-                  })}
+                  {themes
+                    .filter(({ sections }) => sections)
+                    .map(({ id, name, role }) => {
+                      return (
+                        <option value={id}>
+                          {name} ({role})
+                        </option>
+                      );
+                    })}
                 </select>
               </div>
               <button
@@ -58,11 +66,30 @@ export default function ThemePreview() {
                   redirectContext(
                     `https://${state.username}.myshopify.com/admin/themes/${theme}/editor?context=apps&template=index&activateAppId=5178a21d-051e-4b38-8992-ed13ae96cd73/app-block`
                   );
+
+                  onComplete();
                 }}
                 className="px-4 py-2 font-semibold text-white bg-green-600 rounded-md cursor-pointer"
               >
                 Open Preview
               </button>
+            </div>
+
+            <div className="flex justify-center mx-auto sm:-mt-2">
+              <p className="text-xs text-gray-700">
+                Our app works on all{" "}
+                <a
+                  className="font-bold text-blue-500 cursor-pointer"
+                  onClick={() =>
+                    redirectContext(
+                      `https://themes.shopify.com/themes?sort_by=most_recent&architecture%5B%5D=os2&ref=viaglamour-ltd`
+                    )
+                  }
+                >
+                  Online Store 2.0{" "}
+                </a>
+                themes{" "}
+              </p>
             </div>
           </React.Fragment>
         }

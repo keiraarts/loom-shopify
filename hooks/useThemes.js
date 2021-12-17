@@ -22,8 +22,8 @@ function useTheme() {
   );
 
   return {
-    data,
     mutate,
+    data: data || [],
     isLoading: !error && !data,
     isError: error,
   };

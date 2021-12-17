@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="flex flex-col max-w-md py-0 mx-auto mt-3 text-xs text-center text-gray-800">
           <span className="block sm:inline">
             HonestyCore.com is a free Shopify app that uses Loom's SDK. &copy;{" "}
-            {process.env.COMPANY_NAME} 2021. Text us at{" "}
+            {process.env.COMPANY_NAME} 2021. Call us (seriously) at{" "}
             {process.env.SUPPORT_PHONE}
           </span>
         </div>

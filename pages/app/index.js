@@ -44,6 +44,9 @@ function Index() {
 
   // Control tutorial steps
   const [step, setStep] = useState(0);
+
+  const handleStep = () => setStep((v) => v + 1);
+
   useEffect(() => {
     // If merchant added the app but is waiting for a customer video
     if (storefront.is_compatible) setStep(4);
@@ -288,9 +291,9 @@ function Index() {
                     onClick={setStep}
                   />
                 )}
-                {step === 0 && <ThemePreview />}
-                {step === 1 && <VideoAwait />}
-                {step === 2 && <VideoReply onComplete={() => setStep(3)} />}
+                {step === 0 && <ThemePreview onComplete={() => handleStep()} />}
+                {step === 1 && <VideoAwait onComplete={() => handleStep()} />}
+                {step === 2 && <VideoReply onComplete={() => handleStep()} />}
                 {step === 3 && <SetupReview />}
               </React.Fragment>
             )}
@@ -390,7 +393,9 @@ function Index() {
                   </div>
                 </div>
 
-                {videos.length === 0 && <ThemePreview />}
+                {videos.length === 0 && (
+                  <ThemePreview onComplete={handleStep} />
+                )}
 
                 {videos.length > 0 && (
                   <section
