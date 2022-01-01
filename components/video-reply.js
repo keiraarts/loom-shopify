@@ -13,11 +13,8 @@ export default function VideoReply({ onComplete = () => {} }) {
   const { data: storefront } = useStorefront();
   const instance = CreateInstance(state);
 
-  const [body, setBody] = useState();
+  const [body, setBody] = useState("This is a test that messaging works!");
   const [alias, setAlias] = useState(storefront?.account?.alias);
-  const [position, setPosition] = useState(
-    storefront?.account?.position ?? "Support"
-  );
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -27,7 +24,7 @@ export default function VideoReply({ onComplete = () => {} }) {
 
   const handleSend = useCallback(async () => {
     // Prevent multiple sends under the same email address
-    const input = { customer_email: storefront.email, body, alias, position };
+    const input = { customer_email: storefront.email, body, alias };
 
     await instance
       .post(`/${storefront.username}/storefront/videos/reply`, input)
@@ -37,10 +34,10 @@ export default function VideoReply({ onComplete = () => {} }) {
     await instance
       .put(`/${storefront.username}/storefront`, {
         compatible: Date.now(),
-        account: { alias, position, ...(storefront?.account ?? {}) },
+        account: { alias, ...(storefront?.account ?? {}) },
       })
       .catch((err) => console.error(err));
-  }, [body, alias, position]);
+  }, [body, alias]);
 
   return (
     <FadeIn className="flex items-center justify-center flex-1 h-full">
@@ -106,7 +103,7 @@ export default function VideoReply({ onComplete = () => {} }) {
                     for="name"
                     className="block text-xs font-medium text-gray-700"
                   >
-                    Your mame
+                    Your initials
                   </label>
                   <input
                     type="text"
@@ -116,25 +113,7 @@ export default function VideoReply({ onComplete = () => {} }) {
                     value={alias}
                     onChange={(event) => setAlias(event.target.value)}
                     className="flex-1 block w-full p-0 text-gray-900 placeholder-gray-500 border-0 focus:ring-0 sm:text-sm"
-                    placeholder="Jane Doe"
-                  />
-                </div>
-                <div className="relative px-3 py-2 border border-gray-300 rounded-md rounded-t-none focus-within:z-10 focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600">
-                  <label
-                    for="job-title"
-                    className="block w-full text-xs font-medium text-gray-700"
-                  >
-                    Job Title
-                  </label>
-                  <input
-                    type="text"
-                    name="job-title"
-                    id="job-title"
-                    required
-                    value={position}
-                    onChange={(event) => setPosition(event.target.value)}
-                    className="block w-full p-0 text-gray-900 placeholder-gray-500 border-0 focus:ring-0 sm:text-sm"
-                    placeholder="Support engineer"
+                    placeholder="Jane Doe, Support Engineer"
                   />
                 </div>
               </div>

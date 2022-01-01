@@ -2,7 +2,7 @@ import safeCompare from "./safeCompare";
 import crypto from "crypto";
 import querystring from "querystring";
 
-export default function verifyHmac(query) {
+const verifyHmac = (query) => {
   const { hmac, signature: _signature, ...map } = query;
   const orderedMap = Object.keys(map)
     .sort((v1, v2) => v1.localeCompare(v2))
@@ -18,4 +18,6 @@ export default function verifyHmac(query) {
     .digest("hex");
 
   return safeCompare(hmac, compute_hmac);
-}
+};
+
+export default verifyHmac;

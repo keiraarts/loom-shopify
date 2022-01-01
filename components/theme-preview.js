@@ -13,8 +13,6 @@ export default function ThemePreview({ onComplete = () => {} }) {
   const { data: themes } = useThemes();
   const [theme, setTheme] = useState("current");
 
-  console.log({ themes });
-
   // Opens a new tab for users
   const app = useContext(Context);
   const redirectContext = (url) => {

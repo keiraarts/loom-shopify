@@ -1,7 +1,9 @@
 import { isSupported, setup } from "@loomhq/loom-sdk/dist/cjs/safe";
 
 async function init() {
-  const api_key = document.getElementById("loom-key").value;
+  const APP_ID = "47a9781a-1c42-4f28-b857-7ff9e72bed19";
+  // The user_id does not have an expection to be provided
+  const USER_ID = document.getElementById("loom-key").value;
   const root = document.getElementById("app");
   const button = document.getElementById("loom-sdk-button");
   if (!root) return;
@@ -16,7 +18,8 @@ async function init() {
   }
 
   const { configureButton } = await setup({
-    apiKey: api_key,
+    // Use the user's secret, otherwise defaults
+    apiKey: USER_ID || APP_ID,
   });
 
   let loom; // hold the loom sdk response

@@ -1,6 +1,6 @@
 import crypto from "crypto";
 
-export default function safeCompare(stringA, stringB) {
+const safeCompare = (stringA, stringB) => {
   const aLen = Buffer.byteLength(stringA);
   const bLen = Buffer.byteLength(stringB);
 
@@ -16,4 +16,6 @@ export default function safeCompare(stringA, stringB) {
   buffB.write(stringB);
 
   return crypto.timingSafeEqual(buffA, buffB);
-}
+};
+
+export default safeCompare;

@@ -2,7 +2,7 @@ import querystring from "querystring";
 import verifyHmac from "./verifyHmac";
 import exchangeAccessToken from "./exchangeAccessToken";
 
-export default (handler) => {
+const HandleAuthCallback = (handler) => {
   return async (req, res) => {
     const valid = verifyHmac(req.query);
     if (!valid) {
@@ -36,3 +36,5 @@ export default (handler) => {
     }
   };
 };
+
+export default HandleAuthCallback;

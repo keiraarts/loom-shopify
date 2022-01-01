@@ -1,4 +1,4 @@
-export default async (shop, accessTokenQuery) => {
+const ExchangeAccessToken = async (shop, accessTokenQuery) => {
   const data = await fetch(`https://${shop}/admin/oauth/access_token`, {
     method: "POST",
     headers: {
@@ -7,5 +7,8 @@ export default async (shop, accessTokenQuery) => {
     },
     body: accessTokenQuery,
   });
+
   return await data.json();
 };
+
+export default ExchangeAccessToken;

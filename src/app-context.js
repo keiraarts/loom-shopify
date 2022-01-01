@@ -30,7 +30,11 @@ function countReducer(state, action) {
     case "SET_MODAL_VIEW": {
       const view = action?.view;
       const isDuplicate = state?.modal_view === action?.view;
-      return { ...state, modal_view: isDuplicate ? false : view };
+
+      return {
+        ...state,
+        modal_view: isDuplicate ? false : view,
+      };
     }
 
     case "SET_STOREFRONT": {

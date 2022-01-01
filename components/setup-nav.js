@@ -25,7 +25,7 @@ export default function SetupNav({
     <nav aria-label="Progress">
       <ol
         role="list"
-        className="border border-gray-300 divide-y divide-gray-300 rounded-md md:flex md:divide-y-0"
+        className="border border-gray-300 divide-y divide-gray-300 md:flex md:divide-y-0"
       >
         {steps.map((step, index) => {
           return (
