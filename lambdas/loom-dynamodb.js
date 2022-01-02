@@ -1,6 +1,16 @@
+require("dotenv").config();
 const AWS = require("aws-sdk");
-const dynamo = new AWS.DynamoDB.DocumentClient();
-const ses = new AWS.SES({ region: "us-east-1" });
+const isTest = process.env.JEST_WORKER_ID;
+
+const config = isTest && {
+  apiVersion: "2012-08-10",
+  accessKeyId: process.env.AWS_DYNAMODB_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_DYNAMODB_SECRET_ACCESS_KEY,
+  region: "us-east-1",
+};
+
+const dynamo = new AWS.DynamoDB.DocumentClient(config);
+const ses = new AWS.SES(config);
 
 /**
  * Demonstrates a simple HTTP endpoint using API Gateway. You have full
@@ -12,28 +22,23 @@ const ses = new AWS.SES({ region: "us-east-1" });
  * PUT, or DELETE request respectively, passing in the payload to the
  * DynamoDB API as a JSON body.
  */
-exports.handler = async (event, context) => {
-  // console.log('Received event:', event);
 
+exports.handler = async (event, context) => {
   let body;
   let statusCode = "200";
   const headers = { "Content-Type": "application/json" };
-
-  if (typeof event.body === "string") {
-    event.body = JSON.parse(event.body);
-  }
+  if (typeof event.body === "string") event.body = JSON.parse(event.body);
 
   try {
     switch (event.httpMethod) {
       case "POST":
-        if (!event.body.Item.pk) break;
+        if (!event.body.Item || !event.body.Item.pk) {
+          statusCode = "500";
+          break;
+        }
 
-        await Promise.all([
-          NotifyShop(event.body),
-          dynamo.put(event.body).promise(),
-        ]).then((values) => console.log({ values }));
-
-        body = { message: "Loom video collected!" };
+        await dynamo.put(event.body).promise();
+        body = { message: "Loom video saved" };
         break;
 
       case "OPTION":
@@ -44,6 +49,7 @@ exports.handler = async (event, context) => {
   } catch (err) {
     statusCode = "400";
     body = err.message;
+    console.error(err.message);
   } finally {
     body = JSON.stringify(body);
   }
@@ -55,14 +61,16 @@ exports.handler = async (event, context) => {
   };
 };
 
-const NotifyShop = async (body) => {
+const Notify = async (body) => {
+  console.log({ body });
+
   const query = {
     TableName: body.TableName,
     Key: { pk: body.Item.pk, sk: "#STOREFRONT" },
   };
 
   const shop = await dynamo.get(query).promise();
-  const nicknmae = body.Item.email.split("@")[0];
+  const nickname = body.Item.email.split("@")[0];
 
   var params = {
     Destination: {
@@ -107,7 +115,7 @@ const NotifyShop = async (body) => {
                 </style>
             </head>
             <body>
-                <p>${nicknmae} recorded a video question!</p>
+                <p>${nickname} recorded a video question!</p>
                 <p>${body.Item.sharedUrl}</p>
                 <p>You can reply to this email to respond to them! :)</p>
             </body>
@@ -117,10 +125,10 @@ const NotifyShop = async (body) => {
       },
 
       Subject: {
-        Data: `You have a new video from ${nicknmae}`,
+        Data: `You have a new video from ${nickname}`,
       },
     },
-    // Conversation managed by the app
+
     Source: `Honesty <hey@honestycore.com>`,
   };
 
