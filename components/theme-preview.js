@@ -86,7 +86,14 @@ export default function ThemePreview({ onComplete = () => {} }) {
                 >
                   Online Store 2.0{" "}
                 </a>
-                themes{" "}
+                themes.{" "}
+                <span
+                  className="font-bold text-blue-500 cursor-pointer"
+                  onClick={onComplete}
+                >
+                  Skip
+                </span>
+                .
               </p>
             </div>
           </React.Fragment>

@@ -14,12 +14,14 @@ export default function VideoReply({ onComplete = () => {} }) {
   const instance = CreateInstance(state);
 
   const [body, setBody] = useState("This is a test that messaging works!");
-  const [alias, setAlias] = useState(storefront?.account?.alias);
+  const [alias, setAlias] = useState(storefront?.account?.alias ?? "Alice.C");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    onComplete();
+    // Submit form via AWS API
     handleSend();
+    // Callback function to move onto next tutorial
+    onComplete({ body, alias });
   };
 
   const handleSend = useCallback(async () => {
@@ -53,15 +55,14 @@ export default function VideoReply({ onComplete = () => {} }) {
                   aria-orientation="horizontal"
                   role="tablist"
                 >
-                  <button
+                  <div
                     id="tabs-1-tab-1"
                     className="text-gray-500 hover:text-gray-900 bg-white hover:bg-gray-100 px-3 py-1.5 border border-transparent text-sm font-medium rounded-md"
                     aria-controls="tabs-1-panel-1"
                     role="tab"
-                    type="button"
                   >
                     To: (yourself) {storefront.email}
-                  </button>
+                  </div>
                 </div>
                 <div className="mt-2">
                   <div
@@ -69,9 +70,9 @@ export default function VideoReply({ onComplete = () => {} }) {
                     className="p-0.5 -m-0.5 rounded-lg"
                     aria-labelledby="tabs-1-tab-1"
                     role="tabpanel"
-                    tabindex="0"
+                    tabIndex="0"
                   >
-                    <label for="comment" className="sr-only">
+                    <label htmlFor="comment" className="sr-only">
                       Comment
                     </label>
                     <div>
@@ -92,7 +93,7 @@ export default function VideoReply({ onComplete = () => {} }) {
                     className="p-0.5 -m-0.5 rounded-lg"
                     aria-labelledby="tabs-1-tab-2"
                     role="tabpanel"
-                    tabindex="0"
+                    tabIndex="0"
                   ></div>
                 </div>
               </div>
@@ -100,10 +101,10 @@ export default function VideoReply({ onComplete = () => {} }) {
               <div className="mt-2 -space-y-px bg-white rounded-md shadow-sm isolate">
                 <div className="relative px-3 py-2 border border-gray-300 rounded-md rounded-b-none focus-within:z-10 focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600">
                   <label
-                    for="name"
+                    htmlFor="name"
                     className="block text-xs font-medium text-gray-700"
                   >
-                    Your initials
+                    Initials
                   </label>
                   <input
                     type="text"
@@ -111,6 +112,7 @@ export default function VideoReply({ onComplete = () => {} }) {
                     id="name"
                     required
                     value={alias}
+                    label="name"
                     onChange={(event) => setAlias(event.target.value)}
                     className="flex-1 block w-full p-0 text-gray-900 placeholder-gray-500 border-0 focus:ring-0 sm:text-sm"
                     placeholder="Jane Doe, Support Engineer"
