@@ -126,12 +126,12 @@ function countReducer(state, action) {
   }
 }
 
-function CountProvider({ children }) {
+function CountProvider({ children, ...args }) {
   const [state, dispatch] = React.useReducer(countReducer, {
     session_token: false,
     tutorial: "introduction",
     view: "dashboard",
-    key: false,
+    ...args,
   });
 
   return (

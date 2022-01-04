@@ -1,8 +1,8 @@
 import toast from "toasted-notes";
 import cn from "classnames";
 
-export default function Toast(props) {
-  const { message, error, success, cta, onAction, duration = 5000 } = props;
+export default async function Toast(props) {
+  const { message, error, success, cta, onAction, duration = 7000 } = props;
   const position = props?.position ?? "top";
 
   const notifyClass = cn({
@@ -20,7 +20,7 @@ export default function Toast(props) {
     "text-lg hover:bg-none": !message,
   });
 
-  toast.notify(
+  await toast.notify(
     ({ onClose }) => (
       <div
         elevation="sm"

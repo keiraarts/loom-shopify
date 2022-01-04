@@ -3,7 +3,7 @@ import { render } from "@testing-library/react";
 import { CountProvider } from "./app-context";
 
 const AllTheProviders = ({ children }) => {
-  return <CountProvider theme="light">{children}</CountProvider>;
+  return <CountProvider username="demo">{children}</CountProvider>;
 };
 
 const customRender = (ui, options) =>

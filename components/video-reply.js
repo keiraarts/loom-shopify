@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useContext, useEffect } from "react";
+import React, { useCallback, useState, useRef } from "react";
 import { useCountState } from "../src/app-context";
 import { CreateInstance } from "../src/axios";
 import { oembed } from "@loomhq/loom-embed";
@@ -9,6 +9,7 @@ import EmptyState from "../components/empty-state";
 import useStorefront from "../hooks/useStorefront";
 
 export default function VideoReply({ onComplete = () => {} }) {
+  const btnRef = useRef(false);
   const state = useCountState();
   const { data: storefront } = useStorefront();
   const instance = CreateInstance(state);
@@ -16,28 +17,20 @@ export default function VideoReply({ onComplete = () => {} }) {
   const [body, setBody] = useState("This is a test that messaging works!");
   const [alias, setAlias] = useState(storefront?.account?.alias ?? "Alice.C");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Submit form via AWS API
-    handleSend();
-    // Callback function to move onto next tutorial
     onComplete({ body, alias });
+    await handleSend();
   };
 
   const handleSend = useCallback(async () => {
     // Prevent multiple sends under the same email address
     const input = { customer_email: storefront.email, body, alias };
+    btnRef.current.innerHTML = "Sending..";
 
     await instance
       .post(`/${storefront.username}/storefront/videos/reply`, input)
-      .then((res) => Toast({ message: "Message sent", success: true }))
-      .catch((err) => console.error(err));
-
-    await instance
-      .put(`/${storefront.username}/storefront`, {
-        compatible: Date.now(),
-        account: { alias, ...(storefront?.account ?? {}) },
-      })
+      .then(() => (btnRef.current.innerHTML = "Email sent!"))
       .catch((err) => console.error(err));
   }, [body, alias]);
 
@@ -122,6 +115,7 @@ export default function VideoReply({ onComplete = () => {} }) {
 
               <div className="flex justify-end gap-3 mt-4">
                 <button
+                  ref={btnRef}
                   type="submit"
                   className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >

@@ -17,7 +17,12 @@ function useStorefront() {
   const fetcher = (url) => instance.get(url).then(({ data }) => data);
   const { data, error, mutate } = useSWR(
     session_token && `/storefront`,
-    fetcher
+    fetcher,
+    {
+      // This is useful for testing msw in test functions
+      initialData: process.env.JEST_WORKER_ID ? { username: "demo" } : {},
+      revalidateOnMount: true,
+    }
   );
 
   return {
