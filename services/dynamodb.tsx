@@ -1,12 +1,15 @@
-"use strict";
-
-const { DynamoDB } = require("aws-sdk");
+import { DynamoDB } from "aws-sdk";
 const { set, get, isUndefined } = require("lodash");
 
 class DynamoDBClass {
-  constructor(username) {
+  username: string;
+  dynamodbRaw: any;
+  dynamodb: any;
+  table: string;
+
+  constructor(username: string) {
     // Amazon SES configuration
-    const dynamoConfig = {
+    const dynamoConfig: any = {
       apiVersion: "2012-08-10",
       accessKeyId: process.env.AWS_DYNAMODB_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_DYNAMODB_SECRET_ACCESS_KEY,
@@ -20,11 +23,11 @@ class DynamoDBClass {
     this.table = "loom-core";
   }
 
-  GetUsername() {
+  GetUsername(): string {
     return this.username;
   }
 
-  SetUsername(value) {
+  SetUsername(value: string): string {
     this.username = value;
     return this.username;
   }
@@ -32,9 +35,9 @@ class DynamoDBClass {
   async GetEvents() {
     const query = {
       Limit: 10,
-      TableName: this.table,
       ConsistentRead: false,
       ScanIndexForward: false,
+      TableName: this.table as String,
 
       KeyConditionExpression: `pk = :username AND begins_with(sk, :event)`,
       ExpressionAttributeValues: {
@@ -290,42 +293,6 @@ class DynamoDBClass {
       });
 
     return disputes;
-  }
-
-  async UpdateVideo(input = {}) {
-    if (!input.id) return;
-
-    let ExpressionAttributeNames = {};
-    let ExpressionAttributeValues = {};
-    let ExpressionCommands = [];
-
-    for (var key of Object.keys(input)) {
-      // Prevent users from inserting new emails
-      if (!isUndefined(input[key])) {
-        set(ExpressionAttributeNames, `#${key.toUpperCase()}`, key);
-        set(ExpressionAttributeValues, `:${key}`, input[key]);
-        ExpressionCommands.push(`#${key.toUpperCase()} = :${key}`);
-      }
-    }
-
-    const data = {
-      Key: {
-        pk: `USERNAME#${this.username}`,
-        sk: `LOOM#` + input.id,
-      },
-      ExpressionAttributeNames: ExpressionAttributeNames,
-      ExpressionAttributeValues: ExpressionAttributeValues,
-      UpdateExpression: `SET ${ExpressionCommands.join(", ")}`,
-      TableName: this.table,
-    };
-
-    await this.dynamodb
-      .update(data)
-      .promise()
-      .then((data) => data)
-      .catch((err) => console.error(err));
-
-    return data;
   }
 
   async GetVideo(id) {

@@ -3,17 +3,23 @@ import { useCountState } from "../src/app-context";
 import { CreateInstance } from "../src/axios";
 
 import FadeIn from "react-fade-in";
-import EmptyState from "../components/empty-state";
+import EmptyState from "./empty-state";
 import useStorefront from "../hooks/useStorefront";
+
+interface EmailSubmission {
+  customer_email: String;
+  body: String;
+  alias: String;
+}
 
 export default function VideoReply({ onComplete = () => {} }) {
   const btnRef = useRef(false);
   const state = useCountState();
   const { data: storefront } = useStorefront();
-  const instance = CreateInstance(state);
+  const instance = CreateInstance(state as any);
 
   const [body, setBody] = useState("This is a test that messaging works!");
-  const [alias, setAlias] = useState(storefront?.account?.alias ?? "Alice.C");
+  const [alias, setAlias] = useState(storefront?.account?.alias as String);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -23,7 +29,12 @@ export default function VideoReply({ onComplete = () => {} }) {
 
   const handleSend = useCallback(async () => {
     // Prevent multiple sends under the same email address
-    const input = { customer_email: storefront.email, body, alias };
+    const input: EmailSubmission = {
+      customer_email: storefront.email,
+      body,
+      alias,
+    };
+
     btnRef.current.innerHTML = "Sending..";
 
     await instance

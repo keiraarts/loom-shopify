@@ -1,21 +1,24 @@
-"use strict";
-const get = require("lodash/get");
+import get from "lodash/get";
+
+interface IButton {
+  url: string;
+  text: string;
+}
 
 class Emails {
   constructor() {}
 
   GetTimestamp() {
     let date = new Date();
-    let options = {
+
+    return date.toLocaleTimeString("en-us", {
       weekday: "long",
       year: "numeric",
       month: "short",
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-    };
-
-    return date.toLocaleTimeString("en-us", options);
+    });
   }
 
   Personel({ messages = [] }) {
@@ -85,15 +88,28 @@ class Emails {
     headline = ``, // email headline
     email_preview = false, // showin in the preview section of gmail
     bullets = [], // headline bullets, great for three pointers
-    button = false, // clickable button, requires .url .text
+    button, // clickable button, requires .url .text
     body = ``, // Body of th email
     lists = [], // Lists includes lists of items to highlight like addresses, or included order items
     disclaimer = "", // Mention why the customer is getting the email
     footer_list = [], // List of messages on the bottom of the email
     store_name = "", // used for support
-    support_email = false, // used to trigger support vlock
-    support_phone = false, // support phone, optional
-    note = false, // Optional note to write customers messages via CLI
+    support_email, // used to trigger support vlock
+    support_phone, // support phone, optional
+    note, // Optional note to write customers messages via CLI
+  }: {
+    headline: String;
+    email_preview: boolean;
+    bullets: any[];
+    button: IButton;
+    body: String;
+    lists: any[];
+    disclaimer: String;
+    footer_list: String[];
+    store_name: String;
+    support_email: String;
+    support_phone: String;
+    note: String;
   }) {
     let prerenderedList = [];
     let prerenderedFooter = [];
@@ -447,7 +463,7 @@ class Emails {
                        </tbody>
                      </table>
                      ${
-                       button && button != false && get(button, "url", false)
+                       button && get(button, "url", false)
                          ? `<table class="Section Divider" width="100%" style="border: 0;border-collapse: collapse;margin: 0;padding: 0;background-color: #ffffff;">
                      <tbody>
                        <tr>
