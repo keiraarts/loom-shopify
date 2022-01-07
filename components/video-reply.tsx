@@ -24,6 +24,7 @@ export default function VideoReply({ onComplete = () => {} }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     onComplete({ body, alias });
+
     await handleSend();
   };
 
