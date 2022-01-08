@@ -1,9 +1,26 @@
 import toast from "toasted-notes";
 import cn from "classnames";
 
-export default async function Toast(props) {
+enum directions {
+  TOP = "top",
+  LEFT = "bottom-left",
+  RIGHT = "bottom-right",
+  BOTTOKM = "bottom",
+}
+
+interface ToastProps {
+  message: string;
+  error?: string;
+  success?: boolean;
+  cta?: string;
+  duration?: number;
+  position?: directions;
+  onAction?: () => void;
+}
+
+export default async function Toast(props: ToastProps) {
   const { message, error, success, cta, onAction, duration = 7000 } = props;
-  const position = props?.position ?? "top";
+  const position = props?.position ?? directions.TOP;
 
   const notifyClass = cn({
     "flex mt-4 bg-black": true,
@@ -23,7 +40,6 @@ export default async function Toast(props) {
   await toast.notify(
     ({ onClose }) => (
       <div
-        elevation="sm"
         style={{
           overflow: "hidden",
           alignItems: "center",

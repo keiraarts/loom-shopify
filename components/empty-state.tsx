@@ -3,14 +3,14 @@ import cn from "classnames";
 import { useCountDispatch } from "../src/app-context";
 
 type AppProps = {
-  src: string;
-  quote: string;
-  headshot: string;
-  author: string;
-  title: string;
-  button: any;
-  children: any;
-  footer: any;
+  quote: string | React.ReactChild;
+  src?: string;
+  headshot?: string;
+  author?: string;
+  title?: string;
+  button?: any;
+  children?: any;
+  footer?: any;
 };
 
 export default function EmptyState({

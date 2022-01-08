@@ -7,21 +7,25 @@ import Support from "./support";
 import cn from "classnames";
 import Toast from "./toast";
 
-export default function SupportForm(props) {
+interface Options {
+  isEmbedded: boolean;
+}
+
+export default function SupportForm(props: Options) {
   const { isEmbedded } = props;
   const { t } = useTranslation();
-  const buttonRef = React.useRef(null);
+  const buttonRef = React.useRef<HTMLButtonElement>();
 
   const state = useCountState();
   const instance = CreateInstance(state);
   const { data: storefront } = useStorefront();
 
-  const [message, setMessage] = useState();
-  const [tracking, setTracking] = useState();
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
-  const [phone, setPhone] = useState();
-  const [sent, setSent] = useState(false);
+  const [message, setMessage] = useState<string>();
+  const [tracking, setTracking] = useState<string>();
+  const [name, setName] = useState<string>();
+  const [email, setEmail] = useState<string>();
+  const [phone, setPhone] = useState<string>();
+  const [sent, setSent] = useState<boolean>(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -161,7 +165,7 @@ export default function SupportForm(props) {
                     required
                     id="message"
                     name="message"
-                    rows="6"
+                    rows={6}
                     value={message}
                     placeholder={t("quotes.support")}
                     onChange={(event) => setMessage(event.target.value)}

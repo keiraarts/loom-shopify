@@ -2,13 +2,17 @@ import React, { Fragment, useState, useContext, useEffect } from "react";
 import { useCountState } from "../src/app-context";
 
 import FadeIn from "react-fade-in";
-import EmptyState from "../components/empty-state";
+import EmptyState from "./empty-state";
 import useThemes from "../hooks/useThemes";
 
 import { Redirect } from "@shopify/app-bridge/actions";
 import { Context } from "@shopify/app-bridge-react";
 
-export default function ThemePreview({ onComplete = () => {} }) {
+interface LoomSubmission {
+  onComplete(args?: string): string;
+}
+
+export default function ThemePreview(props: LoomSubmission) {
   const state = useCountState();
   const { data: themes } = useThemes();
   const [theme, setTheme] = useState("current");
@@ -33,7 +37,7 @@ export default function ThemePreview({ onComplete = () => {} }) {
             <div className="flex flex-row items-stretch max-w-sm gap-4 mx-auto my-5 text-center">
               <div className="flex-1">
                 <label
-                  for="theme"
+                  htmlFor="theme"
                   className="block text-sm font-medium text-gray-700 sr-only"
                 >
                   Theme
@@ -41,7 +45,9 @@ export default function ThemePreview({ onComplete = () => {} }) {
                 <select
                   id="theme"
                   name="theme"
-                  onChange={() => setTheme(event.target.value)}
+                  onChange={(event: React.FormEvent<HTMLSelectElement>) =>
+                    setTheme(event.currentTarget.value)
+                  }
                   className="block w-full h-full py-2 pl-3 pr-10 text-base border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
                   <option selected value="current">
@@ -65,7 +71,7 @@ export default function ThemePreview({ onComplete = () => {} }) {
                     `https://${state.username}.myshopify.com/admin/themes/${theme}/editor?context=apps&template=index&activateAppId=5178a21d-051e-4b38-8992-ed13ae96cd73/app-block`
                   );
 
-                  onComplete();
+                  props.onComplete();
                 }}
                 className="px-4 py-2 font-semibold text-white bg-green-600 rounded-md cursor-pointer"
               >
@@ -89,7 +95,7 @@ export default function ThemePreview({ onComplete = () => {} }) {
                 themes.{" "}
                 <span
                   className="font-bold text-blue-500 cursor-pointer"
-                  onClick={onComplete}
+                  onClick={() => props.onComplete()}
                 >
                   Skip
                 </span>

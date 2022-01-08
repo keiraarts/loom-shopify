@@ -7,24 +7,27 @@ import EmptyState from "./empty-state";
 import useStorefront from "../hooks/useStorefront";
 
 interface EmailSubmission {
-  customer_email: String;
-  body: String;
-  alias: String;
+  customer_email: string;
+  body: string;
+  alias: string;
 }
 
-export default function VideoReply({ onComplete = () => {} }) {
-  const btnRef = useRef(false);
+interface LoomSubmission {
+  onComplete(arg: { body?: string; alias?: string }): string;
+}
+
+export default function VideoReply(props: LoomSubmission) {
+  const btnRef = useRef<HTMLButtonElement>();
   const state = useCountState();
   const { data: storefront } = useStorefront();
   const instance = CreateInstance(state as any);
 
   const [body, setBody] = useState("This is a test that messaging works!");
-  const [alias, setAlias] = useState(storefront?.account?.alias as String);
+  const [alias, setAlias] = useState(storefront?.account?.alias as string);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    onComplete({ body, alias });
-
+    props.onComplete({ body, alias });
     await handleSend();
   };
 
@@ -73,14 +76,13 @@ export default function VideoReply({ onComplete = () => {} }) {
                     className="p-0.5 -m-0.5 rounded-lg"
                     aria-labelledby="tabs-1-tab-1"
                     role="tabpanel"
-                    tabIndex="0"
                   >
                     <label htmlFor="comment" className="sr-only">
                       Comment
                     </label>
                     <div>
                       <textarea
-                        rows="4"
+                        rows={4}
                         required
                         name="comment"
                         id="comment"
@@ -96,7 +98,6 @@ export default function VideoReply({ onComplete = () => {} }) {
                     className="p-0.5 -m-0.5 rounded-lg"
                     aria-labelledby="tabs-1-tab-2"
                     role="tabpanel"
-                    tabIndex="0"
                   ></div>
                 </div>
               </div>
@@ -113,12 +114,11 @@ export default function VideoReply({ onComplete = () => {} }) {
                     type="text"
                     name="name"
                     id="name"
-                    required
-                    value={alias}
-                    label="name"
+                    value={alias as any}
                     onChange={(event) => setAlias(event.target.value)}
                     className="flex-1 block w-full p-0 text-gray-900 placeholder-gray-500 border-0 focus:ring-0 sm:text-sm"
                     placeholder="Jane Doe, Support Engineer"
+                    required
                   />
                 </div>
               </div>
@@ -131,12 +131,12 @@ export default function VideoReply({ onComplete = () => {} }) {
                 >
                   Send message
                 </button>
-                <div
-                  onClick={onComplete}
+                <button
+                  onClick={() => props.onComplete({ body, alias })}
                   className="inline-flex items-center px-4 py-2 text-sm font-medium text-black bg-gray-300 border border-transparent rounded-md shadow-sm cursor-pointer hover:bg-indigo-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   Skip
-                </div>
+                </button>
               </div>
             </form>
           </React.Fragment>

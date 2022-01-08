@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { useCountState } from "../src/app-context";
-
 import FadeIn from "react-fade-in";
-import EmptyState from "../components/empty-state";
+import EmptyState from "./empty-state";
 
-export default function VideoAwait({ onComplete = () => {} }) {
-  const state = useCountState();
+interface LoomSubmission {
+  onComplete(args?: string): string;
+}
+
+export default function VideoAwait(props: LoomSubmission) {
   const [src, setSrc] = useState("add-app-extension.png");
 
   return (
@@ -13,7 +14,7 @@ export default function VideoAwait({ onComplete = () => {} }) {
       <EmptyState
         src="/logos/primary-logo-icon.png"
         quote={
-          <React.Fragment>
+          <>
             From your theme editor click on{" "}
             <span
               onClick={() => setSrc("add-app-extension.png")}
@@ -36,17 +37,20 @@ export default function VideoAwait({ onComplete = () => {} }) {
               start recording
             </span>
             .
-          </React.Fragment>
+          </>
         }
         children={
-          <React.Fragment>
+          <>
             <div key={src} className="mt-5 bg-gray-200 aspect-w-6 aspect-h-3">
               <img src={`/assets/${src}`} className="w-full object-fit" />
             </div>
             <div className="flex flex-row items-stretch max-w-sm gap-4 mx-auto my-5 text-center"></div>
-          </React.Fragment>
+          </>
         }
-        button={{ cta: "I recorded a video!", onClick: onComplete }}
+        button={{
+          cta: "I recorded a video!",
+          onClick: () => props.onComplete(),
+        }}
       />
     </FadeIn>
   );
