@@ -1,10 +1,17 @@
 import cn from "classnames";
 
+type Steps = { step: number; title: string };
+
+interface Options {
+  readonly steps: Steps[];
+  readonly current: number;
+  onClick: (props: number) => void;
+}
 export default function SetupNav({
   steps = [],
   current = 0,
   onClick = () => {},
-}) {
+}: Options) {
   const CheckmarkIcon = (
     <svg
       className="w-6 h-6 text-white"
@@ -45,7 +52,7 @@ export default function SetupNav({
                       "flex items-center justify-center rounded-full flex-shrink-0 w-8 h-8": true,
                     })}
                   >
-                    {current > index ? CheckmarkIcon : `${index}`}
+                    {current > index ? CheckmarkIcon : `${index + 1}`}
                   </span>
                   <span
                     className={cn({

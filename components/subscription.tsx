@@ -4,11 +4,11 @@ import { Redirect } from "@shopify/app-bridge/actions";
 import { useCountState } from "../src/app-context";
 import useStorefront from "../hooks/useStorefront";
 import { CreateInstance } from "../src/axios";
-import Toast from "../components/toast";
-import Support from "../components/support";
+import Toast from "./toast";
+import Support from "./support";
 
 export default function Subscription() {
-  const [selection, setSelection] = useState(false);
+  const [selection, setSelection] = useState<string | null>();
   const { data: storefront } = useStorefront();
   const state = useCountState();
   const instance = CreateInstance(state);
@@ -99,10 +99,7 @@ export default function Subscription() {
           </ul>
           {!storefront?.email ? (
             <div className="animate-pulse">
-              <button
-                href="#"
-                className="flex items-center justify-center w-full px-8 py-2 text-sm font-medium leading-6 text-white border border-transparent rounded-md cursor-pointer bg-button-green hover:bg-button-hover md:px-10"
-              >
+              <button className="flex items-center justify-center w-full px-8 py-2 text-sm font-medium leading-6 text-white border border-transparent rounded-md cursor-pointer bg-button-green hover:bg-button-hover md:px-10">
                 <span>&nbsp; &nbsp; &nbsp; &nbsp;</span>
               </button>
             </div>

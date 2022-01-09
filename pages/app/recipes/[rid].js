@@ -1,11 +1,9 @@
-import React, { Fragment, useState, useContext, useEffect } from "react";
-import { useCountState, useCountDispatch } from "../../../src/app-context";
+import React, { useState, useContext, useEffect } from "react";
+import { useCountState } from "../../../src/app-context";
 import { Redirect } from "@shopify/app-bridge/actions";
 import { Context } from "@shopify/app-bridge-react";
 import { oembed } from "@loomhq/loom-embed";
 import NProgress from "nprogress";
-import set from "lodash/set";
-import cn from "classnames";
 
 import Recipes from "../../../components/recipes";
 import Search from "../../../components/search";

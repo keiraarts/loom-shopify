@@ -6,7 +6,12 @@ import { useRouter } from "next/router";
 import cn from "classnames";
 import Link from "next/link";
 
-export default function Search({ search, setSearch = () => {} }) {
+interface SearchOptions {
+  search: string;
+  setSearch(arg: string): string;
+}
+
+export default function Search({ search, setSearch }: SearchOptions) {
   // Allow search via email and page urls
   const dispatch = useCountDispatch();
   const state = useCountState();
@@ -49,10 +54,10 @@ export default function Search({ search, setSearch = () => {} }) {
         <div className="flex justify-between flex-1 px-4 sm:px-6">
           <div className="flex flex-1">
             <form className="flex w-full md:ml-0" action="#" method="GET">
-              <label for="desktop-search-field" className="sr-only">
+              <label htmlFor="desktop-search-field" className="sr-only">
                 Search video replies
               </label>
-              <label for="mobile-search-field" className="sr-only">
+              <label htmlFor="mobile-search-field" className="sr-only">
                 Search video replies
               </label>
               <div className="relative w-full text-gray-400 focus-within:text-gray-600">

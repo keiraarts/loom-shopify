@@ -1,7 +1,4 @@
-"use strict";
-
-const util = require("util");
-const axios = require("axios");
+import axios from "axios";
 const get = require("lodash/get");
 const parser = require("fast-xml-parser");
 
@@ -15,8 +12,12 @@ function createInstance() {
 }
 
 class USPS {
-  constructor(username) {
-    this.clientId = "502VIAGL2133";
+  clientId: string = "502VIAGL2133";
+
+  instance: any;
+  username: string;
+
+  constructor(username: string) {
     this.instance = createInstance();
     this.username = username;
   }
@@ -30,7 +31,18 @@ class USPS {
     }
   }
 
-  async VerifyAddress({ destination }) {
+  async VerifyAddress({
+    destination,
+  }: {
+    destination: {
+      address1: string;
+      address2: string;
+      city: string;
+      province_code: string;
+      country_code: string;
+      zip?: string;
+    };
+  }) {
     if (!destination || !destination.zip) return true;
     const { address1, address2, city, province_code, zip = "" } = destination;
 
@@ -53,7 +65,6 @@ class USPS {
 
     const jsonObj = this.ParseXML(response);
     const verification = get(jsonObj, "AddressValidateResponse");
-    console.log(util.inspect(verification, { showHidden: false, depth: null }));
 
     return {
       ...verification,

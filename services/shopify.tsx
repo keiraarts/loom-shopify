@@ -1,14 +1,12 @@
-"use strict";
-
-const axios = require("axios");
+import axios from "axios";
 const auth = require("jsonwebtoken");
 const get = require("lodash/get");
 
-const SERVICE_NAME = "magicsoaps";
+const SERVICE_NAME = "";
 const { GraphQLClient, gql } = require("graphql-request");
 
-function createShopifyInstance(username, shopifyAccessToken) {
-  const domain = username && username.replace(".myshopify.com", "");
+function createShopifyInstance(username: string, shopifyAccessToken: string) {
+  const domain: string = username && username.replace(".myshopify.com", "");
 
   const shopifyInstance = axios.create({
     baseURL:
@@ -27,7 +25,13 @@ function createShopifyInstance(username, shopifyAccessToken) {
 }
 
 class Shopify {
-  constructor(username = false, token = "false") {
+  private username: string;
+  shopifyAccessToken: string;
+  shopifyInstance: any;
+  livemode: boolean;
+  graphQLClient: any;
+
+  constructor(username, token) {
     this.username = username;
     this.shopifyAccessToken = token;
     this.shopifyInstance = createShopifyInstance(username, token);
@@ -42,7 +46,7 @@ class Shopify {
     });
   }
 
-  SetCredentials(username = false, token = "false") {
+  SetCredentials(username, token = "false") {
     this.username = username;
     this.shopifyAccessToken = token;
     this.shopifyInstance = createShopifyInstance(username, token);
@@ -96,9 +100,7 @@ class Shopify {
       .then((res) => res.data.asset)
       .catch((err) => console.error("theme err", err));
 
-    console.log({ assets });
-
-    return themes;
+    return assets;
   }
 
   async GetShopPolicies() {
@@ -935,7 +937,7 @@ class Shopify {
     // May as well group it here for convenience
     // Either verification must succeed
     if (shopifyHmac && !isVerified) {
-      isVerified = this.verifyShopifyHash(ctx);
+      isVerified = await this.verifyShopifyHash(ctx);
     }
 
     return {

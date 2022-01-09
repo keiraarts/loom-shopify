@@ -10,7 +10,7 @@ enum directions {
 
 interface ToastProps {
   message: string;
-  error?: string;
+  error?: boolean;
   success?: boolean;
   cta?: string;
   duration?: number;

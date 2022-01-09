@@ -3,7 +3,21 @@ import { Dialog, Transition } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/outline";
 import cn from "classnames";
 
-export default function Aside({ open, setOpen, className, heading, children }) {
+type Options = {
+  open: boolean;
+  className: string;
+  heading: string;
+  children: React.ReactChildren;
+  setOpen: (arg: boolean) => void;
+};
+
+export default function Aside({
+  open,
+  setOpen,
+  className,
+  heading,
+  children,
+}: Options) {
   return (
     <Transition
       show={open}

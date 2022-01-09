@@ -25,8 +25,8 @@ export default function VideoReply(props: LoomSubmission) {
   const [body, setBody] = useState("This is a test that messaging works!");
   const [alias, setAlias] = useState(storefront?.account?.alias as string);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
     props.onComplete({ body, alias });
     await handleSend();
   };

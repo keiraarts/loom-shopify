@@ -1,12 +1,17 @@
-const get = require("lodash/get");
+import get from "lodash/get";
 const DynamoDB = require("./dynamodb");
 
 class Stripe {
-  isTruthy(value) {
+  isTruthy(value): boolean {
     if (!value || value === "FALSE" || value == "false") return false;
     else if (value === "TRUE" || value == true) return true;
     return false;
   }
+
+  readonly key: string;
+  customer: string | boolean;
+  connect: string | boolean;
+  livemode: boolean | null;
 
   constructor(livemode = undefined, options = {}) {
     const { LIVEMODE } = process.env;
@@ -40,7 +45,7 @@ class Stripe {
     // If customer does not exist, create, return, save to databse
     const stripe = require("stripe")(this.key);
 
-    const customer = await new Promise((resolve, reject) => {
+    const customer: any = await new Promise((resolve, reject) => {
       stripe.customers.create(data, function (err, customer) {
         // asynchronously called
         if (err) {

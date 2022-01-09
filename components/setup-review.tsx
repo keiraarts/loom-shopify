@@ -4,19 +4,15 @@ import { useWindowSize } from "react-use";
 import Confetti from "react-confetti";
 
 import FadeIn from "react-fade-in";
-import EmptyState from "../components/empty-state";
-import useThemes from "../hooks/useThemes";
-
+import EmptyState from "./empty-state";
 import { Redirect } from "@shopify/app-bridge/actions";
 import { Context } from "@shopify/app-bridge-react";
 import useStorefront from "../hooks/useStorefront";
 
 export default function SetupReview() {
-  const state = useCountState();
   const dispatch = useCountDispatch();
   const { width, height } = useWindowSize();
   const { data, mutate } = useStorefront();
-  const [theme, setTheme] = useState("current");
 
   // Opens a new tab for users
   const app = useContext(Context);

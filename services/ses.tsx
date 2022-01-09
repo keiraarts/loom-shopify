@@ -1,17 +1,35 @@
-const { SES } = require("aws-sdk");
+import { SES } from "aws-sdk";
 const Email = require("./emails");
 const { get } = require("lodash");
 
+type Config = {
+  apiVersion: "2010-12-01";
+  accessKeyId: string;
+  secretAccessKey: string;
+  region: string;
+};
+
+export interface Identity {
+  brand: string;
+  ses_email: string;
+  replyto: string;
+}
+
 class SESClass {
+  username: string;
+  identity_brand: string;
+  identity_email: string;
+  replyto: string;
+  config: Config;
+
   constructor(
-    username,
-    identity = {
+    username: string,
+    identity: Identity = {
       brand: "HonestyCore.com",
       ses_email: process.env.AWS_SES_EMAIL,
       replyto: process.env.AWS_SES_EMAIL,
     }
   ) {
-    // Amazon SES configuration
     this.config = {
       apiVersion: "2010-12-01",
       accessKeyId: process.env.AWS_SES_ACCESS_KEY_ID,

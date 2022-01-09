@@ -11,7 +11,18 @@ import React, { useState } from "react";
 import Link from "next/link";
 import cn from "classnames";
 
-const recipes = [
+type HeroIcon = (props: React.ComponentProps<"svg">) => JSX.Element;
+
+interface Recipe<T> {
+  href: T;
+  style: T;
+  title: T;
+  content: T;
+  tags?: T[];
+  icon: HeroIcon;
+}
+
+const recipes: Recipe<string>[] = [
   {
     icon: EmojiHappyIcon,
     href: "/app/recipes/product-feedback",
@@ -57,16 +68,12 @@ const recipes = [
   },
 ];
 
-export default function RecipeCards({ perPage = 10 }) {
-  const [start, setStart] = useState(0);
+export default function RecipeCards({ perPage = 10 }: { perPage: number }) {
+  const [start, setStart] = useState<number | null>(0);
 
   return (
     <div className="overflow-hidden sm:-mx-6 sm:divide-y-0 sm:grid sm:grid-cols-1 sm:gap-px">
-      <FadeIn
-        key={start}
-        wrapperTag={"section"}
-        className="m-2 space-y-3 divide-y-5"
-      >
+      <FadeIn key={start} className="m-2 space-y-3 divide-y-5">
         {recipes
           .slice(start * perPage, start * perPage + perPage)
           .map(({ icon, title, content, style, href }) => {
