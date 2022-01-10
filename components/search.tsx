@@ -20,6 +20,7 @@ export default function Search({ search, setSearch }: SearchOptions) {
   // Opens a new tab for users
   const app = useContext(Context);
   const redirectContext = (url) => {
+    if (!app) return;
     const redirect = Redirect.create(app);
     redirect.dispatch(Redirect.Action.REMOTE, {
       url: url,

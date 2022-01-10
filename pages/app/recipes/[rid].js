@@ -19,18 +19,16 @@ function Index() {
   return (
     <React.Fragment>
       <Search search={search} setSearch={setSearch} />
-      <div className="flex flex-col flex-1 overflow-hidden">
-        <div className="flex flex-row-reverse flex-1 overflow-hidden">
-          <main className="flex flex-col justify-between flex-1 overflow-y-auto">
+      <div className="flex flex-col flex-1 sm:flex-row">
+        <div className="flex flex-col-reverse flex-1 sm:flex-row-reverse">
+          <main className="flex flex-col justify-between flex-1">
             <IntegrationLayout recipe={recipe} />
             <Footer />
           </main>
 
-          <aside className="hidden p-6 border-r border-gray-200 bg-shopify-grey w-96 lg:w-1/3 xl:max-w-sm sm:block">
-            <div className="space-y-6">
-              <div className="m-0 sm:-mt-4">
-                <Recipes perPage={10} />
-              </div>
+          <aside className="block w-full p-6 border-gray-200 sm:border-r bg-shopify-grey lg:w-1/3 xl:max-w-sm sm:block">
+            <div className="m-0 space-y-6 sm:-mt-4">
+              <Recipes perPage={10} />
             </div>
           </aside>
         </div>

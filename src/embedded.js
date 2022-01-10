@@ -15,8 +15,15 @@ export function EmbeddedLayout(props) {
   });
 
   useEffect(() => {
-    if (state?.modal_view === "support")
-      supportModal.dispatch(Modal.Action.OPEN);
+    if (state?.modal_view === "support") {
+      console.log({ app });
+
+      try {
+        supportModal.dispatch(Modal.Action.OPEN);
+      } catch (error) {
+        console.error({ app: error });
+      }
+    }
   }, [state?.modal_view]);
 
   supportModal.subscribe(Modal.Action.CLOSE, () => {

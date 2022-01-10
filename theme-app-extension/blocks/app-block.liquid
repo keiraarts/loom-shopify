@@ -36,8 +36,13 @@
 
         <span class="mb-5 sm:text-4xl" id="video-headlines">
             <h2 class="block custom-font {{ block.settings.font_size }}" style="color: {{ block.settings.text_color }}; font-family: {{ block.settings.heading_font.family }}; font-weight: {{ block.settings.heading_font.weight }}">{{ block.settings.heading | default: 'Have a complicated question?' }}</h3>
-            <p class="block custom-font h3" style="color: {{ block.settings.text_color }}; font-family: {{ block.settings.heading_font.family }};">{{ block.settings.subheading }}</h3>
-       </span>
+
+            {%- if block.settings.subheading -%}
+                <p class="block mt-5 custom-font p" style="color: {{ block.settings.text_color }}!important;">
+                    {{ block.settings.subheading }}
+                </p>
+            {%- endif -%}
+        </span>
 
         <span class="flex flex-col mb-5 sm:text-4xl" id="success-message" style="display: none!important">
             <h2 class="block custom-font {{ block.settings.font_size }}" style="color: {{ block.settings.text_color }}; font-family: {{ block.settings.heading_font.family }}; font-weight: {{ block.settings.heading_font.weight }}">Video message sent!</h3>
