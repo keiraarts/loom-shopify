@@ -2,8 +2,8 @@ import { isSupported, setup } from "@loomhq/loom-sdk/dist/cjs/safe";
 
 async function init() {
   const APP_ID = "47a9781a-1c42-4f28-b857-7ff9e72bed19";
-  // The user_id does not have an expection to be provided
   const USER_ID = document.getElementById("loom-key").value;
+
   const root = document.getElementById("app");
   const button = document.getElementById("loom-sdk-button");
   if (!root) return;
@@ -53,11 +53,17 @@ async function init() {
       errorMessage.style.display = "block";
       // highlight the error message in red
       errorMessage.style.color = "rgb(179, 27, 27);";
+    } else {
+      // Prevent user from closing tab recording their screen
+      // This forces all links to open as new tabs
+      const links = document.getElementsByTagName("a");
+      for (var i = 0; i < links.length; i++) {
+        links[i].target = "_blank";
+      }
     }
   });
 
   sdkButton.on("cancel", () => {
-    console.log("Recording cancelled");
     loom = false;
   });
 }

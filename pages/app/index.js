@@ -28,7 +28,7 @@ const views = ["unread", "completed", "favorited"];
 function Index() {
   const state = useCountState();
   const dispatch = useCountDispatch();
-  const { data: storefront, isLoading } = useStorefront();
+  const { data: storefront, isLoading, mutate } = useStorefront();
 
   // Opens a new tab for users
   const app = useContext(Context);
@@ -251,14 +251,14 @@ function Index() {
                         className="flex flex-1 -mb-px space-x-6 xl:space-x-8"
                         aria-label="Tabs"
                       >
-                        {views.map((view) => {
+                        {views.map((view, index) => {
                           return (
                             <a
                               href="#"
                               aria-current={view}
                               onClick={() => setTab(view)}
                               className={cn({
-                                "px-1 py-4 text-sm font-medium capitalize border-b-2  whitespace-nowrap": true,
+                                "px-1 py-4 text-sm font-medium capitalize border-b-4 whitespace-nowrap": true,
                                 "border-indigo-500 text-indigo-700":
                                   view === tab,
                                 "text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300":
@@ -266,9 +266,10 @@ function Index() {
                               })}
                             >
                               {view}
-                              {counts[view] > 0 && (
-                                <span className="bg-indigo-50 text-indigo-900 hidden ml-2 py-0.5 px-2.5 rounded-full text-xs font-medium md:inline-block">
-                                  {counts[view]}
+
+                              {index === 0 && (
+                                <span className="bg-indigo-600 text-white hidden ml-2 py-0.5 px-2 rounded-full text-xs font-medium md:inline-block">
+                                  {counts?.[view] ?? 0}
                                 </span>
                               )}
                             </a>
@@ -281,7 +282,14 @@ function Index() {
                 </div>
 
                 {videos.length === 0 && (
-                  <ThemePreview onComplete={() => setStep(1)} />
+                  <ThemePreview
+                    quote="You don't have any outstanding videos to watch! Add HonestyCore.com to one of your pages to collect new inbound questions!"
+                    onComplete={() => {
+                      // Force user interface to show the tutorial temporarily
+                      mutate({ is_setup: false }, false);
+                      setStep(1);
+                    }}
+                  />
                 )}
 
                 {videos.length > 0 && (

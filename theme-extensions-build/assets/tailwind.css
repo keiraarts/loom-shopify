@@ -1194,6 +1194,11 @@ div#loom-sdk-record-overlay-shadow-root-id {
     padding-bottom: 6rem;
   }
 
+  .sm\:text-base {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+
   .sm\:text-4xl {
     font-size: 2.25rem;
     line-height: 2.5rem;

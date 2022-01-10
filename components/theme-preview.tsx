@@ -10,6 +10,7 @@ import { Context } from "@shopify/app-bridge-react";
 
 interface LoomSubmission {
   onComplete(args?: string): string;
+  quote?: string;
 }
 
 export default function ThemePreview(props: LoomSubmission) {
@@ -31,7 +32,10 @@ export default function ThemePreview(props: LoomSubmission) {
     <FadeIn className="flex items-center justify-center flex-1 h-full">
       <EmptyState
         src="/logos/primary-logo-icon.png"
-        quote="It can be hard to understand complex questions over email. With our app, you can give customers an easy way to record questions with a video!"
+        quote={
+          props?.quote ??
+          "It can be hard to understand complex questions over email. With our app, you can give customers an easy way to record questions with a video!"
+        }
         children={
           <React.Fragment>
             <div className="flex flex-row items-stretch max-w-sm gap-4 mx-auto my-5 text-center">

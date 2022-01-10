@@ -17,7 +17,10 @@ function useVideos() {
   const fetcher = (url) => instance.get(url).then(({ data }) => data);
   const { data, error, mutate } = useSWR(
     session_token && `/storefront/videos`,
-    fetcher
+    fetcher,
+    {
+      refreshWhenHidden: true,
+    }
   );
 
   return {

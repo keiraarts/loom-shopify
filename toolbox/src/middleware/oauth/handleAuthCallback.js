@@ -28,7 +28,6 @@ const HandleAuthCallback = (handler) => {
       // finished with oauth! Redirect to home page
       res.redirect(`${process.env.HOME_PATH}?shop=${req.query.shop}`);
     } catch (err) {
-      console.log(err);
       res
         .status(401)
         .json({ message: "Error while retrieving access token.", error: err });
