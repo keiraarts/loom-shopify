@@ -1,11 +1,46 @@
-export default function IntegrationLayout() {
+type image = {
+  src: string;
+  alt: string;
+  className: string;
+};
+
+type content = {
+  heading: string;
+  body: string[] | React.ReactElement[];
+};
+
+type feature = {
+  icon: string;
+  heading: string;
+  body: string[];
+};
+
+export interface RecipeDetails {
+  key: string;
+  title: string;
+  rating: number | ((arg: string) => boolean);
+  images?: image[];
+  usage?: string;
+  prose?: content[];
+  features?: feature[];
+}
+
+type RecipeObject = {
+  recipe: RecipeDetails;
+};
+
+export default function IntegrationLayout(props: RecipeObject) {
+  const recipe = props.recipe;
+  if (!recipe || !recipe.title)
+    return <div className="flex-1 m-5 bg-gray-200 rounded-lg"></div>;
+
   return (
-    <main className="max-w-2xl px-4 pb-16 mx-auto mt-8 sm:pb-24 xl:max-w-7xl">
-      <div className="xl:grid xl:grid-cols-12 xl:auto-rows-min xl:gap-x-8">
-        <div className="xl:col-start-8 xl:col-span-5">
+    <main className="w-full max-w-2xl px-4 pb-16 mx-auto mt-8 sm:pb-24 xl:max-w-7xl">
+      <div className="">
+        <div className="">
           <div className="flex justify-between">
             <h1 className="text-2xl font-medium text-gray-900">
-              Collect product feedback
+              {recipe.title}
             </h1>
           </div>
 
@@ -13,7 +48,7 @@ export default function IntegrationLayout() {
             <h2 className="sr-only">Reviews</h2>
             <div className="flex items-center">
               <p className="text-sm text-gray-700">
-                3.9
+                {recipe.rating}
                 <span className="sr-only"> out of 5 stars</span>
               </p>
               <div className="flex items-center ml-1">
@@ -67,25 +102,26 @@ export default function IntegrationLayout() {
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
               </div>
-              <div aria-hidden="true" className="ml-4 text-sm text-gray-300">
-                ·
-              </div>
+              <div
+                aria-hidden="true"
+                className="ml-4 text-sm text-gray-300"
+              ></div>
               <div className="flex ml-4">
                 <a
                   href="#"
                   className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
                 >
-                  See all 512 reviews
+                  {recipe.usage}
                 </a>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="mt-8 xl:mt-0 xl:col-start-1 xl:col-span-7 xl:row-start-1 xl:row-span-3">
+        <div className="mt-8 ">
           <h2 className="sr-only">Images</h2>
 
-          <div className="grid grid-cols-1 xl:grid-cols-2 xl:grid-rows-3 xl:gap-8">
+          <div className="grid grid-cols-1 ">
             <div className="aspect-w-3 aspect-h-2">
               <img
                 className="object-cover rounded-lg"
@@ -97,29 +133,29 @@ export default function IntegrationLayout() {
         </div>
 
         <div className="mt-8 xl:col-span-5">
-          <div className="mt-10">
-            <h2 className="text-sm font-medium text-gray-900">Description</h2>
+          {recipe.prose &&
+            recipe.prose.map((el) => {
+              return (
+                <div className="mt-10">
+                  <h2 className="text-sm font-medium text-gray-900">
+                    {el.heading}
+                  </h2>
 
-            <div className="mt-4 prose-sm prose text-gray-500">
-              <p>
-                The Basic tee is an honest new take on a classic. The tee uses
-                super soft, pre-shrunk cotton for true comfort and a dependable
-                fit. They are hand cut and sewn locally, with a special dye
-                technique that gives each tee it's own look.
-              </p>
-              <p>
-                Looking to stock your closet? The Basic tee also comes in a
-                3-pack or 5-pack at a bundle discount.
-              </p>
-            </div>
-          </div>
+                  <div className="mt-4 prose-sm prose text-gray-900">
+                    {el.body.map((el) => {
+                      return <p>{el}</p>;
+                    })}
+                  </div>
+                </div>
+              );
+            })}
 
           <div className="pt-8 mt-8 border-t border-gray-200">
             <h2 className="text-sm font-medium text-gray-900">
               Fabric &amp; Care
             </h2>
 
-            <div className="mt-4 prose-sm prose text-gray-500">
+            <div className="mt-4 prose-sm prose text-gray-900">
               <ul role="list">
                 <li>Only the best materials</li>
 
@@ -159,7 +195,7 @@ export default function IntegrationLayout() {
                     International delivery
                   </span>
                 </dt>
-                <dd className="mt-1 text-sm text-gray-500">
+                <dd className="mt-1 text-sm text-gray-900">
                   Get your order in 2 years
                 </dd>
               </div>
@@ -185,7 +221,7 @@ export default function IntegrationLayout() {
                     Loyalty rewards
                   </span>
                 </dt>
-                <dd className="mt-1 text-sm text-gray-500">
+                <dd className="mt-1 text-sm text-gray-900">
                   Don&#039;t look at other tees
                 </dd>
               </div>

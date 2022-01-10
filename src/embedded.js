@@ -23,5 +23,9 @@ export function EmbeddedLayout(props) {
     dispatch({ type: "SET_MODAL_VIEW", view: false });
   });
 
+  supportModal.subscribe(Modal.Action.OPEN, () => {
+    dispatch({ type: "SET_MODAL_VIEW", view: true });
+  });
+
   return <div id="embedded-layout">{children}</div>;
 }

@@ -441,9 +441,11 @@ function Index() {
             <div className="space-y-6">
               <div className="m-0">
                 <div
-                  className="-mx-4 -mt-5 bg-white rounded-md"
+                  className="-mx-4 -mt-5 bg-gray-400 rounded-lg"
                   dangerouslySetInnerHTML={{ __html: videoHtml }}
                 ></div>
+
+                <div className="absolute bg-gray-200 aspect-h-9 aspect-w-12"></div>
 
                 <Recipes perPage={3} />
 

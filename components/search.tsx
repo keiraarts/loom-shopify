@@ -30,27 +30,6 @@ export default function Search({ search, setSearch }: SearchOptions) {
   return (
     <header className="z-20 w-full">
       <div className="relative z-10 flex flex-shrink-0 h-12 bg-white border-b border-gray-200 shadow-sm">
-        <button
-          type="button"
-          className="px-4 text-gray-500 border-r border-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500 md:hidden"
-        >
-          <span className="sr-only">Open sidebar</span>
-          <svg
-            className="w-6 h-6"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h7"
-            />
-          </svg>
-        </button>
         <div className="flex justify-between flex-1 px-4 sm:px-6">
           <div className="flex flex-1">
             <form className="flex w-full md:ml-0" action="#" method="GET">
@@ -127,7 +106,7 @@ export default function Search({ search, setSearch }: SearchOptions) {
                         className={cn({
                           "text-black": router.pathname === href,
                           "text-gray-500 ": router.pathname !== href,
-                          "px-3 py-2 text-sm font-medium hover:text-black rounded-md cursor-pointer ": true,
+                          "px-2 sm:px-3 py-2 text-sm font-medium hover:text-black rounded-md cursor-pointer ": true,
                         })}
                       >
                         {value}
@@ -145,7 +124,7 @@ export default function Search({ search, setSearch }: SearchOptions) {
                   `https://${state.username}.myshopify.com/admin/themes/current/editor?context=apps&template=index&activateAppId=5178a21d-051e-4b38-8992-ed13ae96cd73/app-block`
                 );
               }}
-              className="flex items-center justify-center p-1 text-black bg-gray-100 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              className="items-center justify-center hidden p-1 text-black bg-gray-100 rounded-full sm:flex hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               <svg
                 className="w-5 h-5"

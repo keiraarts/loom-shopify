@@ -1,4 +1,5 @@
 import cn from "classnames";
+import React from "react";
 
 type Steps = { step: number; title: string };
 
@@ -12,27 +13,39 @@ export default function SetupNav({
   current = 0,
   onClick = () => {},
 }: Options) {
-  const CheckmarkIcon = (
-    <svg
-      className="w-6 h-6 text-white"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path
-        fill-rule="evenodd"
-        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-        clip-rule="evenodd"
-      />
-    </svg>
-  );
-
   return (
-    <nav aria-label="Progress">
+    <nav
+      className="flex items-center justify-center mt-4 sm:mt-0 sm:block"
+      aria-label="Progress"
+      key={current}
+    >
+      <p className="text-xs font-medium sm:hidden">
+        Step {current + 1} of {steps.length}
+      </p>
+      <ol role="list" className="flex items-center ml-8 space-x-5 sm:hidden">
+        {steps.map((_, index) => {
+          return (
+            <li key={index}>
+              <a
+                href="#"
+                onClick={() => onClick(index)}
+                className={cn({
+                  "block w-2.5 h-2.5 rounded-full z-20": true,
+                  "completed bg-green-700": index < current,
+                  "next bg-gray-300": index > current,
+                  "current relative bg-green-800 ": current === index,
+                })}
+              >
+                <span className="sr-only">Step {current}</span>
+              </a>
+            </li>
+          );
+        })}
+      </ol>
+
       <ol
         role="list"
-        className="border border-gray-300 divide-y divide-gray-300 md:flex md:divide-y-0"
+        className="hidden border border-gray-300 divide-y divide-gray-300 sm:flex md:flex md:divide-y-0"
       >
         {steps.map((step, index) => {
           return (
@@ -90,3 +103,19 @@ export default function SetupNav({
     </nav>
   );
 }
+
+const CheckmarkIcon = (
+  <svg
+    className="w-6 h-6 text-white"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 20 20"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <path
+      fill-rule="evenodd"
+      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+      clip-rule="evenodd"
+    />
+  </svg>
+);

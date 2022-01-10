@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import FadeIn from "react-fade-in";
 import EmptyState from "./empty-state";
+import Image from "next/image";
 
 interface LoomSubmission {
   onComplete(args?: string): string;
@@ -42,7 +43,11 @@ export default function VideoAwait(props: LoomSubmission) {
         children={
           <>
             <div key={src} className="mt-5 bg-gray-200 aspect-w-6 aspect-h-3">
-              <img src={`/assets/${src}`} className="w-full object-fit" />
+              <Image
+                layout="fill"
+                src={`/assets/${src}`}
+                className="w-full object-fit"
+              />
             </div>
             <div className="flex flex-row items-stretch max-w-sm gap-4 mx-auto my-5 text-center"></div>
           </>

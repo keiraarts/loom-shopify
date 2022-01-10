@@ -41,7 +41,7 @@ export default function EmptyState({
                   }}
                 >
                   <div className="relative inline-flex flex-col px-3 py-1 mx-auto mb-3 text-white transition-all transform bg-blue-500 rounded-full opacity-0 cursor-pointer sm:-ml-2 group-hover:opacity-100 duration-50 ">
-                    <span className="absolute w-5 h-5 transform rotate-45 bg-blue-500 left-5 top-4"></span>
+                    <span className="absolute w-5 h-5 transform rotate-45 bg-blue-500 left-5 top-2"></span>
                     <span className="relative inline-block ">
                       Need any help?
                     </span>
