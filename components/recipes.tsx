@@ -53,13 +53,6 @@ const recipes: Recipe<string>[] = [
     content: `You might like to have applications for partners, affiliates, or referal sites submit an application with a video component.`,
   },
   {
-    icon: CakeIcon,
-    href: "/app/recipes/post-purchase-reviews",
-    style: "text-blue-700 rounded-lg bg-blue-50",
-    title: "Post-purchase review",
-    content: `Let customers record a review of their product a few days after purchase.`,
-  },
-  {
     icon: MailIcon,
     href: "/app/recipes/file-attachments",
     style: "text-blue-700 rounded-lg bg-blue-50",

@@ -2,8 +2,7 @@
 {{ header_font | font_face }}
 
 <div id="app" data-id="{{ block.settings.colour }}" class="w-full app-block-products hidden-on-mobile sm:flex md:block" style="background-color: {{ block.settings.background_color }}">
-    <div class="mx-auto text-center" style="margin-bottom: {{ block.settings.margin_bottom }}px; margin-top: {{ block.settings.margin_top }}px">
-
+    <div class="mx-auto text-center" id="app-wrapper" style="margin-bottom: {{ block.settings.margin_bottom }}px; margin-top: {{ block.settings.margin_top }}px">
 
         <div id="icon-section"></div>
         <div id="video-headlines"></div>
@@ -114,7 +113,6 @@
             "type": "text",
             "id": "api_key",
             "label": "Live API Key",
-            "default": "47a9781a",
             "info": "Use your own branding by registering an API key. [Learn more](https://loom.com/developer-portal)"
         }
     ]

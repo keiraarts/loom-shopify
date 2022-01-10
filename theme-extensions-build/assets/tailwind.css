@@ -811,8 +811,8 @@ select {
   height: 4rem;
 }
 
-.max-h-16 {
-  max-height: 4rem;
+.h-full {
+  height: 100%;
 }
 
 .w-10 {
@@ -829,6 +829,10 @@ select {
 
 .w-16 {
   width: 4rem;
+}
+
+.w-auto {
+  width: auto;
 }
 
 .w-full {

@@ -1,14 +1,26 @@
 {% assign header_font = settings.header_font_new %}
+
+{% assign icons_class = 'justify-center' %}
+{% if block.settings.horizontal_alignment == 'ml-0 text-left' %}
+    {% assign icons_class = 'justify-center' %}
+{% endif %}
+
 {{ header_font | font_face }}
 
-<div id="app" data-id="{{ block.settings.colour }}" class="w-full hidden-on-mobile sm:flex md:block" style="background-color: {{ block.settings.background_color }}">
-    <div class="max-w-md px-4 py-12 sm:py-24 sm:px-6 lg:px-8 lg:py-24 {{ block.settings.max_width }} {{ block.settings.horizontal_alignment }}">
+<div id="app" data-id="{{ block.settings.colour }}" class="w-full hidden-on-mobile sm:flex md:block" style="background-color: {{ block.settings.background_color }}; margin-bottom: {{ block.settings.margin_bottom }}px; margin-top: {{ block.settings.margin_top }}px;">
+    <div class="max-w-md px-4 py-12 sm:py-24 sm:px-6 lg:px-8 lg:py-24 {{ block.settings.max_width }} {{ block.settings.horizontal_alignment }}" id="app-wrapper">
 
-        <figure class="flex flex-row items-center justify-center w-full mb-2 icon-item" id="icon-section">
-            {%- if block.settings.logo_image and block.settings.show_icon == true -%}
-                <img class="mb-5 max-h-16 mx-2 sm:mx-4 {{ block.settings.horizontal_alignment }}" src="{{ block.settings.logo_image | img_url: '200px' }}" alt="{{ block.settings.logo_image.alt }}" loading="lazy" width="{{block.settings.logo_image.width}}" height="{{block.settings.logo_image.height}}">
-            {%- elsif block.settings.show_icon == true -%}
-                <img class="mb-5 w-16 h-16 mx-2 sm:mx-4 {{ block.settings.horizontal_alignment }}" src="{{ 'penguin-girl.png' | asset_url }}" loading="lazy" width="300" height="300">
+        <figure class="flex flex-row items-center {{icons_class}} w-full mb-2 icon-item" id="icon-section">
+            {%- if block.settings.logo_image -%}
+                <div style="height: {{ block.settings.image_height }}px;">
+                    <img class="mb-5 w-auto mx-2 h-full sm:mx-4 {{ block.settings.horizontal_alignment }}" src="{{ block.settings.logo_image | image_url: height: 500 }}" alt="{{ block.settings.logo_image.alt }}" loading="lazy" width="{{block.settings.logo_image.width}}" height="{{block.settings.logo_image.height}}">
+                </div>
+            {%- endif -%}
+
+            {%- if block.settings.show_icon == true -%}
+                <a href="https://honestycore.com" target="_blank">
+                    <img class="mb-5 w-16 h-16 mx-2 sm:mx-4 {{ block.settings.horizontal_alignment }}" src="{{ 'penguin-girl.png' | asset_url }}" loading="lazy" width="300" height="300">
+                </a>
             {%- endif -%}
 
             {%- if block.settings.show_sdk == true -%}
@@ -24,7 +36,8 @@
 
         <span class="mb-5 sm:text-4xl" id="video-headlines">
             <h2 class="block custom-font {{ block.settings.font_size }}" style="color: {{ block.settings.text_color }}; font-family: {{ block.settings.heading_font.family }}; font-weight: {{ block.settings.heading_font.weight }}">{{ block.settings.heading | default: 'Have a complicated question?' }}</h3>
-        </span>
+            <p class="block custom-font h3" style="color: {{ block.settings.text_color }}; font-family: {{ block.settings.heading_font.family }};">{{ block.settings.subheading }}</h3>
+       </span>
 
         <span class="flex flex-col mb-5 sm:text-4xl" id="success-message" style="display: none!important">
             <h2 class="block custom-font {{ block.settings.font_size }}" style="color: {{ block.settings.text_color }}; font-family: {{ block.settings.heading_font.family }}; font-weight: {{ block.settings.heading_font.weight }}">Video message sent!</h3>
@@ -87,6 +100,10 @@
             "label": "Text",
             "default": "<p>Send us a video message to get our help finding the best product for you.</p>"
         }, {
+            "type": "richtext",
+            "id": "subheading",
+            "label": "Text"
+        }, {
             "type": "text",
             "id": "cta",
             "label": "Button text",
@@ -140,6 +157,24 @@
             ],
             "default": "mx-auto text-center"
         }, {
+            "type": "range",
+            "id": "margin_top",
+            "min": -75,
+            "max": 75,
+            "step": 5,
+            "unit": "px",
+            "label": "Top margin",
+            "default": 0
+        }, {
+            "type": "range",
+            "id": "margin_bottom",
+            "min": -75,
+            "max": 75,
+            "step": 5,
+            "unit": "px",
+            "label": "Bottom margin",
+            "default": 0
+        }, {
             "type": "header",
             "content": "Font Styles"
         }, {
@@ -188,13 +223,21 @@
             "id": "logo_image",
             "label": "Icon"
         }, {
+            "type": "range",
+            "id": "image_height",
+            "min": 10,
+            "max": 100,
+            "step": 5,
+            "unit": "px",
+            "label": "Image size",
+            "default": 20
+        }, {
             "type": "header",
             "content": "Account"
         }, {
             "type": "text",
             "id": "api_key",
             "label": "Live API Key",
-            "default": "47a9781a",
             "info": "Use your own branding by registering an API key. [Learn more](https://loom.com/developer-portal)"
         }
     ]

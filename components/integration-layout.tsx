@@ -1,12 +1,12 @@
 type image = {
   src: string;
-  alt: string;
-  className: string;
+  alt?: string;
+  className?: string;
 };
 
 type content = {
   heading: string;
-  body: string[] | React.ReactElement[];
+  body: React.ReactNode[];
 };
 
 type feature = {
@@ -18,10 +18,9 @@ type feature = {
 export interface RecipeDetails {
   key: string;
   title: string;
-  rating: number | ((arg: string) => boolean);
-  images?: image[];
+  images: image[];
+  prose: content[];
   usage?: string;
-  prose?: content[];
   features?: feature[];
 }
 
@@ -29,6 +28,7 @@ type RecipeObject = {
   recipe: RecipeDetails;
 };
 
+import Image from "next/image";
 export default function IntegrationLayout(props: RecipeObject) {
   const recipe = props.recipe;
   if (!recipe || !recipe.title)
@@ -47,61 +47,6 @@ export default function IntegrationLayout(props: RecipeObject) {
           <div className="mt-4">
             <h2 className="sr-only">Reviews</h2>
             <div className="flex items-center">
-              <p className="text-sm text-gray-700">
-                {recipe.rating}
-                <span className="sr-only"> out of 5 stars</span>
-              </p>
-              <div className="flex items-center ml-1">
-                <svg
-                  className="flex-shrink-0 w-5 h-5 text-yellow-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-
-                <svg
-                  className="flex-shrink-0 w-5 h-5 text-yellow-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-
-                <svg
-                  className="flex-shrink-0 w-5 h-5 text-yellow-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-
-                <svg
-                  className="flex-shrink-0 w-5 h-5 text-yellow-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-
-                <svg
-                  className="flex-shrink-0 w-5 h-5 text-gray-200"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-              </div>
               <div
                 aria-hidden="true"
                 className="ml-4 text-sm text-gray-300"
@@ -118,17 +63,25 @@ export default function IntegrationLayout(props: RecipeObject) {
           </div>
         </div>
 
-        <div className="mt-8 ">
+        <div className="mt-2 ">
           <h2 className="sr-only">Images</h2>
 
           <div className="grid grid-cols-1 ">
-            <div className="aspect-w-3 aspect-h-2">
-              <img
-                className="object-cover rounded-lg"
-                src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80"
-                alt=""
-              />
-            </div>
+            {recipe.images.map((el) => {
+              return (
+                <div
+                  key={el.src}
+                  className="relative block w-full mb-10 bg-gray-400 aspect-w-6 aspect-h-3"
+                >
+                  <Image
+                    layout="fill"
+                    className="object-fill"
+                    src={el.src}
+                    alt={el?.alt}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
 
@@ -137,7 +90,7 @@ export default function IntegrationLayout(props: RecipeObject) {
             recipe.prose.map((el) => {
               return (
                 <div className="mt-10">
-                  <h2 className="text-sm font-medium text-gray-900">
+                  <h2 className="text-sm font-medium text-black">
                     {el.heading}
                   </h2>
 
@@ -150,25 +103,7 @@ export default function IntegrationLayout(props: RecipeObject) {
               );
             })}
 
-          <div className="pt-8 mt-8 border-t border-gray-200">
-            <h2 className="text-sm font-medium text-gray-900">
-              Fabric &amp; Care
-            </h2>
-
-            <div className="mt-4 prose-sm prose text-gray-900">
-              <ul role="list">
-                <li>Only the best materials</li>
-
-                <li>Ethically and locally made</li>
-
-                <li>Pre-washed and pre-shrunk</li>
-
-                <li>Machine wash cold with similar colors</li>
-              </ul>
-            </div>
-          </div>
-
-          <section aria-labelledby="policies-heading" className="mt-10">
+          <section aria-labelledby="policies-heading" className="hidden mt-5">
             <h2 id="policies-heading" className="sr-only">
               Our Policies
             </h2>
