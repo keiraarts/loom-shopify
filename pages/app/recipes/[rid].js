@@ -12,7 +12,7 @@ function Index() {
   const router = useRouter();
   const { rid } = router.query;
 
-  const recipe = Content.find((el) => el.key === rid);
+  const recipe = Content.find((el) => el.key === rid) || Content[0];
   // Allow search via email and page urls
   const [search, setSearch] = useState();
 

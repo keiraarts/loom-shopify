@@ -19,7 +19,7 @@ interface LoomSubmission {
 export default function VideoReply(props: LoomSubmission) {
   const btnRef = useRef<HTMLButtonElement>();
   const state = useCountState();
-  const { data: storefront } = useStorefront();
+  const { data: storefront, mutate } = useStorefront();
   const instance = CreateInstance(state as any);
 
   const [body, setBody] = useState("This is a test that messaging works!");
@@ -46,6 +46,14 @@ export default function VideoReply(props: LoomSubmission) {
       .then(() => (btnRef.current.innerHTML = "Email sent!"))
       .catch((err) => console.error(err));
   }, [body, alias]);
+
+  const completeSetup = () => {
+    instance
+      // Optimisically update UI that the account is setup to accept videos
+      .put(`/${storefront.username}/storefront`, { is_setup: true })
+      .then(() => mutate({ ...storefront, is_setup: true }, false))
+      .catch((err) => console.error(err));
+  };
 
   return (
     <FadeIn className="flex items-center justify-center flex-1 h-full">
@@ -132,7 +140,10 @@ export default function VideoReply(props: LoomSubmission) {
                   Send message
                 </button>
                 <button
-                  onClick={() => props.onComplete({ body, alias })}
+                  onClick={() => {
+                    props.onComplete({ body, alias });
+                    completeSetup();
+                  }}
                   className="inline-flex items-center px-4 py-2 text-sm font-medium text-black bg-gray-300 border border-transparent rounded-md shadow-sm cursor-pointer hover:bg-indigo-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   Skip

@@ -68,15 +68,16 @@ export default function RecipeCards({ perPage = 10 }: { perPage: number }) {
     <div className="-mx-6 overflow-hidden sm:-mx-6 sm:divide-y-0 sm:grid sm:grid-cols-1 sm:gap-px">
       <FadeIn
         key={start}
-        className="flex flex-row pb-2 m-1 space-x-0 space-y-3 overflow-scroll sm:space-x-0 sm:flex-col sm:overflow-hidden sm:m-2 divide-y-5"
-        childClassName="w-full min-w-full h-full flex-1 px-4 sm:px-0 pb-5"
+        transitionDuration={300}
+        className="flex flex-row pb-2 m-1 space-x-0 space-y-1 overflow-scroll sm:space-x-0 sm:flex-col sm:overflow-hidden sm:m-2 divide-y-3"
+        childClassName="w-full min-w-full h-full flex-1 px-4 sm:px-0 pb-5 sm:pb-2"
       >
         {recipes
           .slice(start * perPage, start * perPage + perPage)
           .map(({ icon, title, content, style, href }) => {
             return (
               <Link href={href}>
-                <div className="relative p-3 bg-white rounded-sm shadow-lg sm:shadow-sm group focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
+                <div className="relative p-4 bg-white rounded-md shadow-lg sm:shadow-sm group focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
                   <div className="mt-0">
                     <div>
                       <span className={`inline-flex p-2 ${style}`}>

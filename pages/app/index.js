@@ -50,7 +50,8 @@ function Index() {
 
   useEffect(() => {
     // If merchant added the app but is waiting for a customer video
-    if (storefront.is_compatible) setStep(4);
+    if (videos.length === 0 && storefront.is_compatible) setStep(1);
+    if (videos.length === 0 && storefront.is_setup) setStep(4);
   }, [storefront.id]);
 
   // Allow search via email and page urls
@@ -185,7 +186,7 @@ function Index() {
             )}
 
             {/*  Renders a list of videos without setup prompts */}
-            {storefront?.is_compatible && storefront?.is_setup && (
+            {storefront?.is_setup && (
               <div className="w-full h-full px-2 mx-auto sm:pt-2 max-w-7xl sm:px-2 lg:px-2">
                 <div className="flex">
                   <h1 className="flex-1 hidden text-2xl font-bold text-gray-900 sr-only">
@@ -285,17 +286,18 @@ function Index() {
 
                 {videos.length > 0 && (
                   <section
-                    className="pb-16 mt-4"
+                    className="pb-16 mt-4 sm:-mx-6"
                     aria-labelledby="gallery-heading"
                   >
                     <h2 id="gallery-heading" className="sr-only">
                       Recently viewed
                     </h2>
-                    <div className="overflow-hidden bg-white sm:rounded-md ">
+                    <div className="overflow-hidden sm:rounded-md ">
                       <FadeIn
                         role="list"
                         wrapperTag="ul"
                         className="divide-y divide-gray-200"
+                        childClassName="border-b border-gray-200"
                       >
                         {videos.map((video, index) => {
                           const char = video.id.toUpperCase().charCodeAt(0);
@@ -309,10 +311,10 @@ function Index() {
                                   "bg-blue-100": loom.id === video.id,
                                   "bg-transparent hover:bg-blue-100":
                                     loom.id !== video.id,
-                                  "block": true,
+                                  "block bg-white": true,
                                 })}
                               >
-                                <div className="flex items-center px-4 py-3 sm:px-6">
+                                <div className="flex items-center px-4 py-4 sm:px-6">
                                   <div className="flex items-center flex-1 min-w-0">
                                     <div className="flex-shrink-0">
                                       <span
@@ -436,7 +438,10 @@ function Index() {
 
           <aside
             key={loom.id}
-            className="hidden p-6 border-r border-gray-200 bg-shopify-grey w-96 lg:w-1/3 xl:max-w-sm sm:block"
+            className={cn({
+              "hidden p-6 border-r border-gray-200 bg-shopify-grey w-96 lg:w-1/3 xl:max-w-sm sm:block": true,
+              "bg-white sm:bg-white": loom.id,
+            })}
           >
             <div className="space-y-6">
               <div className="m-0">
@@ -447,7 +452,7 @@ function Index() {
 
                 <div className="absolute bg-gray-200 aspect-h-9 aspect-w-12"></div>
 
-                <Recipes perPage={3} />
+                {!loom.id && <Recipes perPage={3} />}
 
                 <div
                   className={cn({
@@ -606,17 +611,21 @@ function Index() {
 
                   <div className="flex justify-between py-3 text-sm font-medium">
                     <dt className="text-gray-500">Page</dt>
-                    <dd className="text-gray-900">{loom.page_url}</dd>
+                    <dd className="text-gray-900">{loom?.page_url ?? "/"}</dd>
                   </div>
 
                   <div className="flex justify-between py-3 text-sm font-medium">
                     <dt className="text-gray-500">Customer Name</dt>
-                    <dd className="text-gray-900">{customer?.displayName}</dd>
+                    <dd className="text-gray-900">
+                      {customer?.displayName ?? loom.email?.split("@")?.[0]}
+                    </dd>
                   </div>
 
                   <div className="flex justify-between py-3 text-sm font-medium">
                     <dt className="text-gray-500">Order Count</dt>
-                    <dd className="text-gray-900">{customer?.ordersCount}</dd>
+                    <dd className="text-gray-900">
+                      {customer?.ordersCount ?? "Unknown"}
+                    </dd>
                   </div>
 
                   <div className="flex justify-between py-3 text-sm font-medium">
@@ -628,7 +637,9 @@ function Index() {
 
                   <div className="flex justify-between py-3 text-sm font-medium">
                     <dt className="text-gray-500">Note</dt>
-                    <dd className="text-gray-900 truncate">{customer?.note}</dd>
+                    <dd className="text-gray-900 truncate">
+                      {customer?.note ?? "No notes"}
+                    </dd>
                   </div>
                 </dl>
               </div>

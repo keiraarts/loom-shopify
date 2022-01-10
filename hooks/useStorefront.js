@@ -21,7 +21,6 @@ function useStorefront() {
     {
       // This is useful for testing msw in test functions
       initialData: process.env.JEST_WORKER_ID ? { username: "demo" } : {},
-      revalidateOnMount: true,
     }
   );
 
