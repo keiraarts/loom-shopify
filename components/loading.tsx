@@ -1,4 +1,4 @@
-function Loading({ className }: { className: string }): React.ReactNode {
+function Loading({ className }: { className?: string }): JSX.Element {
   return (
     <div className={className}>
       <div className="mx-auto">

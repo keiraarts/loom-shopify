@@ -9,7 +9,7 @@ import { Redirect } from "@shopify/app-bridge/actions";
 import { Context } from "@shopify/app-bridge-react";
 
 interface LoomSubmission {
-  onComplete(args?: string): string;
+  onComplete(args?: string): void;
   quote?: string;
 }
 

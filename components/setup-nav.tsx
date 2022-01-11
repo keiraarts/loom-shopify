@@ -1,7 +1,7 @@
 import cn from "classnames";
 import React from "react";
 
-type Steps = { step: number; title: string };
+type Steps = { step?: number; title: string };
 
 interface Options {
   readonly steps: Steps[];

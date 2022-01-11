@@ -8,7 +8,7 @@ import Link from "next/link";
 
 interface SearchOptions {
   search: string;
-  setSearch(arg: string): string;
+  setSearch(arg: string): void;
 }
 
 export default function Search({ search, setSearch }: SearchOptions) {

@@ -13,7 +13,7 @@ interface EmailSubmission {
 }
 
 interface LoomSubmission {
-  onComplete(arg: { body?: string; alias?: string }): string;
+  onComplete(arg: { body?: string; alias?: string }): void;
 }
 
 export default function VideoReply(props: LoomSubmission) {

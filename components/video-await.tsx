@@ -4,7 +4,7 @@ import EmptyState from "./empty-state";
 import Image from "next/image";
 
 interface LoomSubmission {
-  onComplete(args?: string): string;
+  onComplete(args?: string): void;
 }
 
 export default function VideoAwait(props: LoomSubmission) {
