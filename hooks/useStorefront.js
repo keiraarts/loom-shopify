@@ -20,13 +20,15 @@ function useStorefront() {
     fetcher,
     {
       // This is useful for testing msw in test functions
-      initialData: process.env.JEST_WORKER_ID ? { username: "demo" } : {},
+      initialData: process.env.JEST_WORKER_ID
+        ? { username: "demo" }
+        : undefined,
     }
   );
 
   return {
     data: data || { id: false, is_compatible: false },
-    isLoading: !error && !data,
+    isLoading: !data && !error,
     isError: error,
     mutate,
   };

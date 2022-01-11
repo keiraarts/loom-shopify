@@ -60,9 +60,9 @@ export default function ThemePreview(props: LoomSubmission) {
 
                   {themes
                     .filter(({ sections }) => sections)
-                    .map(({ id, name, role }) => {
+                    .map(({ id, name, role }, index) => {
                       return (
-                        <option value={id}>
+                        <option key={index} value={id}>
                           {name} ({role})
                         </option>
                       );
