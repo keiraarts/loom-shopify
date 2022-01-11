@@ -144,6 +144,14 @@ function Index() {
     }
   };
 
+  const requestReview = () => {
+    dispatch({ type: "SET_AWAIT_FEEDBACK", state: true });
+  };
+
+  const completeSetup = () => {
+    dispatch({ type: "SET_AWAIT_FEEDBACK", state: false });
+  };
+
   return (
     <React.Fragment>
       <Search search={search} setSearch={setSearch} />
@@ -169,7 +177,7 @@ function Index() {
               "flex-col justify-between flex-1 overflow-y-auto": true,
             })}
           >
-            {(!storefront?.is_setup || storefront?.await_feedback) && (
+            {(!storefront?.is_setup || state.await_feedback) && (
               <>
                 <SetupNav
                   steps={[
@@ -181,15 +189,32 @@ function Index() {
                   onClick={setStep}
                 />
 
+                {/*  This step only loads for users that is_setup = false */}
                 {step === 0 && <ThemePreview onComplete={handleStep} />}
+                {/*  Here we educate how to get the app embedded into a theme */}
                 {step === 1 && <VideoAwait onComplete={handleStep} />}
-                {step === 2 && <VideoReply onComplete={handleStep} />}
-                {step === 3 && <SetupReview />}
+                {/*  We save an attribute as is_setup if a message comes through */}
+                {step === 2 && (
+                  <VideoReply
+                    onComplete={() => {
+                      // The reviews section acts like an empty placeholder ..
+                      // .. while the user doesn't have any videos to watch.
+
+                      // For the initial setup redirect to the review
+                      if (videos.length < 2) requestReview();
+                      // If videos already exist, skip this part
+                      else completeSetup();
+                      handleStep();
+                    }}
+                  />
+                )}
+                {/*  We'll prompt user for a review if we are explictly awaiting it */}
+                {step === 3 && <SetupReview onComplete={completeSetup} />}
               </>
             )}
 
             {/*  Renders a list of videos without setup prompts */}
-            {storefront?.is_setup && (
+            {storefront?.is_setup && !state.await_feedback && (
               <div className="w-full h-full px-2 mx-auto sm:pt-2 max-w-7xl sm:px-2 lg:px-2">
                 <div className="flex">
                   <h1 className="flex-1 hidden text-2xl font-bold text-gray-900 sr-only">
@@ -275,7 +300,7 @@ function Index() {
                     }
                     onComplete={() => {
                       // Force user interface to show the tutorial temporarily
-                      mutate({ is_setup: false }, false);
+                      dispatch({ type: "SET_AWAIT_FEEDBACK", state: true });
                       setStep(1);
                     }}
                   />

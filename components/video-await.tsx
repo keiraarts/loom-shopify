@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import FadeIn from "react-fade-in";
 import EmptyState from "./empty-state";
 import Image from "next/image";
+import cn from "classnames";
 
 interface LoomSubmission {
   onComplete(args?: string): void;
@@ -19,21 +20,30 @@ export default function VideoAwait(props: LoomSubmission) {
             From your theme editor click on{" "}
             <span
               onClick={() => setSrc("add-app-extension.png")}
-              className="text-blue-500 underline cursor-pointer"
+              className={cn({
+                "text-blue-800 text-bold": src === "add-app-extension.png",
+                "underline text-blue-500 cursor-pointer": true,
+              })}
             >
               Add section
             </span>{" "}
             to preview our app. Try clicking on{" "}
             <span
               onClick={() => setSrc("try-a-recording.png")}
-              className="text-blue-500 underline cursor-pointer"
+              className={cn({
+                "text-blue-800 text-bold": src === "try-a-recording.png",
+                "underline text-blue-500 cursor-pointer": true,
+              })}
             >
               record screen
             </span>{" "}
             to open the recording overlay, and then{" "}
             <span
               onClick={() => setSrc("create-video-extension.png")}
-              className="text-blue-500 underline cursor-pointer"
+              className={cn({
+                "text-blue-800 text-bold": src === "create-video-extension.png",
+                "underline text-blue-500 cursor-pointer": true,
+              })}
             >
               start recording
             </span>

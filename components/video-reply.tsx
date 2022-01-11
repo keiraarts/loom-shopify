@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useRef } from "react";
-import { useCountState } from "../src/app-context";
+import { useCountState, useCountDispatch } from "../src/app-context";
 import { CreateInstance } from "../src/axios";
 
 import FadeIn from "react-fade-in";
@@ -19,6 +19,7 @@ interface LoomSubmission {
 export default function VideoReply(props: LoomSubmission) {
   const btnRef = useRef<HTMLButtonElement>();
   const state = useCountState();
+  const dispatch = useCountDispatch();
   const { data: storefront, mutate } = useStorefront();
   const instance = CreateInstance(state as any);
 
@@ -27,8 +28,8 @@ export default function VideoReply(props: LoomSubmission) {
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    props.onComplete({ body, alias });
     await handleSend();
+    props.onComplete({ body, alias });
   };
 
   const handleSend = useCallback(async () => {
@@ -48,15 +49,17 @@ export default function VideoReply(props: LoomSubmission) {
   }, [body, alias]);
 
   const completeSetup = () => {
-    instance
-      // Optimisically update UI that the account is setup to accept videos
-      .put(`/${storefront.username}/storefront`, { is_setup: true })
-      .then(() =>
-        // Finalize the setup to avoid showing the onboarding workflow
-        // Temporarily prompt the review interface to collect feedback
-        mutate({ ...storefront, is_setup: true, await_feedback: true }, false)
-      )
-      .catch((err) => console.error(err));
+    if (!storefront.is_setup) {
+      instance
+        // Optimisically update UI that the account is setup to accept videos
+        .put(`/${storefront.username}/storefront`, { is_setup: true })
+        .then(() =>
+          // Finalize the setup to avoid showing the onboarding workflow
+          // Temporarily prompt the review interface to collect feedback
+          mutate({ ...storefront, is_setup: true }, false)
+        )
+        .catch((err) => console.error(err));
+    }
   };
 
   return (

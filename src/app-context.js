@@ -26,6 +26,10 @@ function countReducer(state, action) {
       return { ...state, view: action?.view ?? false };
     }
 
+    case "SET_AWAIT_FEEDBACK": {
+      return { ...state, await_feedback: action.state };
+    }
+
     case "SET_MODAL_VIEW": {
       const view = action?.view;
       const isDuplicate = state?.modal_view === action?.view;
@@ -129,6 +133,7 @@ function CountProvider({ children, ...args }) {
   const [state, dispatch] = React.useReducer(countReducer, {
     session_token: false,
     tutorial: "introduction",
+    await_feedback: false,
     view: "dashboard",
     modal_view: false,
     ...args,

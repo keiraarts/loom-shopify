@@ -55,7 +55,6 @@ export default function SetupReview(props: LoomSubmission) {
                 onClick={() => {
                   // Hide this user interface from re-appearing unless ..
                   // .. the user repeats the entire onboarding workflow
-                  mutate({ ...data, await_feedback: false }, false);
                   props.onComplete();
                 }}
                 className="inline-flex items-center px-4 text-sm font-medium text-black bg-gray-100 border border-transparent rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 "
