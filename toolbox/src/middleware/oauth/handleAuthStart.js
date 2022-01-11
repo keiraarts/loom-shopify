@@ -1,3 +1,4 @@
+import { setCookies } from "cookies-next";
 const nonce = require("nonce");
 const createNonce = nonce();
 
@@ -19,11 +20,12 @@ const handleAuthStart = (req, res) => {
     shop = shop + ".myshopify.com";
   }
 
+  setCookies("shop", shop, { req, res, maxAge: 60 * 6 * 24 });
   var authUrl = "https://"
     .concat(shop, "/admin/oauth/authorize?client_id=")
     .concat(process.env.SHOPIFY_API_PUBLIC_KEY, "&scope=")
     .concat(scopes, "&redirect_uri=")
-    .concat(encodeURI("https://" + redirect_uri), "&state=")
+    .concat(encodeURI("https://" + redirect_uri + `?shop=${shop}`), "&state=")
     .concat(createNonce());
 
   res.redirect(authUrl);

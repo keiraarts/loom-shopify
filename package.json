@@ -49,6 +49,7 @@
     "browser-image-compression": "^1.0.14",
     "classnames": "^2.2.6",
     "cloudinary": "^1.24.0",
+    "cookies-next": "^2.0.3",
     "cross-env": "^7.0.3",
     "dotenv": "^8.6.0",
     "eslint-config-airbnb": "^18.2.1",

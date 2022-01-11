@@ -13,6 +13,7 @@
     "@loomhq/loom-embed": "^1.2.8",
     "@loomhq/loom-sdk": "^2.21.2",
     "@tailwindcss/forms": "^0.3.4",
+    "cookies-next": "^2.0.3",
     "react-confetti": "^6.0.1",
     "react-use": "^17.3.1"
   },

@@ -30,7 +30,7 @@ module.exports = withOffline(
 
     async headers() {
       return [
-        {
+        /*   {
           source: "/app/:path*",
           headers: [
             {
@@ -52,11 +52,11 @@ module.exports = withOffline(
           headers: [
             {
               key: "Content-Security-Policy",
-              value:
-                "frame-ancestors https://:shop.myshopify.com https://admin.shopify.com;",
+              // https://nextjs.org/docs/api-reference/next.config.js/headers
+              value: `frame-ancestors https://:shop.myshopify.com https://admin.shopify.com;`,
             },
           ],
-        },
+        }, */
       ];
     },
 
