@@ -53,9 +53,7 @@ function SessionProvider(props) {
 
   getSessionToken(app)
     .then((session_token) => {
-      const decoded = decode(session_token);
       const username = shopOrigin.replace(".myshopify.com", "");
-
       dispatch({ type: "SET_USERNAME", username: username });
       const axios = CreateInstance({ username, session_token });
 
@@ -77,20 +75,6 @@ function SessionProvider(props) {
           const redirect = Redirect.create(app);
           const destination = `https://${process.env.TUNNEL}/api/auth/${username}`;
           redirect.dispatch(Redirect.Action.REMOTE, destination);
-        })
-
-        .finally((storefront) => {
-          LogRocket?.init("4bg6ok/disputecore");
-          if (typeof window !== "undefined" && storefront?.username) {
-            const data = {
-              user_id: decoded?.sub,
-              username: decoded?.dest,
-              email: storefront?.email,
-              session_token: session_token,
-              decoded: JSON.stringify(decoded),
-              created_at: storefront?.date_installed,
-            };
-          }
         });
     })
     .catch((err) => console.warn(err));
