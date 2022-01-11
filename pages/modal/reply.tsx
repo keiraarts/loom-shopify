@@ -82,8 +82,8 @@ export default function SupportPage({ isEmbedded }) {
                 })}
               >
                 <Support
-                  email={"Sending to " + state?.loom?.email ?? "..."}
-                  metadata={"From: " + storefront.email}
+                  email={"To " + state?.loom?.email ?? "..."}
+                  metadata={storefront.email}
                 />
               </span>
               <button
@@ -91,7 +91,7 @@ export default function SupportPage({ isEmbedded }) {
                 value="Submit"
                 ref={buttonRef}
                 className={cn({
-                  "sm:bg-gray-800 hover:bg-gray-800": sent,
+                  "sm:bg-gray-800 hover:bg-gray-800 whitespace-nowrap": sent,
                   "inline-flex justify-center px-5 py-2 text-sm font-medium text-white bg-green-700 border border-transparent rounded-md shadow-sm hover:bg-green-800 0 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500": true,
                 })}
               >

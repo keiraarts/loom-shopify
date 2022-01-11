@@ -29,7 +29,7 @@ export function EmbeddedLayout(props) {
 
     const timeouta = setTimeout(() => {
       app.dispatch(Modal.data(_state));
-    }, 1000 * 10);
+    }, 1000 * 5);
 
     const timeoutb = setTimeout(() => {
       app.dispatch(Modal.data(_state));

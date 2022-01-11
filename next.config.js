@@ -28,6 +28,38 @@ module.exports = withOffline(
       CLOUDFRONT_DISTRIBUTION: process.env.CLOUDFRONT_DISTRIBUTION,
     },
 
+    async headers() {
+      return [
+        {
+          source: "/app/:path*",
+          headers: [
+            {
+              key: "x-mock-content-security-policy",
+              value:
+                "frame-ancestors https://*.myshopify.com https://admin.shopify.com;",
+            },
+          ],
+        },
+
+        {
+          source: "/:path*",
+          has: [
+            {
+              type: "query",
+              key: "shop",
+            },
+          ],
+          headers: [
+            {
+              key: "Content-Security-Policy",
+              value:
+                "frame-ancestors https://:shop.myshopify.com https://admin.shopify.com;",
+            },
+          ],
+        },
+      ];
+    },
+
     eslint: {
       // Warning: Dangerously allow production builds to successfully complete even if
       // your project has ESLint errors.
