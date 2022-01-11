@@ -9,7 +9,12 @@ import { Redirect } from "@shopify/app-bridge/actions";
 import { Context } from "@shopify/app-bridge-react";
 import useStorefront from "../hooks/useStorefront";
 
-export default function SetupReview() {
+interface LoomSubmission {
+  onComplete?: () => void;
+  quote?: string;
+}
+
+export default function SetupReview(props: LoomSubmission) {
   const dispatch = useCountDispatch();
   const { width, height } = useWindowSize();
   const { data, mutate } = useStorefront();
@@ -47,12 +52,12 @@ export default function SetupReview() {
             <div className="flex items-center justify-center w-full sm:-mt-2">
               <button
                 type="submit"
-                onClick={() =>
-                  mutate(
-                    { ...data, is_setup: true, is_compatible: true },
-                    false
-                  )
-                }
+                onClick={() => {
+                  // Hide this user interface from re-appearing unless ..
+                  // .. the user repeats the entire onboarding workflow
+                  mutate({ ...data, await_feedback: false }, false);
+                  props.onComplete();
+                }}
                 className="inline-flex items-center px-4 text-sm font-medium text-black bg-gray-100 border border-transparent rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 "
               >
                 Maybe later

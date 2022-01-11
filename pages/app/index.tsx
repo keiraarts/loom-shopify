@@ -169,19 +169,18 @@ function Index() {
               "flex-col justify-between flex-1 overflow-y-auto": true,
             })}
           >
-            {!storefront?.is_setup && (
+            {(!storefront?.is_setup || storefront?.await_feedback) && (
               <>
-                {!storefront?.is_compatible && (
-                  <SetupNav
-                    steps={[
-                      { title: "View preview" },
-                      { title: "Record a video" },
-                      { title: "Send a reply" },
-                    ]}
-                    current={step}
-                    onClick={setStep}
-                  />
-                )}
+                <SetupNav
+                  steps={[
+                    { title: "View preview" },
+                    { title: "Record a video" },
+                    { title: "Send a reply" },
+                  ]}
+                  current={step}
+                  onClick={setStep}
+                />
+
                 {step === 0 && <ThemePreview onComplete={handleStep} />}
                 {step === 1 && <VideoAwait onComplete={handleStep} />}
                 {step === 2 && <VideoReply onComplete={handleStep} />}

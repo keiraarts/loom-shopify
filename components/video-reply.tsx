@@ -51,7 +51,11 @@ export default function VideoReply(props: LoomSubmission) {
     instance
       // Optimisically update UI that the account is setup to accept videos
       .put(`/${storefront.username}/storefront`, { is_setup: true })
-      .then(() => mutate({ ...storefront, is_setup: true }, false))
+      .then(() =>
+        // Finalize the setup to avoid showing the onboarding workflow
+        // Temporarily prompt the review interface to collect feedback
+        mutate({ ...storefront, is_setup: true, await_feedback: true }, false)
+      )
       .catch((err) => console.error(err));
   };
 
