@@ -27,11 +27,7 @@ const views = ["unread", "completed", "favorited"];
 function Index() {
   const state = useCountState();
   const dispatch = useCountDispatch();
-  const {
-    data: storefront,
-    isLoading: isLoadingStorefront,
-    mutate,
-  } = useStorefront();
+  const { data: storefront, isLoading: isLoadingStorefront } = useStorefront();
 
   // Opens a new tab for users
   const app = useContext(Context);
@@ -50,8 +46,19 @@ function Index() {
   const isLoading = isLoadingVideo && isLoadingStorefront;
 
   // Control tutorial steps
+  const steps = [
+    { title: "View preview" },
+    { title: "Record a video" },
+    { title: "Send a reply" },
+  ];
+
   const [step, setStep] = useState(0);
-  const handleStep = () => setStep((v) => v + 1);
+  const handleStep = () =>
+    setStep((v) => {
+      // Prevent step functions from going over available steps
+      if (v < steps.length) return 0;
+      return v + 1;
+    });
 
   useEffect(() => {
     // If merchant added the app but is waiting for a customer video
@@ -179,15 +186,7 @@ function Index() {
           >
             {(!storefront?.is_setup || state.await_feedback) && (
               <>
-                <SetupNav
-                  steps={[
-                    { title: "View preview" },
-                    { title: "Record a video" },
-                    { title: "Send a reply" },
-                  ]}
-                  current={step}
-                  onClick={setStep}
-                />
+                <SetupNav steps={steps} current={step} onClick={setStep} />
 
                 {/*  This step only loads for users that is_setup = false */}
                 {step === 0 && <ThemePreview onComplete={handleStep} />}
