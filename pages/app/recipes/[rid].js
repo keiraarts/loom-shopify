@@ -26,7 +26,7 @@ function Index() {
             <Footer />
           </main>
 
-          <aside className="block w-full p-6 border-gray-200 sm:border-r bg-shopify-grey lg:w-1/3 xl:max-w-sm sm:block">
+          <aside className="block w-full p-6 border-gray-200 sm:border-r bg-shopify-grey sm:w-1/3 xl:max-w-sm sm:block">
             <div className="m-0 space-y-6 sm:-mt-4">
               <Recipes perPage={10} />
             </div>

@@ -35,7 +35,7 @@ export default function IntegrationLayout(props: RecipeObject) {
     return <div className="flex-1 m-5 bg-gray-200 rounded-lg"></div>;
 
   return (
-    <main className="w-full max-w-2xl px-4 pb-16 mx-auto mt-8 sm:pb-24 xl:max-w-7xl">
+    <main className="w-full max-w-2xl px-4 pb-16 mx-auto mt-8 sm:pb-24">
       <div className="">
         <div className="">
           <div className="flex justify-between">
@@ -85,7 +85,7 @@ export default function IntegrationLayout(props: RecipeObject) {
           </div>
         </div>
 
-        <div className="mt-8 xl:col-span-5">
+        <div className="mt-8">
           {recipe.prose &&
             recipe.prose.map((el) => {
               return (
@@ -108,7 +108,7 @@ export default function IntegrationLayout(props: RecipeObject) {
               Our Policies
             </h2>
 
-            <dl className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-1 xl:grid-cols-2">
+            <dl className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <div className="p-6 text-center border border-gray-200 rounded-lg bg-gray-50">
                 <dt>
                   <svg

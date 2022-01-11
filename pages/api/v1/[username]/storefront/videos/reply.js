@@ -34,14 +34,19 @@ export default async function handler(req, res) {
           replyto: get(storefront, "customer_email", storefront.email),
         };
 
-        const { body, customer_email, alias, position } = req.body;
+        const { body, loom_email } = req.body;
+
+        if (!loom_email) {
+          console.error("No email provided");
+          res.status(400).json({ success: false, message: "No email" });
+        }
+
         const SESClass = new SES(username, identity);
-        const status = await SESClass.CustomerOutgoing([customer_email], {
+        const status = await SESClass.CustomerOutgoing([loom_email], {
           subject: `You received a reply to your video message! ✨`,
           domain: get(storefront, "domain", storefront.hostname),
           messages: body.split("\n"),
-          position,
-          alias,
+          brand: storefront.brand,
         });
 
         res.status(200);

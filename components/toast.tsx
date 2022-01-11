@@ -60,7 +60,7 @@ export default async function Toast(props: ToastProps) {
             <p className={ctaClass}>{cta}</p>
             {!message && (
               <svg
-                className="w-6 h-6 ml-3"
+                className="w-4 h-4 ml-3"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -82,7 +82,7 @@ export default async function Toast(props: ToastProps) {
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
-            className="w-5 h-5 ml-4 sm:ml-5 sm:w-8 sm:h-8"
+            className="w-3 h-3 ml-4 sm:ml-5 sm:w-4 sm:h-4"
           >
             <path
               strokeLinecap="round"

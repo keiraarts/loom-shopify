@@ -40,19 +40,18 @@ function Index() {
     });
   };
 
-  const { data } = useVideos();
+  const { data, loading: isVideosLoading } = useVideos();
   const [videos, setVideos] = useState([]);
 
   // Control tutorial steps
   const [step, setStep] = useState(0);
-
   const handleStep = () => setStep((v) => v + 1);
 
   useEffect(() => {
     // If merchant added the app but is waiting for a customer video
     if (videos.length === 0 && storefront.is_compatible) setStep(1);
     if (videos.length === 0 && storefront.is_setup) setStep(4);
-  }, [storefront.id]);
+  }, [storefront.id, isVideosLoading]);
 
   // Allow search via email and page urls
   const [search, setSearch] = useState();
@@ -110,7 +109,7 @@ function Index() {
       setCounts(counts);
       setVideos(items);
     }
-  }, [isLoading, tab, search, state.key]);
+  }, [isLoading, tab, search, state.key, JSON.stringify(data)]);
 
   // Ping Shopify to load cached-customer data using the video's reply-to email
   const { data: customer, isLoading: isCustomer } = useCustomer(loom?.email);
@@ -163,10 +162,8 @@ function Index() {
               "flex flex-col justify-between flex-1 overflow-y-auto": true,
             })}
           >
-            {/*  Loads the onboarding setup flow */}
-
             {!storefront?.is_setup && (
-              <React.Fragment>
+              <>
                 {!storefront?.is_compatible && (
                   <SetupNav
                     steps={[
@@ -182,7 +179,7 @@ function Index() {
                 {step === 1 && <VideoAwait onComplete={handleStep} />}
                 {step === 2 && <VideoReply onComplete={handleStep} />}
                 {step === 3 && <SetupReview />}
-              </React.Fragment>
+              </>
             )}
 
             {/*  Renders a list of videos without setup prompts */}
@@ -192,42 +189,6 @@ function Index() {
                   <h1 className="flex-1 hidden text-2xl font-bold text-gray-900 sr-only">
                     Videos
                   </h1>
-                  <div className="ml-6 bg-gray-100 p-0.5 rounded-lg flex items-center sm:hidden">
-                    <button
-                      type="button"
-                      className="p-1.5 rounded-md text-gray-400 hover:bg-white hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-                    >
-                      <svg
-                        className="w-5 h-5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                          clip-rule="evenodd"
-                        />
-                      </svg>
-                      <span className="sr-only">Use list view</span>
-                    </button>
-                    <button
-                      type="button"
-                      className="ml-0.5 bg-white p-1.5 rounded-md shadow-sm text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-                    >
-                      <svg
-                        className="w-5 h-5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                      </svg>
-                      <span className="sr-only">Use grid view</span>
-                    </button>
-                  </div>
                 </div>
 
                 <div className="mt-3 sm:mt-0">
@@ -238,11 +199,25 @@ function Index() {
                     <select
                       id="tabs"
                       name="tabs"
+                      value={tab}
+                      onChange={(e) => setTab(e.target.value)}
                       className="block w-full py-2 pl-3 pr-10 text-base border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     >
-                      <option selected>Recently Viewed</option>
-                      <option>Recently Added</option>
-                      <option>Favorited</option>
+                      {views.map((view) => {
+                        function capitalize(s) {
+                          return s[0].toUpperCase() + s.slice(1);
+                        }
+
+                        return (
+                          <option
+                            className="capitalize"
+                            key={view}
+                            value={view}
+                          >
+                            {capitalize(view)}
+                          </option>
+                        );
+                      })}
                     </select>
                   </div>
                   <div className="hidden sm:block">
@@ -251,10 +226,10 @@ function Index() {
                         className="flex flex-1 -mb-px space-x-6 xl:space-x-8"
                         aria-label="Tabs"
                       >
-                        {views.map((view, index) => {
+                        {views.map((view) => {
                           return (
                             <a
-                              href="#"
+                              href={"#" + view}
                               aria-current={view}
                               onClick={() => setTab(view)}
                               className={cn({
@@ -267,11 +242,17 @@ function Index() {
                             >
                               {view}
 
-                              {index === 0 && (
-                                <span className="bg-indigo-600 text-white hidden ml-2 py-0.5 px-2 rounded-full text-xs font-medium md:inline-block">
-                                  {counts?.[view] ?? 0}
-                                </span>
-                              )}
+                              <span
+                                className={cn({
+                                  "bg-indigo-100 text-black":
+                                    counts?.[view] === 0,
+                                  "bg-indigo-600 text-white":
+                                    counts?.[view] > 0,
+                                  "hidden ml-2 py-0.5 px-2 rounded-full text-xs font-medium md:inline-block": true,
+                                })}
+                              >
+                                {counts?.[view] ?? 0}
+                              </span>
                             </a>
                           );
                         })}
@@ -283,7 +264,11 @@ function Index() {
 
                 {videos.length === 0 && (
                   <ThemePreview
-                    quote="You don't have any outstanding videos to watch! Add HonestyCore.com to one of your pages to collect new inbound questions!"
+                    quote={
+                      search.length
+                        ? "We couldn't find any videos"
+                        : "You don't have any more videos to watch. Embed our app to any page on your shop to collect new inbound questions!"
+                    }
                     onComplete={() => {
                       // Force user interface to show the tutorial temporarily
                       mutate({ is_setup: false }, false);
@@ -294,148 +279,103 @@ function Index() {
 
                 {videos.length > 0 && (
                   <section
-                    className="pb-16 mt-4 sm:-mx-6"
+                    className="pb-16 mt-4"
                     aria-labelledby="gallery-heading"
                   >
                     <h2 id="gallery-heading" className="sr-only">
                       Recently viewed
                     </h2>
                     <div className="overflow-hidden sm:rounded-md ">
-                      <FadeIn
-                        role="list"
-                        wrapperTag="ul"
-                        className="divide-y divide-gray-200"
-                        childClassName="border-b border-gray-200"
-                      >
-                        {videos.map((video, index) => {
-                          const char = video.id.toUpperCase().charCodeAt(0);
+                      <div className="flex flex-col">
+                        <div className="-my-2 overflow-x-auto">
+                          <div className="inline-block min-w-full py-2 align-middle">
+                            <div className="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
+                              <table className="min-w-full divide-y divide-gray-200">
+                                <thead className="-mt-6 border-b-2 border-gray-200">
+                                  <tr>
+                                    <th
+                                      scope="col"
+                                      className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+                                    >
+                                      Email
+                                    </th>
+                                    <th
+                                      scope="col"
+                                      className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+                                    >
+                                      Page
+                                    </th>
 
-                          return (
-                            <li key={index}>
-                              <a
-                                href={"#" + video.id}
-                                onClick={() => setLoom(video)}
-                                className={cn({
-                                  "bg-blue-100": loom.id === video.id,
-                                  "bg-transparent hover:bg-blue-100":
-                                    loom.id !== video.id,
-                                  "block bg-white": true,
-                                })}
-                              >
-                                <div className="flex items-center px-4 py-4 sm:px-6">
-                                  <div className="flex items-center flex-1 min-w-0">
-                                    <div className="flex-shrink-0">
-                                      <span
-                                        x-char={char}
+                                    <th
+                                      scope="col"
+                                      className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase whitespace-nowrap"
+                                    >
+                                      Recorded on
+                                    </th>
+                                    <th
+                                      scope="col"
+                                      className="relative px-6 py-3"
+                                    >
+                                      <span className="sr-only">Edit</span>
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody className="px-2 bg-white divide-y divide-gray-200">
+                                  {videos.map((video, index) => {
+                                    return (
+                                      <tr
+                                        key={video.sk}
+                                        onClick={() => setLoom(video)}
                                         className={cn({
-                                          "inline-flex items-center justify-center w-8 h-8 rounded-full": true,
-                                          "bg-green-500": char < 10,
-                                          "bg-green-600": char < 20,
-                                          "bg-blue-500": char < 30,
-                                          "bg-blue-600": char < 40,
-                                          "bg-purple-500": char < 50,
-                                          "bg-purple-600": char < 60,
-                                          "bg-indigo-500": char < 70,
-                                          "bg-indigo-600": char < 80,
+                                          "bg-gray-200": loom.id === video.id,
+                                          "bg-transparent hover:bg-gray-200":
+                                            loom.id !== video.id,
+                                          "bg-white w-full -px-10": true,
                                         })}
                                       >
-                                        <span className="font-medium leading-none text-white capitalize">
-                                          {video.email.substring(0, 1)}
-                                        </span>
-                                      </span>
-                                    </div>
-                                    <div className="flex-1 min-w-0 px-4 md:grid md:grid-cols-2 md:gap-4">
-                                      <div>
-                                        <p className="text-sm font-medium text-indigo-600 truncate">
+                                        <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
                                           {video.email}
-                                        </p>
-                                        <p className="flex items-center mt-0.5 text-sm text-gray-500">
-                                          <svg
-                                            className="flex-shrink-0 w-3 h-3 mr-1 text-gray-400"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                            xmlns="http://www.w3.org/2000/svg"
+                                        </td>
+                                        <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                                          {video.page_url !== ""
+                                            ? video.page_url
+                                            : "/"}
+                                        </td>
+
+                                        <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                                          <time datetime={video.date_created}>
+                                            {new Date(
+                                              video.date_created
+                                            ).toLocaleDateString(
+                                              "en-US",
+                                              options
+                                            )}
+                                          </time>
+                                        </td>
+                                        <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                                          <a
+                                            href={"#reply-" + video.id}
+                                            className="text-indigo-600 hover:text-indigo-900"
+                                            onClick={() => {
+                                              dispatch({
+                                                type: "SET_MODAL_VIEW",
+                                                view: "reply",
+                                                loom: video,
+                                              });
+                                            }}
                                           >
-                                            <path
-                                              stroke-linecap="round"
-                                              stroke-linejoin="round"
-                                              stroke-width="3"
-                                              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                            ></path>
-                                          </svg>
-                                          <span className="">
-                                            {video.page_url !== ""
-                                              ? video.page_url
-                                              : "Homepage"}
-                                          </span>
-                                        </p>
-                                      </div>
-                                      <div className="hidden lg:block">
-                                        <div>
-                                          <p className="text-sm text-gray-900">
-                                            Recorded on{" "}
-                                            <time datetime={video.date_created}>
-                                              {new Date(
-                                                video.date_created
-                                              ).toLocaleDateString(
-                                                "en-US",
-                                                options
-                                              )}
-                                            </time>
-                                          </p>
-                                          <p className="flex items-center mt-0.5 text-sm text-gray-500">
-                                            <svg
-                                              className={cn({
-                                                "text-green-600":
-                                                  video?.status === "completed",
-                                                "flex-shrink-0 mr-1.5 h-4 w-4 ": true,
-                                              })}
-                                              xmlns="http://www.w3.org/2000/svg"
-                                              viewBox="0 0 20 20"
-                                              fill="currentColor"
-                                              aria-hidden="true"
-                                            >
-                                              <path
-                                                fill-rule="evenodd"
-                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                                clip-rule="evenodd"
-                                              />
-                                            </svg>
-                                            {video?.status === "completed"
-                                              ? `Replied on ${new Date(
-                                                  video.date_completed
-                                                ).toLocaleDateString(
-                                                  "en-US",
-                                                  options
-                                                )}  `
-                                              : "Awaiting action"}
-                                          </p>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div>
-                                    <svg
-                                      className="w-5 h-5 text-gray-600"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 20 20"
-                                      fill="currentColor"
-                                      aria-hidden="true"
-                                    >
-                                      <path
-                                        fill-rule="evenodd"
-                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                        clip-rule="evenodd"
-                                      />
-                                    </svg>
-                                  </div>
-                                </div>
-                              </a>
-                            </li>
-                          );
-                        })}
-                      </FadeIn>
+                                            Reply
+                                          </a>
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </section>
                 )}
@@ -492,7 +432,6 @@ function Index() {
                         video: update,
                       });
 
-                      if (update.status === "favorited") setTab("favorited");
                       setLoom(update);
                     }}
                     className={cn({
@@ -550,9 +489,11 @@ function Index() {
                     "flex flex-row items-center justify-center flex-1 px-4 py-2 text-sm font-medium border border-transparent rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500": true,
                   })}
                 >
+                  <span>Complete</span>
+
                   {loom?.status !== "completed" && (
                     <svg
-                      className="w-5 h-5 mr-1"
+                      className="w-5 h-5 ml-1"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -566,8 +507,6 @@ function Index() {
                       ></path>
                     </svg>
                   )}
-
-                  <span>Complete</span>
                 </button>
                 <button
                   type="button"

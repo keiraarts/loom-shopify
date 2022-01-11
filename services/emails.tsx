@@ -718,7 +718,7 @@ class Emails {
 `;
   }
 
-  Outgoing({ messages = [], domain, alias, position }) {
+  Outgoing({ messages = [], domain, brand }) {
     return `
       <html>
       <head>
@@ -755,7 +755,7 @@ class Emails {
 
         <div dir="ltr"><div><div dir="ltr">
         <table style="color:rgb(0,0,0);font-family:&quot;Times New Roman&quot;;font-size:medium"><tbody><tr>
-        <p>${alias}, ${position}<br><a href="${domain}?utm_source=honestycore">${domain}</a></p></div><div><p><br>
+        <p><br><a href="${domain}?utm_source=honestycore">${brand}</a></p></div><div><p><br>
         </p></div></td></tr></tbody></table></div></div></div></div>
 
       <p></p>

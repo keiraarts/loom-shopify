@@ -1,6 +1,5 @@
 import React from "react";
 import { mutate } from "swr";
-import { get, set } from "lodash";
 import Toast from "../components/toast";
 import { CreateInstance } from "./axios";
 
@@ -33,6 +32,7 @@ function countReducer(state, action) {
 
       return {
         ...state,
+        loom: action?.loom,
         modal_view: isDuplicate ? false : view,
       };
     }
@@ -75,7 +75,6 @@ function countReducer(state, action) {
 
       axios
         .put(`${username}/storefront/videos/${video.id}`, video)
-        .then(() => Toast({ message: "Updated video" }))
         .catch(() => {});
 
       mutate(
@@ -89,7 +88,7 @@ function countReducer(state, action) {
         false
       );
 
-      return { ...state, key: Date.now() };
+      return { ...state };
     }
 
     case "DELETE_VIDEO": {
@@ -131,6 +130,7 @@ function CountProvider({ children, ...args }) {
     session_token: false,
     tutorial: "introduction",
     view: "dashboard",
+    modal_view: false,
     ...args,
   });
 

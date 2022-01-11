@@ -20,6 +20,7 @@ function useVideos() {
     fetcher,
     {
       refreshWhenHidden: true,
+      revalidateOnMount: true,
     }
   );
 

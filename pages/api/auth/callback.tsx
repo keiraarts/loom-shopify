@@ -172,6 +172,7 @@ const afterAuth = async (req, res, accessToken) => {
       date_updated: Date.now(),
       date_uninstalled: false,
       domain: shop.domain,
+      brand: shop.name,
     });
   }
 };

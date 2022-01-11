@@ -13,7 +13,7 @@ import { Redirect } from "@shopify/app-bridge/actions";
 import { appWithTranslation } from "next-i18next";
 
 import { CreateInstance } from "../src/axios";
-import { EmbeddedLayout } from "../src/embedded";
+import { EmbeddedLayout } from "../src/embedded.tsx";
 import { RoutePropagator } from "../src/propagator";
 import AppLayout from "../components/app-layout";
 import NProgress from "nprogress";

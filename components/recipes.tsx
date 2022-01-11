@@ -69,52 +69,56 @@ export default function RecipeCards({ perPage = 10 }: { perPage: number }) {
       <FadeIn
         key={start}
         transitionDuration={300}
-        className="flex flex-row pb-2 m-1 space-x-0 space-y-1 overflow-scroll sm:space-x-0 sm:flex-col sm:overflow-hidden sm:m-2 divide-y-3"
-        childClassName="w-full min-w-full h-full flex-1 px-4 sm:px-0 pb-5 sm:pb-2"
+        className="flex flex-row pb-2 m-1 space-x-0 overflow-scroll sm:space-y-1 sm:space-x-0 sm:flex-col sm:overflow-hidden sm:m-2 divide-y-3"
       >
         {recipes
           .slice(start * perPage, start * perPage + perPage)
           .map(({ icon, title, content, style, href }) => {
             return (
-              <Link href={href}>
-                <div className="relative p-4 bg-white rounded-md shadow-lg sm:shadow-sm group focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
-                  <div className="mt-0">
-                    <div>
-                      <span className={`inline-flex p-2 ${style}`}>
-                        {React.createElement(icon, {
-                          className: "w-6 h-6",
-                        })}
-                      </span>
-                    </div>
+              <div
+                className="grid flex-1 w-full h-full px-4 pb-5 sm:min-w-full sm:px-0 sm:pb-2"
+                style={{ minWidth: "60vw" }}
+              >
+                <Link href={href}>
+                  <div className="relative self-stretch p-4 bg-white rounded-md shadow-lg sm:shadow-sm group focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
+                    <div className="mt-0">
+                      <div>
+                        <span className={`inline-flex p-2 ${style}`}>
+                          {React.createElement(icon, {
+                            className: "w-6 h-6",
+                          })}
+                        </span>
+                      </div>
 
-                    <h3 className="mt-4 text-base font-medium text-black">
-                      <a href="#" className="focus:outline-none">
-                        <span
-                          className="absolute inset-0"
-                          aria-hidden="true"
-                        ></span>
-                        {title}
-                      </a>
-                    </h3>
-                    <p className="hidden mt-2 text-xs text-gray-600 sm:block">
-                      {content}
-                    </p>
-                  </div>
-                  <span
-                    className="absolute text-gray-400 pointer-events-none top-6 right-6 group-hover:text-gray-800"
-                    aria-hidden="true"
-                  >
-                    <svg
-                      className="w-5 h-5"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
+                      <h3 className="mt-4 text-base font-medium text-black">
+                        <a href="#" className="focus:outline-none">
+                          <span
+                            className="absolute inset-0"
+                            aria-hidden="true"
+                          ></span>
+                          {title}
+                        </a>
+                      </h3>
+                      <p className="hidden mt-2 text-xs text-gray-600 sm:block">
+                        {content}
+                      </p>
+                    </div>
+                    <span
+                      className="absolute text-gray-400 pointer-events-none top-6 right-6 group-hover:text-gray-800"
+                      aria-hidden="true"
                     >
-                      <path d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z" />
-                    </svg>
-                  </span>
-                </div>
-              </Link>
+                      <svg
+                        className="w-5 h-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M20 4h1a1 1 0 00-1-1v1zm-1 12a1 1 0 102 0h-2zM8 3a1 1 0 000 2V3zM3.293 19.293a1 1 0 101.414 1.414l-1.414-1.414zM19 4v12h2V4h-2zm1-1H8v2h12V3zm-.707.293l-16 16 1.414 1.414 16-16-1.414-1.414z" />
+                      </svg>
+                    </span>
+                  </div>
+                </Link>
+              </div>
             );
           })}
       </FadeIn>
