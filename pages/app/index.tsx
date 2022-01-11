@@ -48,7 +48,6 @@ function Index() {
 
   // Join both states to prevent content from showing
   const isLoading = isLoadingVideo && isLoadingStorefront;
-  console.log({ isLoading, data, isLoadingVideo, isLoadingStorefront });
 
   // Control tutorial steps
   const [step, setStep] = useState(0);
