@@ -20,25 +20,12 @@ export function EmbeddedLayout(props) {
   });
 
   useEffect(() => {
-    const _state = state;
     if (state?.modal_view === "support") {
       supportModal.dispatch(Modal.Action.OPEN);
     } else if (state?.modal_view === "reply") {
+      replyModal.set({ path: "/modal/reply/" + state.loom.id });
       replyModal.dispatch(Modal.Action.OPEN);
     }
-
-    const timeouta = setTimeout(() => {
-      app.dispatch(Modal.data(_state));
-    }, 1000 * 5);
-
-    const timeoutb = setTimeout(() => {
-      app.dispatch(Modal.data(_state));
-    }, 1000 * 30);
-
-    return () => {
-      clearTimeout(timeouta);
-      clearTimeout(timeoutb);
-    };
   }, [state.modal_view]);
 
   supportModal.subscribe(Modal.Action.CLOSE, () => {

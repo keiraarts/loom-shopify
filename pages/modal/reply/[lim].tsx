@@ -1,25 +1,48 @@
-import React, { useContext, useState, useCallback } from "react";
+import React, { useContext, useState, useCallback, useEffect } from "react";
 import { setupModalAutoSizing } from "@shopify/app-bridge-utils";
 import { Context } from "@shopify/app-bridge-react";
-import useStorefront from "../../hooks/useStorefront";
 import { Modal } from "@shopify/app-bridge/actions";
-import { CreateInstance } from "../../src/axios";
-import Support from "../../components/support";
+import { CreateInstance } from "../../../src/axios";
+import Support from "../../../components/support";
+
+import useStorefront from "../../../hooks/useStorefront";
+import useVideo from "../../../hooks/useVideo";
+import { oembed } from "@loomhq/loom-embed";
+import { useRouter } from "next/router";
 import cn from "classnames";
 
 export default function SupportPage({ isEmbedded }) {
   if (!isEmbedded) return <>Embedded app not loading..</>;
+  const router = useRouter();
+  const { lim } = router.query;
 
   const buttonRef = React.useRef(null);
   const app = useContext(Context);
   const [state, setState] = useState<any | null>();
+  const [videoHTML, setVideoHTML] = useState<any | string>();
   setupModalAutoSizing(app);
+
+  // Create HTML to embed Loom's shared urls
+  const EmbedVideo = async (element) => {
+    if (element && element.sharedUrl) {
+      try {
+        const { html } = await oembed(element.sharedUrl);
+        setVideoHTML(html);
+      } catch (error) {}
+    }
+  };
 
   app.subscribe(Modal.Action.DATA, (action) => {
     if (action?.loom?.email) setState(action);
   });
 
-  const { data: storefront, loading } = useStorefront();
+  const { data: loom } = useVideo(lim);
+
+  useEffect(() => {
+    EmbedVideo(loom);
+  }, [loom?.id]);
+
+  const { data: storefront } = useStorefront();
   const [message, setMessage] = useState<string | null>();
   const [sent, setSent] = useState<boolean>(false);
 
@@ -31,12 +54,12 @@ export default function SupportPage({ isEmbedded }) {
   const handleSend = useCallback(
     (state) => {
       // Prevent multiple sends under the same email address
-      if (!state.session_token) return;
+      if (!loom) return;
       const instance = CreateInstance(state);
 
       const input = {
         body: message,
-        loom_email: state.loom.email,
+        loom_email: loom.email,
       };
 
       instance
@@ -51,6 +74,11 @@ export default function SupportPage({ isEmbedded }) {
     <div id="reply-form" className="overflow-hidden bg-white">
       <div className="relative mx-auto">
         <div className="w-full">
+          <div
+            className="mb-5 -mt-2 bg-gray-50"
+            dangerouslySetInnerHTML={{ __html: videoHTML }}
+          ></div>
+
           <form onSubmit={handleSubmit}>
             <div className="grid w-full grid-cols-1 px-5 py-3 mx-auto sm:px-6 lg:px-8 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
               <div className="sm:col-span-2">
@@ -66,7 +94,7 @@ export default function SupportPage({ isEmbedded }) {
                     id="message"
                     name="message"
                     value={message}
-                    rows={8}
+                    rows={5}
                     placeholder="Hey! We can totally ship out your products with a different packaging so you can use it as a gift. I looked over your video and everything should fit into one box. Click here to finish your purchase! - Keira"
                     onChange={(event) => setMessage(event.target.value)}
                     className="block w-full px-4 py-3 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
@@ -78,12 +106,12 @@ export default function SupportPage({ isEmbedded }) {
               <span
                 className={cn({
                   "text-left": true,
-                  "invisible": !state?.loom?.email,
+                  "invisible": !loom,
                 })}
               >
                 <Support
-                  email={"To " + state?.loom?.email ?? "..."}
-                  metadata={storefront.email}
+                  email={"To " + loom?.email ?? "..."}
+                  metadata={"From: " + storefront?.email ?? "your brand"}
                 />
               </span>
               <button

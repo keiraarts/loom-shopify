@@ -68,10 +68,8 @@ function Index() {
 
   // Allow search via email and page urls
   const [search, setSearch] = useState<string>("");
-
   // Keep 'tabs' on the selected tab.
   const [tab, setTab] = useState(views[0]);
-
   // Show friendly counts per tab category
   const [counts, setCounts] = useState({});
 
@@ -307,7 +305,7 @@ function Index() {
 
                 {videos.length > 0 && (
                   <section
-                    className="pb-16 mt-4"
+                    className="pb-16 mt-2 sm:mt-4"
                     aria-labelledby="gallery-heading"
                   >
                     <h2 id="gallery-heading" className="sr-only">
@@ -318,7 +316,8 @@ function Index() {
                         <div className="-my-2 overflow-x-auto">
                           <div className="inline-block min-w-full py-2 align-middle">
                             <div className="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
-                              <table className="min-w-full divide-y divide-gray-200">
+                              {/* Hidden on mobile */}
+                              <table className="hidden min-w-full divide-y divide-gray-200 sm:table">
                                 <thead className="-mt-6 border-b-2 border-gray-200">
                                   <tr>
                                     <th
@@ -348,7 +347,7 @@ function Index() {
                                     </th>
                                   </tr>
                                 </thead>
-                                <tbody className="px-2 bg-white divide-y divide-gray-200">
+                                <tbody className="hidden px-2 bg-white divide-y divide-gray-200 sm:table-header-group">
                                   {videos.map((video, index) => {
                                     return (
                                       <tr
@@ -400,6 +399,62 @@ function Index() {
                                   })}
                                 </tbody>
                               </table>
+
+                              <div className="flow-root sm:hidden">
+                                <ul
+                                  role="list"
+                                  className="divide-y divide-gray-200"
+                                >
+                                  {videos.map((video, index) => {
+                                    return (
+                                      <li
+                                        key={index}
+                                        className={cn({
+                                          "bg-gray-200": loom.id === video.id,
+                                          "bg-transparent hover:bg-gray-200":
+                                            loom.id !== video.id,
+                                          "bg-white w-full p-4": true,
+                                        })}
+                                      >
+                                        <div className="flex items-center space-x-4">
+                                          <div className="flex-shrink-0">
+                                            <span className="inline-flex items-center justify-center w-8 h-8 bg-gray-500 rounded-full">
+                                              <span className="font-medium leading-none text-white uppercase">
+                                                {video.email.substring(0, 1)}
+                                              </span>
+                                            </span>
+                                          </div>
+                                          <div className="flex-1 min-w-0">
+                                            <p className="text-sm font-medium text-gray-900 truncate">
+                                              {video.email}
+                                            </p>
+                                            <p className="text-sm text-gray-500 truncate">
+                                              {video.page_url !== ""
+                                                ? video.page_url
+                                                : "Homepage"}
+                                            </p>
+                                          </div>
+                                          <div>
+                                            <a
+                                              href={"#reply-" + video.id}
+                                              className="text-indigo-600 hover:text-indigo-900"
+                                              onClick={() => {
+                                                dispatch({
+                                                  type: "SET_MODAL_VIEW",
+                                                  view: "reply",
+                                                  loom: video,
+                                                });
+                                              }}
+                                            >
+                                              Reply
+                                            </a>
+                                          </div>
+                                        </div>
+                                      </li>
+                                    );
+                                  })}
+                                </ul>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -432,7 +487,7 @@ function Index() {
 
                 <div
                   className={cn({
-                    "flex items-start justify-between mt-4": true,
+                    "flex items-start justify-between sm:mt-4": true,
                     "hidden": !loom.id,
                   })}
                 >
