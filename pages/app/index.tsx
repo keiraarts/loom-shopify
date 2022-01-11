@@ -53,11 +53,10 @@ function Index() {
   ];
 
   const [step, setStep] = useState(0);
-
   const handleStep = () =>
     setStep((v) => {
       // Prevent step functions from going over available steps
-      if (v + 1 > steps.length + 1) return 0;
+      if (v - 1 > steps.length) return 0;
       return ++v;
     });
 

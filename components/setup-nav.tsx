@@ -17,6 +17,7 @@ export default function SetupNav({
     <nav
       className="flex items-center justify-center mt-4 sm:mt-0 sm:block"
       aria-label="Progress"
+      x-current-step={current}
       key={current}
     >
       <p className="text-xs font-medium sm:hidden">

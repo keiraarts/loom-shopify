@@ -63,12 +63,14 @@ export default function SetupReview(props: LoomSubmission) {
               </button>
               <button
                 type="submit"
-                onClick={() =>
+                onClick={() => {
                   dispatch({
                     type: "SET_MODAL_VIEW",
                     view: "support",
-                  })
-                }
+                  });
+
+                  props.onComplete();
+                }}
                 className="inline-flex items-center px-4 text-sm font-medium text-black bg-gray-100 border border-transparent rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 "
               >
                 Get help with setup

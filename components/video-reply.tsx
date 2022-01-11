@@ -29,6 +29,7 @@ export default function VideoReply(props: LoomSubmission) {
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     await handleSend();
+    await completeSetup();
     props.onComplete({ body, alias });
   };
 
@@ -148,8 +149,8 @@ export default function VideoReply(props: LoomSubmission) {
                 </button>
                 <button
                   onClick={() => {
-                    props.onComplete({ body, alias });
                     completeSetup();
+                    props.onComplete({ body, alias });
                   }}
                   className="inline-flex items-center px-4 py-2 text-sm font-medium text-black bg-gray-300 border border-transparent rounded-md shadow-sm cursor-pointer hover:bg-indigo-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
