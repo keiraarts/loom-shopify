@@ -63,7 +63,7 @@ function Index() {
   useEffect(() => {
     // If merchant added the app but is waiting for a customer video
     if (videos.length === 0 && storefront.is_compatible) setStep(1);
-    if (videos.length === 0 && storefront.is_setup) setStep(4);
+    if (videos.length === 0 && storefront.is_setup) setStep(3);
   }, [storefront.id, isLoadingVideo]);
 
   // Allow search via email and page urls
@@ -176,6 +176,7 @@ function Index() {
           </section>
 
           <main
+            x-step={step}
             className={cn({
               "flex": !isLoading,
               "loading-storefront hidden": isLoading,
@@ -188,8 +189,10 @@ function Index() {
 
                 {/*  This step only loads for users that is_setup = false */}
                 {step === 0 && <ThemePreview onComplete={handleStep} />}
+
                 {/*  Here we educate how to get the app embedded into a theme */}
                 {step === 1 && <VideoAwait onComplete={handleStep} />}
+
                 {/*  We save an attribute as is_setup if a message comes through */}
                 {step === 2 && (
                   <VideoReply
@@ -205,6 +208,7 @@ function Index() {
                     }}
                   />
                 )}
+
                 {/*  We'll prompt user for a review if we are explictly awaiting it */}
                 {step === 3 && <SetupReview onComplete={completeSetup} />}
               </>

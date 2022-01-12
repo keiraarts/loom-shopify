@@ -17,7 +17,6 @@ import { EmbeddedLayout } from "../src/embedded.tsx";
 import { RoutePropagator } from "../src/propagator";
 import AppLayout from "../components/app-layout";
 import NProgress from "nprogress";
-import Head from "next/head";
 import "../css/global.css";
 import "../i18n";
 
