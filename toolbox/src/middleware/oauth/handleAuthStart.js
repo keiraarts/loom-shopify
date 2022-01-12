@@ -21,12 +21,13 @@ const handleAuthStart = (req, res) => {
   }
 
   setCookies("shop", shop, { req, res, maxAge: 60 * 6 * 24 });
+
   var authUrl = "https://"
     .concat(shop, "/admin/oauth/authorize?client_id=")
     .concat(process.env.SHOPIFY_API_PUBLIC_KEY, "&scope=")
     .concat(scopes, "&redirect_uri=")
-    .concat(encodeURI("https://" + redirect_uri), "&state=")
-    .concat(createNonce(), encodeURI("&shop=" + shop));
+    .concat(encodeURI("https://" + redirect_uri), "&state=", createNonce())
+    .concat(encodeURI("&shop=" + shop));
 
   res.redirect(authUrl);
 };
