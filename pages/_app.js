@@ -99,12 +99,6 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
   const shopOrigin = useShopOrigin();
 
-  useEffect(() => {
-    if (shopOrigin && shopOrigin !== "")
-      // Save a session variable as a precaution agsinst lost url params
-      sessionStorage.setItem("shopOrigin", JSON.stringify(shopOrigin));
-  }, [shopOrigin]);
-
   const defaults = {
     title: "Honesty - Video messages for Shopify",
     description: "Let customers send you video messages",
