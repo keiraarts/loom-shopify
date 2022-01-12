@@ -25,8 +25,8 @@ const handleAuthStart = (req, res) => {
     .concat(shop, "/admin/oauth/authorize?client_id=")
     .concat(process.env.SHOPIFY_API_PUBLIC_KEY, "&scope=")
     .concat(scopes, "&redirect_uri=")
-    .concat(encodeURI("https://" + redirect_uri + `?shop=${shop}`), "&state=")
-    .concat(createNonce());
+    .concat(encodeURI("https://" + redirect_uri), "&state=")
+    .concat(createNonce(), encodeURI("&shop=" + shop));
 
   res.redirect(authUrl);
 };
