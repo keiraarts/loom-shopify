@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 // https://shopify.dev/apps/store/security/iframe-protection
-export function middleware(req: NextRequest) {
+export default function middleware(req: NextRequest) {
   const url = req.nextUrl;
   const params = url.searchParams;
   let response = NextResponse.next();

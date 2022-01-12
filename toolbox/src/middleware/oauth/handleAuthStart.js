@@ -1,4 +1,3 @@
-import { setCookies } from "cookies-next";
 const nonce = require("nonce");
 const createNonce = nonce();
 
