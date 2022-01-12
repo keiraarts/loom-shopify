@@ -7,6 +7,10 @@ node_modules
 theme-extensions-build/node_modules/
 theme-app-extension/node_modules/
 
+# Illustrator director
+node_modules
+public/illustrator
+
 # Test coverage directory
 coverage
 
