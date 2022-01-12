@@ -20,8 +20,6 @@ const handleAuthStart = (req, res) => {
     shop = shop + ".myshopify.com";
   }
 
-  setCookies("shop", shop, { req, res, maxAge: 60 * 6 * 24 });
-
   var authUrl = "https://"
     .concat(shop, "/admin/oauth/authorize?client_id=")
     .concat(process.env.SHOPIFY_API_PUBLIC_KEY, "&scope=")
