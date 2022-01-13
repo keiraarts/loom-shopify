@@ -70,24 +70,25 @@ function SessionProvider(props) {
           return res?.data;
         })
 
+        .then((storefront) => {
+          LogRocket?.init("nygdoo/honestycore");
+
+          if (username) {
+            LogRocket?.identify(username, {
+              user_id: decoded?.sub,
+              username: decoded?.dest,
+              email: storefront?.email,
+              session_token: session_token,
+              ...storefront,
+            });
+          }
+        })
+
         .catch((err) => {
           // If the user requires a re-install
           const redirect = Redirect.create(app);
           const destination = `https://${process.env.TUNNEL}/api/auth/${username}`;
           redirect.dispatch(Redirect.Action.REMOTE, destination);
-        })
-
-        .finally((storefront) => {
-          LogRocket?.init("nygdoo/honestycore");
-          if (typeof window !== "undefined" && storefront?.username) {
-            LogRocket?.identify(storefront.username, {
-              user_id: decoded?.sub,
-              username: decoded?.dest,
-              email: storefront?.email,
-              session_token: session_token,
-              created_at: storefront?.date_installed,
-            });
-          }
         });
     })
     .catch((err) => console.warn(err));
