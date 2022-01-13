@@ -50,31 +50,30 @@ class Emails {
     </style>
   </head>
   <body>
-  <p>
+    <p>
 
-  ${messages.join(`</p><p>`)}
+    ${messages.join(`</p><p>`)}
 
-  </p>
-
+    </p>
   <br>
   <div>
 
-      <table style="color:rgb(0,0,0);font-family:&quot;Times New Roman&quot;;font-size:medium"><tbody>
-      <tr>
-      <td align="left" style="margin-right:30px;">
-        <img src="https://pbs.twimg.com/profile_images/1360831646107336704/D2wEMMUD_400x400.jpg" style="width:50px; margin-right:20px; border-radius: 50%!important;"></td><td><span style="background-color:rgb(255,255,255)">
-        <span style="margin-bottom: -10px!important;"><p>Keira<br>
-        <span color="#999999">App Developer<br></span>
-          </p></span>
-        </span></td></tr></tbody></table>
+      <table style="color:rgb(0,0,0);font-family:&quot;Times New Roman&quot;;font-size:medium">
+        <tbody>
+          <tr>
+            <td align="left" style="margin-right:30px;">
+              <img src="https://honestycore.com/brand/logomark-tight@2x.png" style="width:50px; margin-right:20px; border-radius: 50%!important;"></td><td><span style="background-color:rgb(255,255,255)">
+              <span style="margin-bottom: -10px!important;"><p>Keira<br>
+              <span color="#999999">App Developer<br></span>
+                </p></span>
+              </span>
+            </td>
+          </tr>
+          </tbody>
+        </table>
 
-    <div dir="ltr"><div><div dir="ltr"><br>
-    <table style="color:rgb(0,0,0);font-family:&quot;Times New Roman&quot;;font-size:medium"><tbody><tr>
-    <td align="left"><a href="https://honestycore.com" target="_blank"><img alt="honestycore" border="0" src="https://honestycore.com/brand/wordmark@2x.png" style="max-width:150px;border:0px;padding:0px;margin:auto"></a><br><p></p><div>
-    <p>Text us at +1 (866) 217-1477</p></div><div><p><br>
-    </p></div></td></tr></tbody></table></div></div></div></div>
+    </div>
 
-<p></p>
 </body>
 </html>
 `;

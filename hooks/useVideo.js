@@ -16,7 +16,7 @@ function useVideo(id) {
 
   const fetcher = (url) => instance.get(url).then(({ data }) => data);
   const { data, error, mutate } = useSWR(
-    session_token && id && `/storefront/videos/${id}`,
+    session_token && username && id && `/storefront/videos/${id}`,
     fetcher
   );
 

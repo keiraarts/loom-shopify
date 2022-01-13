@@ -474,7 +474,7 @@ function Index() {
           <aside
             key={loom.id}
             className={cn({
-              "hidden p-6 border-r border-gray-200 bg-shopify-grey w-96 lg:w-1/3 xl:max-w-sm sm:block": true,
+              "hidden p-6 border-r border-gray-200 bg-shopify-grey sm:w-64 md:w-96 lg:w-1/3 xl:max-w-sm sm:block": true,
               "bg-white sm:bg-white": loom.id,
             })}
           >

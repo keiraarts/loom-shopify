@@ -18,7 +18,7 @@ function useCustomer(email) {
   const fetcher = (url) => instance.get(url).then(({ data }) => data);
 
   const { data, error, mutate } = useSWR(
-    [shopify_token && `/shopify/customers?email=${email}`, email],
+    [shopify_token && username && `/shopify/customers?email=${email}`, email],
     fetcher
   );
 
