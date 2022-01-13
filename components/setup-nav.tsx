@@ -91,7 +91,7 @@ export default function SetupNav({
                 >
                   <path
                     d="M0 -2L20 40L0 82"
-                    vectorEffect={}="non-scaling-stroke"
+                    vectorEffect="non-scaling-stroke"
                     stroke="currentcolor"
                     stroke-linejoin="round"
                   />
