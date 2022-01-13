@@ -5,11 +5,7 @@ export default function Example() {
         <div className="flex justify-center flex-shrink-0">
           <a href="/" className="inline-flex">
             <span className="sr-only">Workflow</span>
-            <img
-              className="w-auto h-12"
-              src="/logos/census-footer-badge.png"
-              alt=""
-            />
+            <img className="w-auto h-12" src="/logos/wordmark.svg" alt="" />
           </a>
         </div>
         <div className="py-16">

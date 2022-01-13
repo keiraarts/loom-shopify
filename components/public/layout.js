@@ -66,7 +66,7 @@ export default function Layout({ children }) {
         <div className="container h-full p-5 px-3 pt-10 mx-auto max-w-7xl sm:px-6 lg:px-6 ">
           <div className="xl:grid xl:grid-cols-3 xl:gap-8">
             <div className="space-y-8 xl:col-span-1">
-              <img className="h-20" src="/brand/census-logo-wordmark.svg"></img>
+              <img className="h-20" src="/brand/wordmark.svg"></img>
               <p className="text-base ">
                 It can be hard to understand complex questions over email. With
                 our app, you can give customers an easy way to record questions

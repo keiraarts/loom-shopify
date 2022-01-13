@@ -5,9 +5,6 @@ const Shopify = require("../../../../services/shopify");
 const DynamoDB = require("../../../../services/dynamodb");
 const SES = require("../../../../services/ses");
 
-const Analytics = require("analytics-node");
-const analytics = new Analytics(process.env.SEGMENT_WRITE_KEY);
-
 // Turn off default NextJS bodyParser, so we can run our own middleware
 export const config = {
   api: {
@@ -60,13 +57,7 @@ export default async function handler(req, res) {
         const { app_subscription } = req.body;
         const { status, name } = app_subscription;
         const subscription_id = name.toLowerCase();
-        console.log("Process app_subscriptions_update");
         console.log({ username, app_subscription });
-
-        analytics.identify({
-          userId: username,
-          traits: { subscriptionn: app_subscription },
-        });
 
         const SESClass = new SES();
         const DynamoDBClass = new DynamoDB(username);
@@ -83,12 +74,6 @@ export default async function handler(req, res) {
               `Your subscription was added to Shopify's next billing cycle.`,
               `I'm excited to help you win more disputes; reach out if I can help!`,
             ],
-          });
-
-          analytics.track({
-            userId: username,
-            event: "Subscribed",
-            properties: app_subscription,
           });
         }
 

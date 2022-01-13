@@ -138,7 +138,7 @@ export default function RecipeCards({ perPage = 10 }: { perPage: number }) {
             .fill(true)
             .map((el, index) => {
               return (
-                <li>
+                <li key={index}>
                   <a
                     onClick={() => setStart(index)}
                     className={cn({
