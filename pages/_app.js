@@ -17,6 +17,7 @@ import { EmbeddedLayout } from "../src/embedded.tsx";
 import { RoutePropagator } from "../src/propagator";
 import AppLayout from "../components/app-layout";
 import NProgress from "nprogress";
+import LogRocket from "logrocket";
 import "../css/global.css";
 import "../i18n";
 
@@ -74,6 +75,19 @@ function SessionProvider(props) {
           const redirect = Redirect.create(app);
           const destination = `https://${process.env.TUNNEL}/api/auth/${username}`;
           redirect.dispatch(Redirect.Action.REMOTE, destination);
+        })
+
+        .finally((storefront) => {
+          LogRocket?.init("nygdoo/honestycore");
+          if (typeof window !== "undefined" && storefront?.username) {
+            LogRocket?.identify(storefront.username, {
+              user_id: decoded?.sub,
+              username: decoded?.dest,
+              email: storefront?.email,
+              session_token: session_token,
+              created_at: storefront?.date_installed,
+            });
+          }
         });
     })
     .catch((err) => console.warn(err));
