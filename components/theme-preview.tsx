@@ -54,9 +54,7 @@ export default function ThemePreview(props: LoomSubmission) {
                   }
                   className="block w-full h-full py-2 pl-3 pr-10 text-base border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
-                  <option selected value="current">
-                    Current theme
-                  </option>
+                  <option value="current">Current theme</option>
 
                   {themes
                     .filter(({ sections }) => sections)

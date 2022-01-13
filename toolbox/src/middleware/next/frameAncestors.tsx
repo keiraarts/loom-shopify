@@ -6,7 +6,6 @@ export default function middleware(req: NextRequest) {
   const url = req.nextUrl;
   const params = url.searchParams;
   let response = NextResponse.next();
-  // get the cookies from the request
   const shop = params.get("shop");
 
   if (shop) {

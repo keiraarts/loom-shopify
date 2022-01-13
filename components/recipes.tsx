@@ -73,11 +73,12 @@ export default function RecipeCards({ perPage = 10 }: { perPage: number }) {
       >
         {recipes
           .slice(start * perPage, start * perPage + perPage)
-          .map(({ icon, title, content, style, href }) => {
+          .map(({ icon, title, content, style, href }, index) => {
             return (
               <div
                 className="grid flex-1 w-full h-full px-4 pb-5 sm:min-w-full sm:px-0 sm:pb-2"
                 style={{ minWidth: "60vw" }}
+                key={index}
               >
                 <Link href={href}>
                   <div className="relative self-stretch p-4 bg-white rounded-md shadow-lg sm:shadow-sm group focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">

@@ -131,7 +131,7 @@ export default function SupportPage({ isEmbedded }) {
                     required
                     id="message"
                     name="message"
-                    rows="5"
+                    rows="4"
                     value={message}
                     placeholder="Hello Keira @ HonestyCore! Can you help me change the fonts on the record button? I'd love to use Helvetica Rounded!"
                     onChange={(event) => setMessage(event.target.value)}

@@ -42,6 +42,7 @@ function SessionProvider(props) {
     // Prevent embedded app from loading standalone
     if (shopOrigin && process?.browser && window?.top == window?.self) {
       const hmac = new URLSearchParams(window.location.search).get("hmac");
+
       const destination = hmac
         ? `https://${process.env.TUNNEL}/api/auth?shop=${shopOrigin}&hmac=${hmac}`
         : `https://${shopOrigin}/admin/apps/${process.env.APP_SLUG}?intention=embed&shop=${shopOrigin}`;
@@ -53,6 +54,7 @@ function SessionProvider(props) {
 
   getSessionToken(app)
     .then((session_token) => {
+      const decoded = decode(session_token);
       const username = shopOrigin.replace(".myshopify.com", "");
       dispatch({ type: "SET_USERNAME", username: username });
       const axios = CreateInstance({ username, session_token });
@@ -73,7 +75,7 @@ function SessionProvider(props) {
         .then((storefront) => {
           LogRocket?.init("nygdoo/honestycore");
 
-          if (username) {
+          if (username && storefront?.username) {
             LogRocket?.identify(username, {
               user_id: decoded?.sub,
               username: decoded?.dest,
@@ -86,6 +88,7 @@ function SessionProvider(props) {
 
         .catch((err) => {
           // If the user requires a re-install
+          console.error(err);
           const redirect = Redirect.create(app);
           const destination = `https://${process.env.TUNNEL}/api/auth/${username}`;
           redirect.dispatch(Redirect.Action.REMOTE, destination);

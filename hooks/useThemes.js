@@ -17,7 +17,7 @@ function useTheme() {
 
   const fetcher = (url) => instance.get(url).then(({ data }) => data);
   const { data, error, mutate } = useSWR(
-    [shopify_token && username && `/shopify/themes`],
+    [shopify_token && `/shopify/themes`],
     fetcher
   );
 

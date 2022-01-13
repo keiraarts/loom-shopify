@@ -50,7 +50,7 @@ export default function SetupNav({
       >
         {steps.map((step, index) => {
           return (
-            <li className="relative md:flex-1 md:flex">
+            <li key={index} className="relative md:flex-1 md:flex">
               <a
                 href="#"
                 onClick={() => onClick(index)}
