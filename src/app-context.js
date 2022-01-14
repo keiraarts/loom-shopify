@@ -17,7 +17,7 @@ function countReducer(state, action) {
         ...state,
         session_token: action.token,
         shop_origin: action.shop_origin,
-        shopify_token: action?.shopify_token,
+        shopify_token: action?.shopify_token ?? state?.shopify_token,
       };
     }
 

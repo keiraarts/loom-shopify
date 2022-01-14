@@ -17,7 +17,7 @@ function useVideos() {
 
   const fetcher = (url) => instance.get(url).then(({ data }) => data);
   const { data, error, mutate } = useSWR(
-    username && [`/storefront/videos`],
+    session_token && [`/storefront/videos`],
     fetcher,
     {
       refreshWhenHidden: true,

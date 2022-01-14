@@ -1,4 +1,3 @@
-import decode from "jwt-decode";
 import { DefaultSeo } from "next-seo";
 import Router, { useRouter } from "next/router";
 import React, { useContext, useEffect } from "react";
@@ -22,15 +21,11 @@ import "../css/global.css";
 import "../i18n";
 
 Router.events.on("routeChangeStart", (url, { shallow }) => {
-  if (!shallow) {
-    NProgress.start();
-  }
+  if (!shallow) NProgress.start();
 });
 
 Router.events.on("routeChangeComplete", (url, { shallow }) => {
-  if (!shallow) {
-    NProgress.done();
-  }
+  if (!shallow) NProgress.done();
 });
 
 function SessionProvider(props) {
@@ -54,7 +49,6 @@ function SessionProvider(props) {
 
   getSessionToken(app)
     .then((session_token) => {
-      const decoded = decode(session_token);
       const username = shopOrigin.replace(".myshopify.com", "");
       dispatch({ type: "SET_USERNAME", username: username });
       const axios = CreateInstance({ username, session_token });
@@ -69,21 +63,20 @@ function SessionProvider(props) {
             shopify_token: res?.data?.shopify_token,
           });
 
-          return res?.data;
+          return res.data;
         })
 
         .then((storefront) => {
-          LogRocket?.init("nygdoo/honestycore");
-
-          if (username && storefront?.username) {
-            LogRocket?.identify(username, {
-              user_id: decoded?.sub,
-              username: decoded?.dest,
-              email: storefront?.email,
-              session_token: session_token,
-              ...storefront,
-            });
-          }
+          try {
+            LogRocket?.init("nygdoo/honestycore");
+            if (username && storefront?.username) {
+              LogRocket?.identify(username, {
+                email: storefront.email,
+                session_token: session_token,
+                ...storefront,
+              });
+            }
+          } catch (error) {}
         })
 
         .catch((err) => {

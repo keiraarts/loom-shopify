@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 
   if (!isVerified) {
     res.status(403);
-    res.json({ message: "Token expired before patching dispatch." });
+    res.json({ message: "Token expired!", username });
     return;
   }
 

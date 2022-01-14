@@ -1,7 +1,8 @@
 import React from "react";
 import cn from "classnames";
-import { useCountDispatch } from "../src/app-context";
+import Image from "next/image";
 import FadeIn from "react-fade-in";
+import { useCountDispatch } from "../src/app-context";
 
 type AppProps = {
   quote: string | React.ReactChild;
@@ -50,12 +51,15 @@ export default function EmptyState({
                 </div>
               </div>
 
-              <FadeIn delay={200}>
-                <img
-                  className={cn({ "h-20 mx-auto pr-1": true, "hidden": !src })}
-                  alt="ship your orders"
-                  src={src}
-                />
+              <FadeIn delay={100} transitionDuration={500}>
+                <div className="w-20 h-20 mx-auto">
+                  <Image
+                    className={cn({ hidden: !src })}
+                    width={250}
+                    height={250}
+                    src={src}
+                  />
+                </div>
               </FadeIn>
             </div>
           )}

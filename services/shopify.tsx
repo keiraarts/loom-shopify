@@ -55,7 +55,7 @@ class Shopify {
     const endpoint = `https://${username}.myshopify.com/admin/api/${process.env.SHOPIFY_API_VERSION}/graphql.json`;
     this.graphQLClient = new GraphQLClient(endpoint, {
       headers: {
-        "X-Shopify-Access-Token": token.trim(),
+        "X-Shopify-Access-Token": token,
         "X-Shopify-Shop-Domain": username + `.myshopify.com`,
       },
     });
