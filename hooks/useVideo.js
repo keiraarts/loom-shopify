@@ -11,12 +11,13 @@ function useVideo(id) {
     headers: {
       "Content-Type": "application/json",
       "Authorization": "Bearer " + session_token,
+      "X-App-Function": "useVideo",
     },
   });
 
   const fetcher = (url) => instance.get(url).then(({ data }) => data);
   const { data, error, mutate } = useSWR(
-    session_token && id && `/storefront/videos/${id}`,
+    session_token ? [`/storefront/videos/${id}`, id] : null,
     fetcher
   );
 

@@ -12,12 +12,14 @@ function useTheme() {
       "Content-Type": "application/json",
       "Authorization": "Bearer " + session_token,
       "X-Shopify-Access-Token": shopify_token,
+      "X-App-Function": "useTheme",
     },
   });
 
   const fetcher = (url) => instance.get(url).then(({ data }) => data);
   const { data, error, mutate } = useSWR(
-    [shopify_token && `/shopify/themes`],
+    // Requirement is a username
+    username ? [`/shopify/themes`] : null,
     fetcher
   );
 

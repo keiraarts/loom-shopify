@@ -11,16 +11,16 @@ function useVideos() {
     headers: {
       "Content-Type": "application/json",
       "Authorization": "Bearer " + session_token,
+      "X-App-Function": "useVideos",
     },
   });
 
   const fetcher = (url) => instance.get(url).then(({ data }) => data);
   const { data, error, mutate } = useSWR(
-    session_token && username && `/storefront/videos`,
+    username && [`/storefront/videos`],
     fetcher,
     {
       refreshWhenHidden: true,
-      revalidateOnMount: true,
     }
   );
 

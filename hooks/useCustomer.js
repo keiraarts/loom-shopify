@@ -12,13 +12,14 @@ function useCustomer(email) {
       "Content-Type": "application/json",
       "Authorization": "Bearer " + session_token,
       "X-Shopify-Access-Token": shopify_token,
+      "X-App-Function": "useCustomer",
     },
   });
 
   const fetcher = (url) => instance.get(url).then(({ data }) => data);
 
   const { data, error, mutate } = useSWR(
-    [shopify_token && `/shopify/customers?email=${email}`, email],
+    username ? [`/shopify/customers?email=${email}`, email] : null,
     fetcher
   );
 

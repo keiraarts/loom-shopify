@@ -63,7 +63,7 @@ export default function SetupNav({
                       "completed text-white bg-green-600": current > index,
                       "next-step text-black bg-gray-100 border-2 group-hover:bg-gray-200":
                         current < index,
-                      "flex items-center justify-center rounded-full flex-shrink-0 w-8 h-8": true,
+                      "flex items-center justify-center rounded-full flex-shrink-0 w-6 h-6 md:w-8 md:h-8": true,
                     })}
                   >
                     {current > index ? CheckmarkIcon : `${index + 1}`}
@@ -107,7 +107,7 @@ export default function SetupNav({
 
 const CheckmarkIcon = (
   <svg
-    className="w-6 h-6 text-white"
+    className="text-white sm:w-4 sm:h-4 md:w-6 md:h-6"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 20 20"
     fill="currentColor"
