@@ -56,15 +56,16 @@ export default function ThemePreview(props: LoomSubmission) {
                 >
                   <option value="current">Current theme</option>
 
-                  {themes
-                    .filter(({ sections }) => sections)
-                    .map(({ id, name, role }, index) => {
-                      return (
-                        <option key={index} value={id}>
-                          {name} ({role})
-                        </option>
-                      );
-                    })}
+                  {themes.length &&
+                    themes
+                      .filter((theme) => theme?.sections ?? false)
+                      .map(({ id, name, role }, index) => {
+                        return (
+                          <option key={index} value={id}>
+                            {name} ({role})
+                          </option>
+                        );
+                      })}
                 </select>
               </div>
               <button

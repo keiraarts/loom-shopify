@@ -12,8 +12,10 @@ async function init() {
   if (!button) return;
 
   if (!supported) {
+    button.setAttribute("disabled", "true");
     button.setAttribute("supported", supported);
     button.setAttribute("error", error.toString());
+    displayError(error);
     return;
   }
 
@@ -48,11 +50,7 @@ async function init() {
 
   document.getElementById("loom-sdk-button").addEventListener("click", () => {
     if (!supported) {
-      const errorMessage = document.getElementById("loom-error-message");
-      // show the default error if the button isn't supported
-      errorMessage.style.display = "block";
-      // highlight the error message in red
-      errorMessage.style.color = "rgb(179, 27, 27);";
+      displayError(error);
     } else {
       // Prevent user from closing tab recording their screen
       // This forces all links to open as new tabs
@@ -66,6 +64,17 @@ async function init() {
   sdkButton.on("cancel", () => {
     loom = false;
   });
+}
+
+async function displayError(error_message) {
+  const errorMessage = document.getElementById("loom-error-message");
+  const errorId = document.getElementById("error-id");
+  // show the default error if the button isn't supported
+  errorMessage.style.display = "block";
+  // highlight the error message in red
+  errorMessage.style.color = "rgb(179, 27, 27);";
+  // surface the error to the user
+  errorId.innerHTML = `[${error_message.toString()}]`;
 }
 
 async function SubmitVideo(video) {

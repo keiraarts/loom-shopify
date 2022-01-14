@@ -49,7 +49,7 @@ export default async function handler(req, res) {
         res.json(themes);
       } catch (error) {
         console.error(error);
-        res.status(400).json({ success: false, message: "fetch failed" });
+        res.status(400).json([]);
       }
 
       break;
