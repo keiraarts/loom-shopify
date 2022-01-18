@@ -81,16 +81,17 @@ export default function ThemePreview(props: LoomSubmission) {
                 >
                   <option value="current">Current theme</option>
 
-                  {themes.length &&
-                    themes
-                      .filter((theme) => theme?.sections ?? false)
-                      .map(({ id, name, role }, index) => {
-                        return (
-                          <option key={index} value={id}>
-                            {name} ({role})
-                          </option>
-                        );
-                      })}
+                  {themes
+                    ?.filter((theme) => theme?.sections ?? false)
+                    ?.map((theme, index) => {
+                      const { id, name, role } = theme;
+
+                      return (
+                        <option key={index} value={id}>
+                          {name} ({role})
+                        </option>
+                      );
+                    })}
                 </select>
               </div>
               <button
@@ -119,9 +120,7 @@ export default function ThemePreview(props: LoomSubmission) {
                 <a
                   className="font-bold text-blue-500 cursor-pointer"
                   onClick={() =>
-                    redirectContext(
-                      `https://themes.shopify.com/themes?sort_by=most_recent&architecture%5B%5D=os2&ref=viaglamour-ltd`
-                    )
+                    redirectContext(`https://shopify.pxf.io/5bqBQo`)
                   }
                 >
                   Online Store 2.0{" "}

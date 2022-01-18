@@ -16,9 +16,11 @@ import { EmbeddedLayout } from "../src/embedded";
 import { RoutePropagator } from "../src/propagator";
 import AppLayout from "../components/app-layout";
 import NProgress from "nprogress";
-import LogRocket from "logrocket";
 import "../css/global.css";
 import "../i18n";
+
+import { datadogRum } from "@datadog/browser-rum";
+import LogRocket from "logrocket";
 
 Router.events.on("routeChangeStart", (url, { shallow }) => {
   if (!shallow) NProgress.start();
@@ -68,16 +70,30 @@ function SessionProvider(props) {
         })
 
         .then((storefront) => {
-          try {
+          // Run on browsers where the storefront object is available
+          if (username && storefront?.email && process?.browser) {
+            // LogRocket
             LogRocket?.init("nygdoo/honestycore");
-            if (username && storefront?.username) {
-              LogRocket?.identify(username, {
-                email: storefront.email,
-                session_token: session_token,
-                ...storefront,
-              });
-            }
-          } catch (error) {}
+            LogRocket?.identify(username, {
+              email: storefront.email,
+              session_token: session_token,
+              ...storefront,
+            });
+
+            // Datadog
+            datadogRum?.init({
+              applicationId: "0a9f4daf-8039-4023-ab65-e47d146e7844",
+              clientToken: "pubb602e8110c9fbb36b6a983db048e9594",
+              site: "datadoghq.com",
+              service: "honestycore.com",
+              sampleRate: 100,
+              trackInteractions: true,
+              env: process.env.NODE_ENV,
+              defaultPrivacyLevel: "mask-user-input",
+            });
+
+            datadogRum?.startSessionReplayRecording();
+          }
         })
 
         .catch((err) => {
