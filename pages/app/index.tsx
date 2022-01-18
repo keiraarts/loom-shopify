@@ -257,6 +257,8 @@ function Index() {
                         aria-label="Tabs"
                       >
                         {views.map((view) => {
+                          const count = counts?.[view] ?? 0;
+
                           return (
                             <span
                               onClick={() => setTab(view)}
@@ -272,11 +274,9 @@ function Index() {
 
                               <span
                                 className={cn({
-                                  "bg-indigo-100 text-black":
-                                    counts?.[view] === 0,
-                                  "bg-indigo-600 text-white":
-                                    counts?.[view] > 0,
-                                  "hidden ml-2 py-0.5 px-2 rounded-full text-xs font-medium md:inline-block": true,
+                                  "bg-indigo-100 text-black": !count,
+                                  "bg-indigo-600 text-white": count > 0,
+                                  "hidden  ml-2 py-0.5 px-2 rounded-full text-xs font-medium md:inline-block": true,
                                 })}
                               >
                                 {counts?.[view] ?? 0}

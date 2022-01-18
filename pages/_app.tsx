@@ -71,7 +71,7 @@ function SessionProvider(props) {
 
         .then((storefront) => {
           // Run on browsers where the storefront object is available
-          if (username && storefront?.email && process?.browser) {
+          if (username && storefront?.email) {
             // LogRocket
             LogRocket?.init("nygdoo/honestycore");
             LogRocket?.identify(username, {
@@ -82,8 +82,8 @@ function SessionProvider(props) {
 
             // Datadog
             datadogRum?.init({
-              applicationId: "0a9f4daf-8039-4023-ab65-e47d146e7844",
-              clientToken: "pubb602e8110c9fbb36b6a983db048e9594",
+              applicationId: process.env.DATADOG_ID,
+              clientToken: process.env.DATADOG_TOKEN,
               site: "datadoghq.com",
               service: "honestycore.com",
               sampleRate: 100,
