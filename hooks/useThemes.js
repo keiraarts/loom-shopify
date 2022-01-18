@@ -18,8 +18,8 @@ function useTheme() {
 
   const fetcher = (url) => instance.get(url).then(({ data }) => data);
   const { data, error, mutate } = useSWR(
-    // Requirement is a username
-    session_token ? [`/shopify/themes`] : null,
+    // Requirement is a username and session token
+    session_token ? [`/shopify/themes`, username] : null,
     fetcher
   );
 
@@ -27,6 +27,7 @@ function useTheme() {
     mutate,
     data: data || [],
     isLoading: !error && !data,
+    isCompatible: !error && data && data.length > 0,
     isError: error,
   };
 }

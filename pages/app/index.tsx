@@ -22,7 +22,7 @@ import useVideos from "../../hooks/useVideos";
 import Footer from "../../components/footer";
 
 const options = { weekday: "long", month: "short", day: "numeric" } as const;
-const views = ["unread", "completed", "favorited"];
+const views = ["unread", "completed", "favorited"] as const;
 
 function Index() {
   const state = useCountState();
@@ -62,16 +62,16 @@ function Index() {
 
   useEffect(() => {
     // If merchant added the app but is waiting for a customer video
-    if (videos.length === 0 && storefront.is_compatible) setStep(1);
-    if (videos.length === 0 && storefront.is_setup) setStep(3);
+    if (videos.length === 0 && storefront?.is_compatible) setStep(1);
+    if (videos.length === 0 && storefront?.is_setup) setStep(3);
   }, [storefront.id, isLoadingVideo]);
 
   // Allow search via email and page urls
   const [search, setSearch] = useState<string>("");
   // Keep 'tabs' on the selected tab.
-  const [tab, setTab] = useState(views[0]);
+  const [tab, setTab] = useState<string>(views[0]);
   // Show friendly counts per tab category
-  const [counts, setCounts] = useState({});
+  const [counts, setCounts] = useState<object>({});
 
   // Placeholder data that represents Loom's SDK response
   const defaults = {
@@ -94,7 +94,7 @@ function Index() {
   const [videoHtml, setVideoHTML] = useState<string>("");
 
   useEffect(() => {
-    if (data) {
+    if (data && data.length) {
       let items = [];
       views.map((view, index) => {
         // Required to detemine count for each tab
@@ -132,7 +132,7 @@ function Index() {
     if (hasCustomer) NProgress.start();
     const delay = setTimeout(() => NProgress.done());
     return () => clearTimeout(delay);
-  }, [hasCustomer, customer.id]);
+  }, [hasCustomer, loom.id]);
 
   useEffect(() => {
     // Generated new html when a video is selected
@@ -162,13 +162,12 @@ function Index() {
       <Search search={search} setSearch={setSearch} />
       <div className="flex flex-col flex-1 overflow-hidden">
         <div className="flex flex-row-reverse flex-1 overflow-hidden">
-          {/*  Blocks the UI rendering until the storefront data has loaded */}
-
           <section
             className={cn({
               "hidden": !isLoading,
               "flex flex-col justify-between flex-1 overflow-y-auto": isLoading,
             })}
+            // Loading screen until storefront data is available to the rest of the app
           >
             <div className="flex items-center justify-center flex-1 h-full sm:-ml-3">
               <Loading />
@@ -176,12 +175,12 @@ function Index() {
           </section>
 
           <main
-            x-step={step}
             className={cn({
               "flex": !isLoading,
               "loading-storefront hidden": isLoading,
               "flex-col justify-between flex-1 overflow-y-auto": true,
             })}
+            // Initial splash page for users without any videos
           >
             {(!storefront?.is_setup || state.await_feedback) && (
               <>
@@ -214,7 +213,6 @@ function Index() {
               </>
             )}
 
-            {/*  Renders a list of videos without setup prompts */}
             {storefront?.is_setup && !state.await_feedback && (
               <div className="w-full h-full px-2 mx-auto sm:pt-2 max-w-7xl sm:px-2 lg:px-2">
                 <div className="flex">

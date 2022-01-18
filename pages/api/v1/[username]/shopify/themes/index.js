@@ -12,6 +12,7 @@ export default async function handler(req, res) {
   } = await ShopifyClass.getCredentials(headers);
 
   if (!isVerified) {
+    // Not authorized
     res.status(403);
     return;
   }
@@ -44,18 +45,18 @@ export default async function handler(req, res) {
               return { ...theme, sections: false };
             }
           })
-        );
+        ).then((values) => values.filter(Boolean));
 
         res.json(themes);
       } catch (error) {
         console.error(error);
-        res.status(400).json([]);
+        res.status(200).json([]);
       }
 
       break;
 
     default:
-      res.status(400).json({ success: false, message: "route not matched" });
+      res.status(404).json({ success: false, message: "route not matched" });
       break;
   }
 }

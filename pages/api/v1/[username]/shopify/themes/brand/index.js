@@ -12,7 +12,8 @@ export default async function handler(req, res) {
   } = await ShopifyClass.getCredentials(headers);
 
   if (!isVerified) {
-    res.status(403);
+    // unathorized
+    res.status(401);
     return;
   }
 
@@ -27,13 +28,14 @@ export default async function handler(req, res) {
         res.json(assets);
       } catch (error) {
         console.error(error);
-        res.status(400).json({ success: false, message: "fetch failed" });
+        res.status(408).json({ success: false, message: "fetch failed" });
       }
 
       break;
 
     default:
-      res.status(400).json({ success: false, message: "route not matched" });
+      // Method not allowed
+      res.status(405).json({ success: false, message: "route not matched" });
       break;
   }
 }

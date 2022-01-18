@@ -1,5 +1,5 @@
 "use strict";
-const Shopify = require("../../../../../../services/shopify");
+const Shopify = require("../../../../services/shopify");
 
 export default async function handler(req, res) {
   const { method } = req;

@@ -7,6 +7,7 @@ import useThemes from "../hooks/useThemes";
 
 import { Redirect } from "@shopify/app-bridge/actions";
 import { Context } from "@shopify/app-bridge-react";
+import cn from "classnames";
 
 interface LoomSubmission {
   onComplete(args?: string): void;
@@ -15,7 +16,7 @@ interface LoomSubmission {
 
 export default function ThemePreview(props: LoomSubmission) {
   const state = useCountState();
-  const { data: themes } = useThemes();
+  const { data: themes, isLoading, isCompatible } = useThemes();
   const [theme, setTheme] = useState("current");
 
   // Opens a new tab for users
@@ -33,8 +34,32 @@ export default function ThemePreview(props: LoomSubmission) {
       <EmptyState
         src="/logos/primary-logo-icon.png"
         quote={
-          props?.quote ??
-          "It can be hard to understand complex questions over email. With our app, you can give customers an easy way to record questions with a video!"
+          !isLoading && !isCompatible ? (
+            <React.Fragment>
+              Your shop doesn't have any{" "}
+              <a
+                className="text-blue-600 cursor-pointer"
+                onClick={() => {
+                  redirectContext(`https://shopify.pxf.io/5bqBQo`);
+                }}
+              >
+                Online Store 2.0{" "}
+              </a>{" "}
+              themes that supports embedded apps like ours. You can{" "}
+              <a
+                className="text-blue-600 cursor-pointer"
+                onClick={() => {
+                  redirectContext(`https://shopify.pxf.io/a1LZmq`);
+                }}
+              >
+                add one
+              </a>{" "}
+              to your store for free.
+            </React.Fragment>
+          ) : (
+            props?.quote ??
+            "It can be hard to understand complex questions over email. With our app, you can give customers an easy way to record questions with a video!"
+          )
         }
         children={
           <React.Fragment>
@@ -70,13 +95,19 @@ export default function ThemePreview(props: LoomSubmission) {
               </div>
               <button
                 onClick={() => {
-                  redirectContext(
-                    `https://${state.username}.myshopify.com/admin/themes/${theme}/editor?context=apps&template=index&activateAppId=5178a21d-051e-4b38-8992-ed13ae96cd73/app-block`
-                  );
+                  if (isCompatible) {
+                    redirectContext(
+                      `https://${state.username}.myshopify.com/admin/themes/${theme}/editor?context=apps&template=index&activateAppId=5178a21d-051e-4b38-8992-ed13ae96cd73/app-block`
+                    );
 
-                  props.onComplete();
+                    props.onComplete();
+                  }
                 }}
-                className="px-4 py-2 font-semibold text-white bg-green-600 rounded-md cursor-pointer"
+                className={cn({
+                  "px-4 py-2 font-semibold rounded-md": true,
+                  "text-black bg-gray-200 cursor-default": !isCompatible,
+                  "text-white bg-green-600 rounded-md cursor-pointer": isCompatible,
+                })}
               >
                 Open Preview
               </button>

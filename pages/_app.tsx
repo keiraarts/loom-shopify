@@ -12,7 +12,7 @@ import { Redirect } from "@shopify/app-bridge/actions";
 import { appWithTranslation } from "next-i18next";
 
 import { CreateInstance } from "../src/axios";
-import { EmbeddedLayout } from "../src/embedded.tsx";
+import { EmbeddedLayout } from "../src/embedded";
 import { RoutePropagator } from "../src/propagator";
 import AppLayout from "../components/app-layout";
 import NProgress from "nprogress";
@@ -28,6 +28,7 @@ Router.events.on("routeChangeComplete", (url, { shallow }) => {
   if (!shallow) NProgress.done();
 });
 
+declare const Buffer;
 function SessionProvider(props) {
   const { Component, pageProps, shopOrigin } = props;
   const dispatch = useCountDispatch();
@@ -154,7 +155,7 @@ function MyApp({ Component, pageProps }) {
     );
   }
 
-  var host = new Buffer(shopOrigin);
+  var host = new Buffer(shopOrigin as any);
 
   const config = {
     apiKey: process.env.NEXT_PUBLIC_SHOPIFY_API_PUBLIC_KEY,
